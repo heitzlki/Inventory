@@ -12,7 +12,7 @@ const initialState: ItemsState = Array.from({ length: 30 }, (_, i) => ({
 }));
 
 export const itemsSlice = createSlice({
-  name: 'items',
+  name: 'inventury',
   initialState,
   reducers: {
     increment: (

@@ -5,6 +5,15 @@ export interface ItemState {
   unit: unit;
 }
 
+// TODO new ItemState
+// export interface ItemState {
+//   id: string;
+//   stockId: string;
+//   name: string;
+//   amount: number;
+//   unit: unit;
+// }
+
 export interface ItemsState extends Array<ItemState> {}
 
 export enum unit {
