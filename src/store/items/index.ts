@@ -1,84 +1,128 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import uuid from 'react-native-uuid';
+import moment from 'moment';
 
-import { ItemState, ItemsState, unit } from 'store/items/state';
 import { middelware } from 'store/middelware';
 
-const initialState: ItemsState = Array.from({ length: 30 }, (_, i) => ({
-  title: `Item ${i}`,
-  key: `key${i}`,
-  amount: 0,
-  unit: unit.kg,
-}));
+import { ItemState, ItemsState, unit } from 'store/items/state';
+import { store } from '..';
+
+const findItemById = (state: ItemsState, id: string) => {
+  return state.find(item => item.id == id);
+};
+
+const findInventuryIndexById = (state: ItemsState, id: string) => {
+  return state.findIndex(item => item.id == id);
+};
+
+// const stockItemById = (id: string) => {
+// store.getState().
+// }
 
 export const itemsSlice = createSlice({
   name: 'items',
-  initialState,
+  initialState: [],
   reducers: {
-    increment: (
-      state: ItemsState,
-      action: PayloadAction<{ index: number }>,
-    ) => {
-      state[action.payload.index].amount += 1;
+    updatedAt: (state: ItemsState, action: PayloadAction<{ id: string }>) => {
+      let item = findItemById(state, action.payload.id);
+      if (item) {
+        item.updatedAt = moment().unix().toString();
+      }
     },
-    decrement: (
+
+    loadItems: (
       state: ItemsState,
-      action: PayloadAction<{ index: number }>,
+      action: PayloadAction<{ items: ItemsState }>,
     ) => {
-      state[action.payload.index].amount -= 1;
+      state = action.payload.items;
     },
+
+    clearItems: (state: ItemsState) => {
+      state.splice(0, state.length);
+    },
+
+    setAmount: (
+      state: ItemsState,
+      action: PayloadAction<{ id: string; amount: number }>,
+    ) => {
+      let item = findItemById(state, action.payload.id);
+      if (item) {
+        item.amount = action.payload.amount;
+      }
+    },
+
     deleteItem: (
       state: ItemsState,
       action: PayloadAction<{ index: number }>,
     ) => {
       state.splice(action.payload.index, 1);
     },
-    addItem: (state: ItemsState, action: PayloadAction<ItemState>) => {
-      state.unshift(action.payload);
+
+    addItem: (
+      state: ItemsState,
+      action: PayloadAction<{
+        stockId: string;
+        amount?: number;
+      }>,
+    ) => {
+      const { stockId, amount } = action.payload;
+      const stockItem = { name: 'Test', unit: unit.piece }; // stockItemById(stockId)
+
+      let item: ItemState = {
+        id: uuid.v4().toString(),
+        stockId,
+        createdAt: moment().unix().toString(),
+        updatedAt: moment().unix().toString(),
+        name: stockItem.name ?? `Item`,
+        amount: amount ?? 0,
+        unit: stockItem.unit,
+      };
+
+      state.unshift(item);
     },
+
     changeUnit: (
       state: ItemsState,
-      action: PayloadAction<{ index: number; unit: unit }>,
+      action: PayloadAction<{ id: string; unit: unit }>,
     ) => {
-      state[action.payload.index].unit = action.payload.unit;
+      let item = findItemById(state, action.payload.id);
+      if (item) {
+        item.unit = action.payload.unit;
+      }
     },
-    changeAmount: (
-      state: ItemsState,
-      action: PayloadAction<{ index: number; amount: number }>,
-    ) => {
-      state[action.payload.index].amount = action.payload.amount;
-    },
+
     changeOrder: (
       state: ItemsState,
       action: PayloadAction<{ prevIndex: number; newIndex: number }>,
     ) => {
       let item: ItemState = state[action.payload.prevIndex];
+
       state.splice(action.payload.prevIndex, 1);
       state.splice(action.payload.newIndex, 0, item);
-    },
-    clearAllItems: (state: ItemsState) => {
-      state.splice(0, state.length);
-      console.log(state);
     },
   },
 });
 
 export const {
-  increment,
-  decrement,
+  updatedAt,
+  loadItems,
+  clearItems,
+  setAmount,
   addItem,
   deleteItem,
   changeUnit,
-  changeAmount,
   changeOrder,
-  clearAllItems,
 } = itemsSlice.actions;
 
 export default itemsSlice.reducer;
 
-// middelware({
-//   matcher: isAnyOf(increment, decrement),
-//   effect: async (_, listenerApi) => {
-//     console.log('aa');
-//   },
-// });
+middelware({
+  matcher: isAnyOf(setAmount, changeUnit, changeOrder),
+  effect: async (action, listenerApi) => {
+    let id = action?.payload.id;
+    if (id) {
+      listenerApi.dispatch(updatedAt(id));
+    }
+  },
+});
