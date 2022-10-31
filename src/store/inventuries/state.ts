@@ -10,4 +10,4 @@ export interface InventuryState {
   items: ItemsState;
 }
 
-export interface InventoriesState extends Array<InventuryState> {}
+export interface InventuriesState extends Array<InventuryState> {}

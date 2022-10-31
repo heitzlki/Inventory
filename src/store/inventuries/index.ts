@@ -1,84 +1,134 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { ItemState, ItemsState, unit } from 'store/items/state';
+import { InventuryState, InventuriesState } from 'store/inventuries/state';
 import { middelware } from 'store/middelware';
+import { Matcher } from '@reduxjs/toolkit/dist/tsHelpers';
+import Inventury from 'screens/inventury';
+import uuid from 'react-native-uuid';
+import moment from 'moment';
+import { ItemsState, ItemState } from 'store/items/state';
 
-const initialState: ItemsState = Array.from({ length: 30 }, (_, i) => ({
-  title: `Item ${i}`,
-  key: `key${i}`,
-  amount: 0,
-  unit: unit.kg,
-}));
+const findInventuryById = (state: InventuriesState, id: string) => {
+  return state.find(inventury => inventury.id == id);
+};
 
-export const itemsSlice = createSlice({
-  name: 'inventury',
-  initialState,
+const findInventuryIndexById = (state: InventuriesState, id: string) => {
+  return state.findIndex(inventury => inventury.id == id);
+};
+
+export const inventuriesSlice = createSlice({
+  name: 'inventuries',
+  initialState: [],
   reducers: {
-    increment: (
-      state: ItemsState,
-      action: PayloadAction<{ index: number }>,
+    updatedAt: (
+      state: InventuriesState,
+      action: PayloadAction<{ id: string }>,
     ) => {
-      state[action.payload.index].amount += 1;
+      let inventury = findInventuryById(state, action.payload.id);
+      if (inventury) {
+        inventury.updatedAt = moment().unix().toString();
+      }
     },
-    decrement: (
-      state: ItemsState,
-      action: PayloadAction<{ index: number }>,
+
+    addInventury: (
+      state: InventuriesState,
+      action: PayloadAction<{
+        name?: string;
+        description?: string;
+        creator?: string;
+        items?: ItemsState;
+      }>,
     ) => {
-      state[action.payload.index].amount -= 1;
+      const { name, description, creator, items } = action.payload;
+
+      let inventury: InventuryState = {
+        id: uuid.v4().toString(),
+        createdAt: moment().unix().toString(),
+        updatedAt: moment().unix().toString(),
+        name: name ?? `Inventury ${state.length}`,
+        description:
+          description ?? `Created at ${moment().format('DD-MM-YYYY HH:mm')}`,
+        creator: creator ?? 'default',
+        items: items ?? [],
+      };
+
+      state.unshift(inventury);
     },
-    deleteItem: (
-      state: ItemsState,
-      action: PayloadAction<{ index: number }>,
+
+    deleteInventury: (
+      state: InventuriesState,
+      action: PayloadAction<{ id: string }>,
     ) => {
-      state.splice(action.payload.index, 1);
+      let inventuryIndex = findInventuryIndexById(state, action.payload.id);
+      if (inventuryIndex) {
+        state.splice(inventuryIndex, 1);
+      }
     },
-    addItem: (state: ItemsState, action: PayloadAction<ItemState>) => {
-      state.unshift(action.payload);
-    },
-    changeUnit: (
-      state: ItemsState,
-      action: PayloadAction<{ index: number; unit: unit }>,
+
+    editInventuryName: (
+      state: InventuriesState,
+      action: PayloadAction<{ id: string; name: string }>,
     ) => {
-      state[action.payload.index].unit = action.payload.unit;
+      let inventury = findInventuryById(state, action.payload.id);
+      if (inventury) {
+        inventury.name = action.payload.name;
+      }
     },
-    changeAmount: (
-      state: ItemsState,
-      action: PayloadAction<{ index: number; amount: number }>,
+
+    editInventuryDescription: (
+      state: InventuriesState,
+      action: PayloadAction<{ id: string; description: string }>,
     ) => {
-      state[action.payload.index].amount = action.payload.amount;
+      let inventury = findInventuryById(state, action.payload.id);
+      if (inventury) {
+        inventury.description = action.payload.description;
+      }
     },
-    changeOrder: (
-      state: ItemsState,
-      action: PayloadAction<{ prevIndex: number; newIndex: number }>,
+
+    changeInventuryCreator: (
+      state: InventuriesState,
+      action: PayloadAction<{ id: string; creator: string }>,
     ) => {
-      let item: ItemState = state[action.payload.prevIndex];
-      state.splice(action.payload.prevIndex, 1);
-      state.splice(action.payload.newIndex, 0, item);
+      let inventury = findInventuryById(state, action.payload.id);
+      if (inventury) {
+        inventury.creator = action.payload.creator;
+      }
     },
-    clearAllItems: (state: ItemsState) => {
-      state.splice(0, state.length);
-      console.log(state);
+
+    editInventuryItems: (
+      state: InventuriesState,
+      action: PayloadAction<{ id: string; items: ItemsState }>,
+    ) => {
+      let inventury = findInventuryById(state, action.payload.id);
+      if (inventury) {
+        inventury.items = action.payload.items;
+      }
     },
   },
 });
 
 export const {
-  increment,
-  decrement,
-  addItem,
-  deleteItem,
-  changeUnit,
-  changeAmount,
-  changeOrder,
-  clearAllItems,
-} = itemsSlice.actions;
+  updatedAt,
+  addInventury,
+  deleteInventury,
+  editInventuryName,
+  editInventuryDescription,
+  changeInventuryCreator,
+  editInventuryItems,
+} = inventuriesSlice.actions;
 
-export default itemsSlice.reducer;
-
-// middelware({
-//   matcher: isAnyOf(increment, decrement),
-//   effect: async (_, listenerApi) => {
-//     console.log('aa');
-//   },
-// });
+middelware({
+  matcher: isAnyOf(
+    editInventuryName,
+    editInventuryDescription,
+    changeInventuryCreator,
+    editInventuryItems,
+  ),
+  effect: async (action, listenerApi) => {
+    let id = action?.payload.id;
+    if (id) {
+      listenerApi.dispatch(updatedAt(id));
+    }
+  },
+});
