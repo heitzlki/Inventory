@@ -16,7 +16,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { Portal } from '@gorhom/portal';
 import { FullWindowOverlay } from 'react-native-screens';
-import uuid from 'react-native-uuid';
+
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
