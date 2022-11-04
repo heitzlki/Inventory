@@ -1,0 +1,15 @@
+FROM node:14-slim
+
+ARG SERVER_PORT
+
+WORKDIR /app
+
+COPY package*.json ./app
+
+RUN yarn install
+
+COPY . .
+
+EXPOSE $SERVER_PORT
+
+CMD ["yarn", "run", "dev"]

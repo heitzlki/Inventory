@@ -19,3 +19,6 @@ const App = () => {
 };
 
 export default App;
+
+// https://reactnavigation.org/docs/drawer-based-navigation
+// https://wix.github.io/react-native-ui-lib/
