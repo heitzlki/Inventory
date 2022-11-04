@@ -1,13 +1,24 @@
-import { ItemsState } from 'store/items/state';
+export interface ItemState {
+  id: string;
+  stockId: string;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  amount: number;
+}
+
+interface ItemsState {
+  [key: string]: ItemState;
+}
 
 export interface InventuryState {
   id: string;
   createdAt: string;
   updatedAt: string;
   name: string;
-  description: string;
-  creator: string;
   items: ItemsState;
 }
 
-export interface InventuriesState extends Array<InventuryState> {}
+export interface InventuriesState {
+  [key: string]: InventuryState;
+}

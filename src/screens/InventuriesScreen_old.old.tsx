@@ -1,4 +1,5 @@
 import { View, Text, Button, PermissionsAndroid } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
 import XLSX from 'xlsx';
 import fs from 'react-native-fs';
@@ -7,7 +8,33 @@ import Share from 'react-native-share';
 
 import { store } from 'store/index';
 
-const Inventories = () => {
+import type { RootState } from 'store/index';
+import {
+  loadItems,
+  clearItems,
+  setAmount,
+  addItem,
+  deleteItem,
+  changeUnit,
+  changeOrder,
+  findItemById,
+} from 'store/items/index';
+import { unit } from 'store/items/state';
+import { itemList } from 'screens/inventury';
+
+// import { useNavigation } from '@react-navigation/native';
+
+import type { AppTabParamList, RootStackParamList } from 'navigation/types';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+type Props = NativeStackScreenProps<AppTabParamList, 'Inventuries'>;
+
+import type { RootStackScreenProps } from 'navigation/types';
+
+const InventuriesScreen = ({
+  route,
+  navigation,
+}: RootStackScreenProps<'Inventuries'>) => {
   const generateShareableExcel = async (): Promise<string> => {
     let state = store.getState();
 
@@ -118,14 +145,40 @@ const Inventories = () => {
     }
   };
 
+  const items = useSelector((state: RootState) => state.itemsReducer);
+  const dispatch = useDispatch();
+
+  // const navigation = useNavigation();
+
+  const loadNewItems = () => {
+    dispatch(clearItems());
+    dispatch(
+      loadItems({
+        items: Array.from({ length: 20 }, (_, i) => ({
+          name: itemList[Math.floor(Math.random() * itemList.length)].name,
+          id: uuid.v4().toString(),
+          stockId: '',
+          createdAt: '',
+          updatedAt: '',
+          amount: Math.floor(Math.random() * 10),
+          unit: unit.kg,
+        })),
+      }),
+    );
+
+    // navigation.navigate('Inventury', { id: 'Tessttsts' }); // TODO Pass inventury ID and then all actions over inventury state
+  };
+
   return (
-    <View style={{ width: '100%', height: 100, backgroundColor: '#fff' }}>
-      <Text>Test</Text>
-      <View style={{ marginTop: 50 }}>
-        <Button onPress={onShare} title="Share" />
-      </View>
-    </View>
+    <></>
+    // <View style={{ width: '100%', height: '100%', backgroundColor: '#fff000' }}>
+    //   <Text>Test</Text>
+    //   <View style={{ marginTop: 50 }}>
+    //     <Button onPress={onShare} title="Share" />
+    //     <Button onPress={loadNewItems} title="Load new items" />
+    //   </View>
+    // </View>
   );
 };
 
-export default Inventories;
+export default InventuriesScreen;

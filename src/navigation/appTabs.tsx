@@ -18,6 +18,7 @@ import {
   Pressable,
 } from 'react-native';
 import Inventuries from 'screens/Inventuries';
+import type { RootStackScreenProps } from './types';
 
 const Tab = createBottomTabNavigator<AppTabParamList>();
 
@@ -209,19 +210,3 @@ const TabHeader = ({ props }: { props: BottomTabHeaderProps }) => (
     </View>
   </View>
 );
-const AppNavigation = () => {
-  return (
-    <Tab.Navigator
-      tabBar={(props: BottomTabBarProps) => <TabBar {...props} />}
-      screenOptions={{
-        headerTransparent: true,
-        header: (props: BottomTabHeaderProps) => <TabHeader props={props} />,
-      }}>
-      {/* <Tab.Screen name="Inventuren" component={Home} /> */}
-      <Tab.Screen name="Inventuries" component={Inventuries} />
-      <Tab.Screen name="Inventury" component={Inventury} />
-    </Tab.Navigator>
-  );
-};
-
-export default AppNavigation;

@@ -24,17 +24,18 @@ import _, { isInteger } from 'lodash';
 
 import type { RootState } from 'store/index';
 import {
+  loadItems,
+  clearItems,
+  setAmount,
   addItem,
-  decrement,
   deleteItem,
-  increment,
-  clearAllItems,
-  changeAmount,
   changeUnit,
+  changeOrder,
+  findItemById,
 } from 'store/items/index';
 import { unit } from 'store/items/state';
 
-const itemList = [
+export const itemList = [
   { name: 'Cherries', icon: 'fruit-cherries', color: '#ffc6ff' },
   { name: 'Citrus', icon: 'fruit-citrus', color: '#fdffb6' },
   { name: 'Grapes', icon: 'fruit-grapes', color: '#bdb2ff' },
@@ -58,8 +59,12 @@ const itemList = [
 ];
 
 // https://www.crowdbotics.com/blog/add-search-bar-flatlist-react-native-apps
+import type { RootStackParamList } from 'navigation/types';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const Inventury = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Inventury'>;
+
+const InventuryScreen = ({ route, navigation }: Props) => {
   const items = useSelector((state: RootState) => state.itemsReducer);
   const dispatch = useDispatch();
 
@@ -128,18 +133,19 @@ const Inventury = () => {
         style={{
           backgroundColor: '#36393F',
           height: '100%',
-          paddingTop: 50,
-          paddingBottom: 60,
         }}>
+        <View style={{ height: 60, backgroundColor: '#000' }}>
+          <Text>{route.params.id}</Text>
+        </View>
         <FlatList
           contentContainerStyle={{
             alignItems: 'center',
-            paddingBottom: 84,
+            paddingBottom: 84, // Bottom space for add button
           }}
           data={items}
           renderItem={({ item, index, separators }) => (
             <View
-              key={item.key}
+              key={item.id}
               style={{
                 backgroundColor: '#2F3136',
                 height: 48,
@@ -155,8 +161,7 @@ const Inventury = () => {
               <View
                 style={{
                   backgroundColor:
-                    itemList.find(o => o.name == item.title)?.color ??
-                    '#9bf6ff',
+                    itemList.find(o => o.name == item.name)?.color ?? '#9bf6ff',
                   borderRadius: 10,
                   width: 35,
                   height: 35,
@@ -165,9 +170,7 @@ const Inventury = () => {
                   marginHorizontal: 5,
                 }}>
                 <MaterialCommunityIcon
-                  name={
-                    itemList.find(o => o.name == item.title)?.icon ?? 'atom'
-                  }
+                  name={itemList.find(o => o.name == item.name)?.icon ?? 'atom'}
                   color="#202225"
                   size={20}></MaterialCommunityIcon>
               </View>
@@ -180,7 +183,7 @@ const Inventury = () => {
                   alignItems: 'flex-start',
                   paddingLeft: '5%',
                 }}>
-                <Text style={{ color: '#DCDDDE' }}>{item.title}</Text>
+                <Text style={{ color: '#DCDDDE' }}>{item.name}</Text>
               </View>
               <Pressable
                 style={{
@@ -192,7 +195,9 @@ const Inventury = () => {
                   alignItems: 'center',
                   marginHorizontal: 5,
                 }}
-                onPress={() => dispatch(increment({ index }))}>
+                onPress={() =>
+                  dispatch(setAmount({ index: index, amount: item.amount + 1 }))
+                }>
                 <AntDesignIcon
                   name="plus"
                   size={20}
@@ -251,7 +256,9 @@ const Inventury = () => {
                   alignItems: 'center',
                   marginHorizontal: 5,
                 }}
-                onPress={() => dispatch(decrement({ index }))}>
+                onPress={() =>
+                  dispatch(setAmount({ index, amount: item.amount - 1 }))
+                }>
                 <AntDesignIcon
                   name="minus"
                   size={20}
@@ -282,7 +289,7 @@ const Inventury = () => {
           onRequestClose={() => {
             setUnitPicker({ ...unitPicker, visible: !unitPicker.visible });
             dispatch(
-              changeAmount({
+              setAmount({
                 index: unitPicker.index,
                 amount: unitPicker.amount,
               }),
@@ -342,7 +349,7 @@ const Inventury = () => {
                   });
 
                   dispatch(
-                    changeAmount({
+                    setAmount({
                       index: unitPicker.index,
                       amount: unitPicker.amount,
                     }),
@@ -374,7 +381,7 @@ const Inventury = () => {
                   });
 
                   dispatch(
-                    changeAmount({
+                    setAmount({
                       index: unitPicker.index,
                       amount: unitPicker.amount,
                     }),
@@ -406,7 +413,7 @@ const Inventury = () => {
                   });
 
                   dispatch(
-                    changeAmount({
+                    setAmount({
                       index: unitPicker.index,
                       amount: unitPicker.amount,
                     }),
@@ -447,7 +454,7 @@ const Inventury = () => {
               position: 'absolute',
               alignSelf: 'flex-end',
               bottom: 20,
-              right: 10,
+              right: 20,
               alignItems: 'center',
               justifyContent: 'center',
               width: 64,
@@ -459,7 +466,7 @@ const Inventury = () => {
               setNewItem({ ...newItem, visible: !newItem.visible })
             }
             onLongPress={() => {
-              dispatch(clearAllItems());
+              dispatch(clearItems());
             }}>
             <AntDesignIcon
               name="plus"
@@ -573,10 +580,8 @@ const Inventury = () => {
                     onPress={() => {
                       dispatch(
                         addItem({
-                          title: item.name,
-                          key: uuid.v4().toString(),
+                          stockId: 'defaultStockId',
                           amount: 0,
-                          unit: unit.kg,
                         }),
                       );
                       setNewItem({
@@ -585,7 +590,7 @@ const Inventury = () => {
                         visible: !newItem.visible,
                       });
                       setUnitPicker({
-                        index: 0,
+                        id: '',
                         amount: 0,
                         visible: !unitPicker.visible,
                       });
@@ -630,4 +635,4 @@ const Inventury = () => {
     </SafeAreaView>
   );
 };
-export default Inventury;
+export default InventuryScreen;
