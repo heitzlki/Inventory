@@ -26,11 +26,10 @@ const SignInScreen = ({
       <Button
         onPress={() => {
           dispatch(signIn({ token: credentials }));
-          console.log('Test');
-          // navigation.navigate('Inventuries');
         }}
         title="SignIn"
       />
+      <Button onPress={() => navigation.navigate('SignUp')} title="SignUp" />
     </>
   );
 };

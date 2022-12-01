@@ -13,6 +13,7 @@ export const authSlice = createSlice({
         state.signedIn = true;
       }
     },
+
     signOut: (state: AuthState) => {
       state.token = '';
       state.signedIn = false;

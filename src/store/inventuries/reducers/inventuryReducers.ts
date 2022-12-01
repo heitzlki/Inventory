@@ -23,13 +23,15 @@ export const inventuryAdd = (
   // }>,
 ) => {
   let id = `${uuid.v4()}`;
+  console.log(state);
+
   return Object.assign(
     {
-      id: {
+      [id]: {
         id,
         createdAt: moment().unix().toString(),
         updatedAt: moment().unix().toString(),
-        name: `Inventury ${state.length}`,
+        name: `Inventury ${Object.keys(state).length}`,
         items: {} as ItemState,
       },
     },

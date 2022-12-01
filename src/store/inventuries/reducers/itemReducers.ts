@@ -39,7 +39,7 @@ export const itemAdd = (
   let id = `${uuid.v4()}`;
   state[action.payload.inventuryId].items = Object.assign(
     {
-      id: {
+      [id]: {
         id,
         stockId: '',
         createdAt: moment().unix().toString(),
