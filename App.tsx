@@ -13,9 +13,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <PortalProvider>
-          <Drawer>
-            <Navigation />
-          </Drawer>
+          <Navigation />
         </PortalProvider>
       </PersistGate>
     </Provider>

@@ -28,8 +28,12 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
-  withTiming,
+  runOnJS,
+  cancelAnimation,
 } from 'react-native-reanimated';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from 'store/index';
 
 import type { SharedValue } from 'react-native-reanimated';
 
@@ -68,139 +72,121 @@ type DrawerProps = {
   children?: React.ReactNode;
 };
 
-const Drawer = React.forwardRef<DrawerRefProps, DrawerProps>(
-  ({ children }, ref) => {
-    // const drawerSheetRef = useRef<DrawerSheetRefProps>(null);
+import { RootStackScreenProps } from 'navigation/types';
+import { activate } from 'store/drawer';
 
-    const translateX = useSharedValue(0);
-    // const active = useSharedValue(false);
+const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
+  const drawer = useSelector((state: RootState) => state.drawerReducer);
+  const dispatch = useDispatch();
 
-    const active = useSharedValue(false);
+  const translateX = useSharedValue(0);
 
-    // setIsActive;
+  const activeReal = useSharedValue(false);
 
-    const activate = useCallback(() => {
-      console.log('Activate');
-      console.log(active.value);
+  const duringAnimation = useSharedValue(false);
 
-      if (active.value) {
-        // setIsActive(false);
-        scrollTo(0);
-      } else {
-        // setIsActive(true);
-        scrollTo(MAX_TRANSLATE_X);
+  const closeModal = () => {
+    navigation.goBack();
+  };
+
+  const activateAnimation = useCallback(() => {
+    'worklet';
+
+    if (activeReal.value) {
+      activeReal.value = false;
+
+      duringAnimation.value = true;
+
+      translateX.value = withSpring(0, { damping: 50 }, () => {
+        duringAnimation.value = false;
+        runOnJS(closeModal)();
+      });
+    } else {
+      scrollTo(MAX_TRANSLATE_X);
+    }
+  }, []);
+
+  const panGestureEvent = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    { x: number }
+  >({
+    onStart: (_, context) => {
+      context.x = translateX.value;
+    },
+
+    onActive: (event, context) => {
+      translateX.value = event.translationX + context.x;
+      translateX.value =
+        translateX.value >= MAX_TRANSLATE_X
+          ? MAX_TRANSLATE_X
+          : translateX.value;
+    },
+    onEnd: () => {
+      if (translateX.value < MAX_TRANSLATE_X) {
+        activateAnimation();
       }
-    }, []);
+    },
+  });
 
-    const panGestureEvent = useAnimatedGestureHandler<
-      PanGestureHandlerGestureEvent,
-      { x: number }
-    >({
-      onStart: (_, context) => {
-        context.x = translateX.value;
-      },
+  const rDrawerSheetStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: translateX.value }],
+    };
+  }, []);
 
-      onActive: (event, context) => {
-        translateX.value = event.translationX + context.x;
-        translateX.value =
-          translateX.value >= MAX_TRANSLATE_X
-            ? MAX_TRANSLATE_X
-            : translateX.value;
-      },
+  const scrollTo = useCallback((destination: number) => {
+    'worklet';
+
+    activeReal.value = destination <= 0 ? false : true;
+
+    translateX.value = withSpring(destination, { damping: 50 });
+  }, []);
+
+  const tapGestureEvent =
+    useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
       onEnd: () => {
-        if (translateX.value < MAX_TRANSLATE_X) {
-          translateX.value = withSpring(0, { damping: 50 });
+        if (!duringAnimation.value) {
+          activateAnimation();
         }
       },
     });
 
-    const rDrawerSheetStyle = useAnimatedStyle(() => {
-      return {
-        transform: [{ translateX: translateX.value }],
-      };
-    }, []);
-
-    const scrollTo = (destination: number) => {
-      'worklet';
-      let a = destination <= 0 ? false : true;
-      console.log(a);
-
-      active.value = a;
-
-      console.log(active);
-
-      translateX.value = withSpring(destination, { damping: 50 });
-      // drawerContext.setIsActive(active.value);
-    };
-
-    const tapGestureEvent =
-      useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
-        onEnd: () => {
-          scrollTo(0);
-        },
-      });
-
-    const rDrawerSheetBackGroundStyle = useAnimatedStyle(() => {
-      const opacity = interpolate(
-        translateX.value,
-        [0, MAX_TRANSLATE_X],
-        [0.0, 0.8],
-      );
-
-      const width = translateX.value == 0 ? 0 : '100%';
-
-      return {
-        backgroundColor: `rgba(0, 0, 0, ${opacity})`,
-        width,
-      };
-    }, []);
-
-    return (
-      <DrawerContext.Provider value={{ active, activate }}>
-        {children}
-
-        {/* <Modal visible={isActive} transparent>
-          <Pressable
-            style={{
-              backgroundColor: 'rgba(255,255,255,0.5)',
-              flex: 1,
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '0%',
-              height: '0%',
-            }}
-            onPress={() => setIsActive(false)}>
-                      <GestureHandlerRootView
-            style={{
-              flex: 1,
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              // backgroundColor: 'red',
-            }}>
-            <TapGestureHandler onGestureEvent={tapGestureEvent}>
-              <Animated.View
-                style={[
-                  styles.drawerSheetBackGround,
-                  rDrawerSheetBackGroundStyle,
-                ]}
-              />
-            </TapGestureHandler>
-            <PanGestureHandler onGestureEvent={panGestureEvent}>
-              <Animated.View
-                style={[styles.drawerSheetContainer, rDrawerSheetStyle]}>
-                {children}
-              </Animated.View>
-            </PanGestureHandler>
-          </Pressable>
-        </Modal> */}
-      </DrawerContext.Provider>
+  const rDrawerSheetBackGroundStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(
+      translateX.value,
+      [0, MAX_TRANSLATE_X],
+      [0.0, 0.8],
     );
-  },
-);
+
+    const width = translateX.value == 0 ? 0 : '100%';
+
+    return {
+      backgroundColor: `rgba(0, 0, 0, ${opacity})`,
+      width,
+    };
+  }, []);
+
+  useEffect(() => {
+    activateAnimation();
+  }, [drawer.active]);
+
+  return (
+    <>
+      <TapGestureHandler onGestureEvent={tapGestureEvent}>
+        <Animated.View
+          style={[styles.drawerSheetBackGround, rDrawerSheetBackGroundStyle]}
+        />
+      </TapGestureHandler>
+      <PanGestureHandler onGestureEvent={panGestureEvent}>
+        <Animated.View
+          style={[
+            styles.drawerSheetContainer,
+            rDrawerSheetStyle,
+          ]}></Animated.View>
+      </PanGestureHandler>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   drawerSheetBackGround: {

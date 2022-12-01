@@ -6,6 +6,8 @@ export type RootStackParamList = {
   Settings: undefined;
   SearchItem: { inventuryId: string };
 
+  Drawer: undefined;
+
   Welcome: undefined;
   SignIn: undefined;
   SignUp: undefined;

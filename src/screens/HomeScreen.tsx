@@ -12,7 +12,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
-import { signOut } from 'store/auth';
+import { activate } from 'store/drawer';
 
 import { inventuryAdd, inventuryDelete } from 'store/inventuries';
 
@@ -27,9 +27,8 @@ const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
   const inventuries = useSelector(
     (state: RootState) => state.inveturiesReducer,
   );
+  const drawer = useSelector((state: RootState) => state.drawerReducer);
   const dispatch = useDispatch();
-
-  const drawerContext = useContext(DrawerContext);
 
   return (
     <GestureHandlerRootView
@@ -51,10 +50,15 @@ const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
             justifyContent: 'center',
           }}>
           <View>
-            <Pressable style={{ left: 10 }} onPress={drawerContext.activate}>
+            <Pressable
+              style={{ left: 10 }}
+              onPress={() => {
+                dispatch(activate());
+                navigation.navigate('Drawer');
+              }}>
               <MaterialCommunityIcon name="menu" size={30} color="#DCDDDE" />
             </Pressable>
-            <Text>{`${drawerContext.active.value}`}</Text>
+            <Text>{`${drawer.active}`}</Text>
           </View>
         </View>
 
