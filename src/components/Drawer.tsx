@@ -1,21 +1,6 @@
-import React, {
-  useCallback,
-  useRef,
-  useImperativeHandle,
-  createContext,
-  useContext,
-  useReducer,
-  useEffect,
-} from 'react';
+import React, { useCallback, createContext, useEffect } from 'react';
 
-import {
-  Dimensions,
-  StyleSheet,
-  Modal,
-  View,
-  Pressable,
-  Text,
-} from 'react-native';
+import { Dimensions, Pressable, StyleSheet, Text } from 'react-native';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
@@ -29,7 +14,8 @@ import Animated, {
   useSharedValue,
   withSpring,
   runOnJS,
-  cancelAnimation,
+  withTiming,
+  Easing,
 } from 'react-native-reanimated';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -50,8 +36,6 @@ export type DrawerSheetRefProps = {
   isOpen: boolean;
 };
 
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
 export type DrawerState = {
   activate: () => void;
   active: SharedValue<boolean>;
@@ -62,8 +46,6 @@ export const DrawerContext = createContext<DrawerState>({
   active: { value: false },
 });
 
-import { useState } from 'react';
-
 export type DrawerRefProps = {
   activate: () => void;
 };
@@ -72,8 +54,42 @@ type DrawerProps = {
   children?: React.ReactNode;
 };
 
-import { RootStackScreenProps } from 'navigation/types';
+import { RootStackScreenProps, RootStackParamList } from 'navigation/types';
 import { activate } from 'store/drawer';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+const DrawerRoute = ({
+  action,
+  title,
+}: {
+  action?: () => void;
+  title: string;
+}) => {
+  return (
+    <Pressable
+      style={{
+        height: 34,
+        width: '95%',
+        backgroundColor: '#2f3136',
+        borderTopRightRadius: 8,
+        borderBottomRightRadius: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10,
+      }}
+      onPress={action}>
+      <Text
+        style={{
+          color: '#DCDDDE',
+          fontWeight: '500',
+          fontSize: 16,
+          left: 4,
+        }}>
+        {title}
+      </Text>
+    </Pressable>
+  );
+};
 
 const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
   const drawer = useSelector((state: RootState) => state.drawerReducer);
@@ -85,9 +101,21 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
 
   const duringAnimation = useSharedValue(false);
 
+  // const fnVal = useSharedValue(navigation.navigate('Home'));
+
   const closeModal = () => {
+    dispatch(activate());
+
     navigation.goBack();
   };
+
+  const scrollTo = useCallback((destination: number, callback?: () => void) => {
+    'worklet';
+
+    activeReal.value = destination <= 0 ? false : true;
+
+    translateX.value = withTiming(destination, { duration: 400 }, callback);
+  }, []);
 
   const activateAnimation = useCallback(() => {
     'worklet';
@@ -97,10 +125,20 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
 
       duringAnimation.value = true;
 
-      translateX.value = withSpring(0, { damping: 50 }, () => {
+      scrollTo(0, () => {
         duringAnimation.value = false;
+
         runOnJS(closeModal)();
+        // runOnJS(a)();
+        // runOnJS(dispatch)(activate);
+        // runOnJS(navigation.navigate)("Home" );
+        // navigation.navigate('Home');
       });
+
+      // translateX.value = withSpring(0, { damping: 50 }, () => {
+      //   duringAnimation.value = false;
+      //   runOnJS(closeModal)();
+      // });
     } else {
       scrollTo(MAX_TRANSLATE_X);
     }
@@ -111,18 +149,22 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
     { x: number }
   >({
     onStart: (_, context) => {
-      context.x = translateX.value;
+      if (!duringAnimation.value) {
+        context.x = translateX.value;
+      }
     },
 
     onActive: (event, context) => {
-      translateX.value = event.translationX + context.x;
-      translateX.value =
-        translateX.value >= MAX_TRANSLATE_X
-          ? MAX_TRANSLATE_X
-          : translateX.value;
+      if (!duringAnimation.value) {
+        translateX.value = event.translationX + context.x;
+        translateX.value =
+          translateX.value >= MAX_TRANSLATE_X
+            ? MAX_TRANSLATE_X
+            : translateX.value;
+      }
     },
     onEnd: () => {
-      if (translateX.value < MAX_TRANSLATE_X) {
+      if (translateX.value < MAX_TRANSLATE_X && !duringAnimation.value) {
         activateAnimation();
       }
     },
@@ -132,14 +174,6 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
     return {
       transform: [{ translateX: translateX.value }],
     };
-  }, []);
-
-  const scrollTo = useCallback((destination: number) => {
-    'worklet';
-
-    activeReal.value = destination <= 0 ? false : true;
-
-    translateX.value = withSpring(destination, { damping: 50 });
   }, []);
 
   const tapGestureEvent =
@@ -178,11 +212,49 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
         />
       </TapGestureHandler>
       <PanGestureHandler onGestureEvent={panGestureEvent}>
-        <Animated.View
-          style={[
-            styles.drawerSheetContainer,
-            rDrawerSheetStyle,
-          ]}></Animated.View>
+        <Animated.View style={[styles.drawerSheetContainer, rDrawerSheetStyle]}>
+          <Pressable
+            style={{
+              height: 34,
+              width: '95%',
+              backgroundColor: '#2f3136',
+              borderTopRightRadius: 8,
+              borderBottomRightRadius: 8,
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}
+            onPress={() => {
+              activateAnimation();
+            }}>
+            <Text
+              style={{
+                color: '#DCDDDE',
+                fontWeight: '500',
+                fontSize: 16,
+                left: 4,
+              }}>
+              Settings
+            </Text>
+          </Pressable>
+          {/* <DrawerRoute
+            action={() => {
+              activateAnimation(() => {
+                navigation.navigate('Home');
+              });
+            }}
+            title={'Home'}
+          />
+          <DrawerRoute
+            action={() => {
+              // navigation.navigate('Settings');
+              activateAnimation(() => {
+                navigation.navigate('Settings');
+              });
+            }}
+            title={'Home'}
+          /> */}
+        </Animated.View>
       </PanGestureHandler>
     </>
   );
@@ -203,11 +275,13 @@ const styles = StyleSheet.create({
     top: 0,
     width: MAX_TRANSLATE_X,
     height: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#36393f',
     right: SCREEN_WIDTH,
     borderTopRightRadius: 25,
     borderBottomRightRadius: 25,
     zIndex: 4,
+    flex: 1,
+    alignItems: 'flex-start',
   },
 });
 

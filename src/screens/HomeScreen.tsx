@@ -53,12 +53,11 @@ const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
             <Pressable
               style={{ left: 10 }}
               onPress={() => {
-                dispatch(activate());
                 navigation.navigate('Drawer');
+                dispatch(activate());
               }}>
               <MaterialCommunityIcon name="menu" size={30} color="#DCDDDE" />
             </Pressable>
-            <Text>{`${drawer.active}`}</Text>
           </View>
         </View>
 
