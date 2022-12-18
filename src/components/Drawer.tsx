@@ -12,10 +12,8 @@ import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
   runOnJS,
   withTiming,
-  Easing,
 } from 'react-native-reanimated';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -56,7 +54,6 @@ type DrawerProps = {
 
 import { RootStackScreenProps, RootStackParamList } from 'navigation/types';
 import { activate } from 'store/drawer';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const DrawerRoute = ({
   action,
@@ -101,14 +98,6 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
 
   const duringAnimation = useSharedValue(false);
 
-  // const fnVal = useSharedValue(navigation.navigate('Home'));
-
-  const closeModal = () => {
-    dispatch(activate());
-
-    navigation.goBack();
-  };
-
   const scrollTo = useCallback((destination: number, callback?: () => void) => {
     'worklet';
 
@@ -128,17 +117,9 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
       scrollTo(0, () => {
         duringAnimation.value = false;
 
-        runOnJS(closeModal)();
-        // runOnJS(a)();
-        // runOnJS(dispatch)(activate);
-        // runOnJS(navigation.navigate)("Home" );
-        // navigation.navigate('Home');
+        runOnJS(dispatch)(activate);
+        runOnJS(navigation.goBack)();
       });
-
-      // translateX.value = withSpring(0, { damping: 50 }, () => {
-      //   duringAnimation.value = false;
-      //   runOnJS(closeModal)();
-      // });
     } else {
       scrollTo(MAX_TRANSLATE_X);
     }
@@ -185,6 +166,20 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
       },
     });
 
+  const handleNav = useCallback((navFn: () => void) => {
+    'worklet';
+    activeReal.value = false;
+
+    duringAnimation.value = true;
+
+    translateX.value = withTiming(0, { duration: 400 }, () => {
+      duringAnimation.value = false;
+      runOnJS(dispatch)(activate);
+      runOnJS(navigation.goBack)();
+      runOnJS(navFn)();
+    });
+  }, []);
+
   const rDrawerSheetBackGroundStyle = useAnimatedStyle(() => {
     const opacity = interpolate(
       translateX.value,
@@ -213,47 +208,20 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
       </TapGestureHandler>
       <PanGestureHandler onGestureEvent={panGestureEvent}>
         <Animated.View style={[styles.drawerSheetContainer, rDrawerSheetStyle]}>
-          <Pressable
-            style={{
-              height: 34,
-              width: '95%',
-              backgroundColor: '#2f3136',
-              borderTopRightRadius: 8,
-              borderBottomRightRadius: 8,
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 10,
-            }}
-            onPress={() => {
-              activateAnimation();
-            }}>
-            <Text
-              style={{
-                color: '#DCDDDE',
-                fontWeight: '500',
-                fontSize: 16,
-                left: 4,
-              }}>
-              Settings
-            </Text>
-          </Pressable>
-          {/* <DrawerRoute
+          <DrawerRoute
             action={() => {
-              activateAnimation(() => {
-                navigation.navigate('Home');
-              });
+              handleNav(() => {});
             }}
             title={'Home'}
           />
           <DrawerRoute
             action={() => {
-              // navigation.navigate('Settings');
-              activateAnimation(() => {
+              handleNav(() => {
                 navigation.navigate('Settings');
               });
             }}
-            title={'Home'}
-          /> */}
+            title={'Settings'}
+          />
         </Animated.View>
       </PanGestureHandler>
     </>
