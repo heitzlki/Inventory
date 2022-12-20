@@ -1,5 +1,4 @@
 import React, { useCallback, createContext, useEffect } from 'react';
-
 import { Dimensions, Pressable, StyleSheet, Text } from 'react-native';
 import {
   PanGestureHandler,

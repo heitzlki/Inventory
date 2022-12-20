@@ -1,13 +1,5 @@
-import { useState, useRef, useContext } from 'react';
-import {
-  Button,
-  View,
-  Text,
-  TouchableOpacity,
-  Pressable,
-  FlatList,
-  Modal,
-} from 'react-native';
+import { useRef, useState } from 'react';
+import { View, Text, Pressable, FlatList } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,16 +11,19 @@ import { inventuryAdd, inventuryDelete } from 'store/inventuries';
 import type { RootStackScreenProps } from 'navigation/types';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Drawer from 'components/Drawer';
 
-import { DrawerContext } from 'components/Drawer';
+import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 
 const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
   const inventuries = useSelector(
     (state: RootState) => state.inveturiesReducer,
   );
-  const drawer = useSelector((state: RootState) => state.drawerReducer);
+  // const drawer = useSelector((state: RootState) => state.drawerReducer);
   const dispatch = useDispatch();
+
+  const bottomSheetRef = useRef<BottomSheetRefProps>(null);
+
+  const [bottomSheetItemId, setBottomSheetItemId] = useState('');
 
   return (
     <GestureHandlerRootView
@@ -85,10 +80,7 @@ const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
                   navigation.navigate('Inventury', {
                     inventuryId: inventuries[item].id,
                   })
-                }
-                onLongPress={() => {
-                  dispatch(inventuryDelete({ inventuryId: item }));
-                }}>
+                }>
                 <View
                   style={{
                     left: 10,
@@ -111,7 +103,11 @@ const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
                   </Text>
                 </View>
                 <View style={{ position: 'absolute', right: 0 }}>
-                  <Pressable>
+                  <Pressable
+                    onPress={() => {
+                      bottomSheetRef?.current?.activate();
+                      setBottomSheetItemId(item);
+                    }}>
                     <MaterialCommunityIcon
                       name="dots-vertical"
                       size={28}
@@ -140,6 +136,31 @@ const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
           onPress={() => dispatch(inventuryAdd())}>
           <MaterialCommunityIcon name="plus" size={40} color="#DCDDDE" />
         </Pressable>
+
+        <BottomSheet ref={bottomSheetRef}>
+          <Pressable
+            style={{
+              alignSelf: 'center',
+              alignItems: 'center',
+              justifyContent: 'center',
+
+              borderRadius: 15,
+
+              height: 34,
+              width: '95%',
+              backgroundColor: '#2f3136',
+            }}
+            onPress={() => {
+              dispatch(inventuryDelete({ inventuryId: bottomSheetItemId }));
+              bottomSheetRef?.current?.activate();
+            }}>
+            <MaterialCommunityIcon
+              name="trash-can-outline"
+              size={25}
+              color="#DCDDDE"
+            />
+          </Pressable>
+        </BottomSheet>
       </View>
     </GestureHandlerRootView>
   );
