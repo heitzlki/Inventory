@@ -23,7 +23,7 @@ const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
 
   const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
-  const [bottomSheetItemId, setBottomSheetItemId] = useState('');
+  const [bottomSheetInventuryId, setBottomSheetInventuryId] = useState('');
 
   return (
     <GestureHandlerRootView
@@ -106,7 +106,7 @@ const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
                   <Pressable
                     onPress={() => {
                       bottomSheetRef?.current?.activate();
-                      setBottomSheetItemId(item);
+                      setBottomSheetInventuryId(item);
                     }}>
                     <MaterialCommunityIcon
                       name="dots-vertical"
@@ -151,7 +151,9 @@ const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
               backgroundColor: '#2f3136',
             }}
             onPress={() => {
-              dispatch(inventuryDelete({ inventuryId: bottomSheetItemId }));
+              dispatch(
+                inventuryDelete({ inventuryId: bottomSheetInventuryId }),
+              );
               bottomSheetRef?.current?.activate();
             }}>
             <MaterialCommunityIcon
