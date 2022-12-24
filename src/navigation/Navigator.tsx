@@ -17,6 +17,7 @@ import SignInScreen from 'screens/SignInScreen';
 import Drawer from 'components/Drawer';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import AmountCalcScreen from 'screens/AmountCalcScreen';
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -45,6 +46,11 @@ const Navigator = () => {
               <Stack.Screen
                 name="SearchItem"
                 component={SearchItemScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="AmountCalc"
+                component={AmountCalcScreen}
                 options={{ headerShown: false }}
               />
             </Stack.Group>

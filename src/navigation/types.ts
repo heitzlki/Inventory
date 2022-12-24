@@ -5,6 +5,7 @@ export type RootStackParamList = {
   Inventury: { inventuryId: string };
   Settings: undefined;
   SearchItem: { inventuryId: string };
+  AmountCalc: { inventuryId: string; itemId: string };
 
   Drawer: undefined;
 
