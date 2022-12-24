@@ -13,7 +13,7 @@ export const itemSetAmount = (
   action: PayloadAction<{
     inventuryId: string;
     itemId: string;
-    newAmount: number;
+    newAmount: string;
   }>,
 ) => {
   const { inventuryId, itemId, newAmount } = action.payload;

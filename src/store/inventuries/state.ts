@@ -4,7 +4,7 @@ export interface ItemState {
   createdAt: string;
   updatedAt: string;
   name: string;
-  amount: number;
+  amount: string;
 }
 
 interface ItemsState {
