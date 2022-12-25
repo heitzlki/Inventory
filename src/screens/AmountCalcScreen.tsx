@@ -29,10 +29,12 @@ interface ButtonProps {
 }
 
 const evalAndFormat = (input: string) => {
-  return eval(input.replace(/^0+(?=\d)/, ''))
-    .toFixed(3)
-    .replace(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/, '$1')
-    .toString();
+  if (input != '') {
+    return eval(input.replace(/^0+(?=\d)/, ''))
+      .toFixed(3)
+      .replace(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/, '$1')
+      .toString();
+  }
 };
 
 const AmountCalcButton = ({ title, onPress, style }: ButtonProps) => {
@@ -255,7 +257,7 @@ const AmountCalcScreen = ({
           <AmountCalcButton
             title="⌫"
             onPress={() => {
-              setAmount(`${amount.substring(0, amount.length - 1)}`);
+              setAmount(`${amount}`.slice(0, -1));
             }}
           />
           <AmountCalcButton
