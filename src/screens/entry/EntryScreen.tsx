@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from 'react-native';
 import type { RootStackScreenProps } from 'navigation/types';
 
-const WelcomeScreen = ({ navigation }: RootStackScreenProps<'Welcome'>) => (
+const EntryScreen = ({ navigation }: RootStackScreenProps<'Entry'>) => (
   <View style={{ flex: 1, backgroundColor: '#36393f' }}>
     <View
       style={{
@@ -49,4 +49,4 @@ const WelcomeScreen = ({ navigation }: RootStackScreenProps<'Welcome'>) => (
   </View>
 );
 
-export default WelcomeScreen;
+export default EntryScreen;

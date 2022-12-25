@@ -60,10 +60,10 @@ const AmountCalcButton = ({ title, onPress, style }: ButtonProps) => {
   );
 };
 
-const AmountCalcScreen = ({
+const AmountInputScreen = ({
   route,
   navigation,
-}: RootStackScreenProps<'AmountCalc'>) => {
+}: RootStackScreenProps<'AmountInput'>) => {
   const { inventuryId, itemId } = route.params;
 
   const inventuries = useSelector(
@@ -305,31 +305,9 @@ const AmountCalcScreen = ({
             </Text>
           </TouchableOpacity>
         </View>
-
-        {/* <View
-          style={{
-            maxWidth: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <TouchableOpacity
-            style={{
-              width: 154,
-              height: 72,
-              borderRadius: 24,
-              backgroundColor: '#2f3136',
-              justifyContent: 'center',
-              alignItems: 'center',
-              margin: 5,
-            }}>
-            <Text style={{ color: '#DCDDDE', fontWeight: '500', fontSize: 28 }}>
-              ✅
-            </Text>
-          </TouchableOpacity>
-        </View> */}
       </View>
     </View>
   );
 };
 
-export default AmountCalcScreen;
+export default AmountInputScreen;

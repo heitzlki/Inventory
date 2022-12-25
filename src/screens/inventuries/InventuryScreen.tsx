@@ -18,84 +18,6 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 
 import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 
-// function cleanNumber(str: string) {
-//   const match = str.match(/^([+-]?)(0*)([0-9]*)([.,][0-9]+|[.,]?)|0$/);
-//   if (!match) {
-//     return '0';
-//   }
-//   if (match[0] === '0') {
-//     return '0';
-//   }
-//   if (match[4] === '.' || match[4] === ',') {
-//     return `0${match[4]}`;
-//   }
-//   const [, sign, leadingZeros, integer, decimal] = match;
-//   return `${sign}${integer}${decimal}`.replace(/^([+-])?0+(?=\d)/, '$1');
-// }
-
-// function convertString(str: string): string {
-//   str = str.replace(/\s/g, ''); // Remove all spaces from the input string
-//   const regex = /^([+-]?)(\d*)([.,]\d+)?$/;
-//   const match = str.match(regex);
-//   if (match) {
-//     return match[1] + match[2] + (match[3] || '');
-//   } else {
-//     return '';
-//   }
-// }
-
-// function convertString(input: string): string {
-//   const match = input.match(/^([+-]?)(\d*[.,]?\d+)$/);
-//   if (match) {
-//     return match[1] + match[2].replace(',', '.');
-//   } else {
-//     return '0';
-//   }
-// }
-
-function convertString(input: string): string {
-  // handle empty or whitespace input
-  if (!input || !input.trim()) {
-    return '0';
-  }
-
-  // remove any non-numeric or non-decimal characters
-  input = input.replace(/[^\d.,]/g, '');
-
-  // split input by decimal point
-  let parts = input.split('.');
-
-  // handle decimal values
-  if (parts.length > 1) {
-    // remove any trailing zeros after the decimal point
-    parts[1] = parts[1].replace(/0+$/, '');
-    // rejoin parts with decimal point
-    input = parts.join('.');
-  }
-
-  // split input by comma
-  parts = input.split(',');
-
-  // handle comma-separated values
-  if (parts.length > 1) {
-    // remove any leading zeros before the comma
-    parts[0] = parts[0].replace(/^0+/, '');
-    // rejoin parts with comma
-    input = parts.join(',');
-  }
-
-  // calculate value of input
-  let result = eval(input);
-
-  // handle negative result
-  if (result < 0) {
-    result = result * -1;
-    input = `-${result}`;
-  }
-
-  return input;
-}
-
 const InventuryScreen = ({
   route,
   navigation,
@@ -285,7 +207,7 @@ const InventuryScreen = ({
                     borderRadius: 8,
                   }}
                   onPress={() => {
-                    navigation.navigate('AmountCalc', {
+                    navigation.navigate('AmountInput', {
                       inventuryId,
                       itemId: inventuries[inventuryId].items[item].id,
                     });

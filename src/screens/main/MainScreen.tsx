@@ -14,7 +14,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 
 import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 
-const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
+const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
   const inventuries = useSelector(
     (state: RootState) => state.inveturiesReducer,
   );
@@ -168,4 +168,4 @@ const HomeScreen = ({ route, navigation }: RootStackScreenProps<'Home'>) => {
   );
 };
 
-export default HomeScreen;
+export default MainScreen;
