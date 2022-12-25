@@ -1,0 +1,40 @@
+version: '3'
+services:
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      args:
+        - SERVER_PORT=${SERVER_PORT}
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    container_name: api
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+  #     - redis
+
+  db:
+    image: mongo:latest
+    container_name: mongodb
+    hostname: ${DB_HOST}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${DB_NAME}
+    volumes:
+      - db:/data/db
+
+volumes:
+  db:
+  # redis:
+  #   image: mongo
+  #   ports:
+  #     - 27017:27017
+  #   container_name: mongo-db
+  #   networks:
+  #     - mean-stack-net
+  #   volumes:
+  #     - mongo-data:/data/db

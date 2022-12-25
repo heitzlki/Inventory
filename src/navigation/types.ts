@@ -1,29 +1,21 @@
-import type {
-  CompositeScreenProps,
-  NavigatorScreenParams,
-} from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 export type RootStackParamList = {
-  AppTabs: NavigatorScreenParams<AppTabParamList>;
+  Home: undefined;
+  Inventury: { inventuryId: string };
+  Settings: undefined;
+  SearchItem: { inventuryId: string };
+  AmountCalc: { inventuryId: string; itemId: string };
 
-  NotFound: undefined;
+  Drawer: undefined;
+
+  Welcome: undefined;
+  SignIn: undefined;
+  SignUp: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, T>;
-
-export type AppTabParamList = {
-  Home: undefined;
-  Test: undefined;
-};
-
-export type AppTabScreenProps<T extends keyof AppTabParamList> =
-  CompositeScreenProps<
-    BottomTabScreenProps<AppTabParamList, T>,
-    RootStackScreenProps<keyof RootStackParamList>
-  >;
 
 declare global {
   namespace ReactNavigation {
