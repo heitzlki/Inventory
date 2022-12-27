@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import {
   Button,
   View,
@@ -7,13 +7,17 @@ import {
   Pressable,
   FlatList,
   Modal,
+  TextInput,
 } from 'react-native';
 
-import {itemAdd} from 'store/inventories';
-import {useSelector, useDispatch} from 'react-redux';
-import {RootState} from 'store/index';
+import uuid from 'react-native-uuid';
 
-import type {RootStackScreenProps} from 'navigation/types';
+import { inventoryItemAdd } from 'store/inventories';
+import type { ProductState } from 'store/catalog/state';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from 'store/index';
+
+import type { RootStackScreenProps } from 'navigation/types';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -21,14 +25,32 @@ const SearchItemScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'SearchItem'>) => {
-  const inventories = useSelector(
-    (state: RootState) => state.inveturiesReducer,
-  );
+  const { inventoryId } = route.params;
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<ProductState[]>([]);
+
+  const catalog = useSelector((state: RootState) => state.catalogReducer);
 
   const dispatch = useDispatch();
 
+  function search(query: string): ProductState[] {
+    const results: ProductState[] = [];
+    for (const key in catalog) {
+      if (catalog[key].name.indexOf(query) !== -1) {
+        results.push(catalog[key]);
+      }
+    }
+    return results;
+  }
+
+  function handleSearchChange(query: string) {
+    setSearchQuery(query);
+    setSearchResults(search(query));
+  }
+
   return (
-    <View style={{flex: 1, backgroundColor: '#36393f'}}>
+    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
       <View
         style={{
           position: 'absolute',
@@ -44,7 +66,7 @@ const SearchItemScreen = ({
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center', left: 10}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', left: 10 }}>
           <Pressable style={{}} onPress={() => navigation.goBack()}>
             <MaterialCommunityIcon
               name="keyboard-backspace"
@@ -52,28 +74,30 @@ const SearchItemScreen = ({
               color="#DCDDDE"
             />
           </Pressable>
-          <Text
+          <TextInput
             style={{
               color: '#DCDDDE',
               fontWeight: '500',
               fontSize: 16,
-              left: 4,
-            }}>
-            aaa
-          </Text>
+            }}
+            placeholderTextColor={'#BCBFC5'}
+            value={searchQuery}
+            onChangeText={handleSearchChange}
+            placeholder="Search"
+          />
         </View>
       </View>
 
-      <View style={{flex: 1, paddingTop: 58, justifyContent: 'center'}}>
+      <View style={{ flex: 1, paddingTop: 58, justifyContent: 'center' }}>
         <FlatList
           contentContainerStyle={{
             alignItems: 'center',
             paddingBottom: 80, // Bottom space for add button
           }}
-          data={['A', 'B', 'C']}
-          renderItem={({item, index}) => (
+          data={searchResults}
+          renderItem={({ item, index }) => (
             <Pressable
-              key={item}
+              key={item.id}
               style={{
                 height: 50,
                 maxWidth: '95%',
@@ -81,15 +105,15 @@ const SearchItemScreen = ({
                 backgroundColor: '#2f3136',
                 marginVertical: 4,
                 borderRadius: 8,
-                // flexDirection: 'row',
-                // justifyContent: 'space-between',
-                // alignItems: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
               }}
               onPress={() => {
-                dispatch(itemAdd({inventoryId: route.params.inventoryId}));
+                let itemId = uuid.v4().toString();
+                dispatch(inventoryItemAdd({ inventoryId, id: itemId }));
+
                 navigation.goBack();
+                navigation.navigate('AmountInput', { inventoryId, itemId });
               }}>
               <View
                 style={{
@@ -109,10 +133,10 @@ const SearchItemScreen = ({
                     fontSize: 16,
                     left: 4,
                   }}>
-                  item
+                  {item.name}
                 </Text>
               </View>
-              <View style={{position: 'absolute', right: 0}}>
+              <View style={{ position: 'absolute', right: 0 }}>
                 {/* <Pressable>
                   <MaterialCommunityIcon
                     name="dots-vertical"
