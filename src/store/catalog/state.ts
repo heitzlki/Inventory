@@ -3,10 +3,10 @@ export interface ProductState {
   createdAt: string;
   updatedAt: string;
   name: string;
-  amount: number;
+  defaultAmount: string;
   unit: string;
 }
 
-interface CatalogState {
+export interface CatalogState {
   [key: string]: ProductState;
 }
