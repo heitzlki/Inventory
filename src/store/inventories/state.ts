@@ -1,6 +1,6 @@
 export interface ItemState {
   id: string;
-  stockId: string;
+  productId: string;
   createdAt: string;
   updatedAt: string;
   name: string;
