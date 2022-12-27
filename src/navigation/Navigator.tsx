@@ -15,10 +15,6 @@ export const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigator = () => {
   const auth = useSelector((state: RootState) => state.authReducer);
 
-  React.useEffect(() => {
-    console.log(auth.signedIn);
-  }, [auth.signedIn]);
-
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       {auth.signedIn ? <AppStack /> : <AuthStack />}
