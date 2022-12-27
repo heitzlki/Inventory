@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+import { useRef, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,15 +8,15 @@ import {
   Pressable,
   TextInput,
 } from 'react-native';
-import type {RootStackScreenProps} from 'navigation/types';
+import type { RootStackScreenProps } from 'navigation/types';
 
-import {useSelector, useDispatch} from 'react-redux';
-import {itemAdd, itemDelete, itemSetAmount} from 'store/inventories';
-import {RootState} from 'store/index';
+import { useSelector, useDispatch } from 'react-redux';
+import { inventoryItemSetAmount } from 'store/inventories';
+import { RootState } from 'store/index';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import BottomSheet, {BottomSheetRefProps} from 'components/BottomSheet';
+import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 
 const InventoryScreen = ({
   route,
@@ -34,7 +34,7 @@ const InventoryScreen = ({
   const [bottomSheetItemId, setBottomSheetItemId] = useState('');
 
   return (
-    <View style={{flex: 1, backgroundColor: '#36393f'}}>
+    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
       <View
         style={{
           position: 'absolute',
@@ -49,7 +49,7 @@ const InventoryScreen = ({
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center', left: 10}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', left: 10 }}>
           <Pressable style={{}} onPress={() => navigation.goBack()}>
             <MaterialCommunityIcon
               name="keyboard-backspace"
@@ -114,14 +114,14 @@ const InventoryScreen = ({
         </View>
       </View>
 
-      <View style={{flex: 1, paddingTop: 58, justifyContent: 'center'}}>
+      <View style={{ flex: 1, paddingTop: 58, justifyContent: 'center' }}>
         <FlatList
           contentContainerStyle={{
             alignItems: 'center',
             paddingBottom: 64, // Bottom space for add button
           }}
           data={Object.keys(inventories[inventoryId].items)}
-          renderItem={({item, index}) => (
+          renderItem={({ item, index }) => (
             <Pressable
               key={item}
               style={{
@@ -171,7 +171,7 @@ const InventoryScreen = ({
                 }}
                 onPress={() => {
                   dispatch(
-                    itemSetAmount({
+                    inventoryItemSetAmount({
                       inventoryId,
                       itemId: inventories[inventoryId].items[item].id,
                       newAmount: eval(
@@ -233,7 +233,7 @@ const InventoryScreen = ({
                   }}
                   onPress={() => {
                     dispatch(
-                      itemSetAmount({
+                      inventoryItemSetAmount({
                         inventoryId,
                         itemId: inventories[inventoryId].items[item].id,
                         newAmount: eval(
@@ -267,7 +267,7 @@ const InventoryScreen = ({
           borderRadius: 15,
           backgroundColor: '#202225',
         }}
-        onPress={() => navigation.navigate('SearchItem', {inventoryId})}>
+        onPress={() => navigation.navigate('SearchItem', { inventoryId })}>
         <MaterialCommunityIcon name="plus" size={40} color="#DCDDDE" />
       </Pressable>
       <BottomSheet ref={bottomSheetRef}>

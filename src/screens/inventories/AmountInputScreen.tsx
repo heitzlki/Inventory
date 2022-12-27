@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,17 +10,21 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import type {StyleProp, ViewStyle} from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 
-import type {RootStackScreenProps} from 'navigation/types';
+import type { RootStackScreenProps } from 'navigation/types';
 
-import {useSelector, useDispatch} from 'react-redux';
-import {itemAdd, itemDelete, itemSetAmount} from 'store/inventories';
-import {RootState} from 'store/index';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  inventoryItemAdd,
+  inventoryItemDelete,
+  inventoryItemSetAmount,
+} from 'store/inventories';
+import { RootState } from 'store/index';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import BottomSheet, {BottomSheetRefProps} from 'components/BottomSheet';
+import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 
 interface ButtonProps {
   onPress: () => void;
@@ -37,7 +41,7 @@ const evalAndFormat = (input: string) => {
   }
 };
 
-const AmountCalcButton = ({title, onPress, style}: ButtonProps) => {
+const AmountCalcButton = ({ title, onPress, style }: ButtonProps) => {
   return (
     <TouchableOpacity
       style={[
@@ -53,7 +57,7 @@ const AmountCalcButton = ({title, onPress, style}: ButtonProps) => {
         style,
       ]}
       onPress={onPress}>
-      <Text style={{color: '#DCDDDE', fontWeight: '500', fontSize: 28}}>
+      <Text style={{ color: '#DCDDDE', fontWeight: '500', fontSize: 28 }}>
         {title}
       </Text>
     </TouchableOpacity>
@@ -64,7 +68,7 @@ const AmountInputScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'AmountInput'>) => {
-  const {inventoryId, itemId} = route.params;
+  const { inventoryId, itemId } = route.params;
 
   const inventories = useSelector(
     (state: RootState) => state.inveturiesReducer,
@@ -113,8 +117,8 @@ const AmountInputScreen = ({
   }, [amount]);
 
   return (
-    <View style={{flex: 1, backgroundColor: '#36393f'}}>
-      <View style={{position: 'absolute', top: 20, width: '100%'}}>
+    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+      <View style={{ position: 'absolute', top: 20, width: '100%' }}>
         <Text>{`${inventoryId}: ${inventories[inventoryId].name}`}</Text>
         <Text>{`${itemId}: ${inventories[inventoryId].items[itemId].name}`}</Text>
       </View>
@@ -130,11 +134,11 @@ const AmountInputScreen = ({
               alignItems: 'flex-end',
               right: 48,
             }}>
-            <Text style={{color: '#EBECED', fontWeight: '500', fontSize: 56}}>
+            <Text style={{ color: '#EBECED', fontWeight: '500', fontSize: 56 }}>
               {displayFirstNumber()}
             </Text>
 
-            <Text style={{color: '#EBECED', fontWeight: '500', fontSize: 34}}>
+            <Text style={{ color: '#EBECED', fontWeight: '500', fontSize: 34 }}>
               {displaySecondNumber()}
             </Text>
           </View>
@@ -165,7 +169,7 @@ const AmountInputScreen = ({
             }}
           />
           <AmountCalcButton
-            style={{backgroundColor: '#292B2F'}}
+            style={{ backgroundColor: '#292B2F' }}
             title="÷"
             onPress={() => {
               setAmount(`${amount}/`);
@@ -197,7 +201,7 @@ const AmountInputScreen = ({
             }}
           />
           <AmountCalcButton
-            style={{backgroundColor: '#292B2F'}}
+            style={{ backgroundColor: '#292B2F' }}
             title="×"
             onPress={() => {
               setAmount(`${amount}*`);
@@ -229,7 +233,7 @@ const AmountInputScreen = ({
             }}
           />
           <AmountCalcButton
-            style={{backgroundColor: '#292B2F'}}
+            style={{ backgroundColor: '#292B2F' }}
             title="+"
             onPress={() => {
               setAmount(`${amount}+`);
@@ -261,7 +265,7 @@ const AmountInputScreen = ({
             }}
           />
           <AmountCalcButton
-            style={{backgroundColor: '#292B2F'}}
+            style={{ backgroundColor: '#292B2F' }}
             title="-"
             onPress={() => {
               setAmount(`${amount}-`);
@@ -291,7 +295,7 @@ const AmountInputScreen = ({
                   setAmount(evalAndFormat(amount));
                   if (confirmed) {
                     dispatch(
-                      itemSetAmount({
+                      inventoryItemSetAmount({
                         inventoryId,
                         itemId,
                         newAmount: amount,
@@ -304,7 +308,7 @@ const AmountInputScreen = ({
                 }
               } catch {}
             }}>
-            <Text style={{color: '#DCDDDE', fontWeight: '500', fontSize: 28}}>
+            <Text style={{ color: '#DCDDDE', fontWeight: '500', fontSize: 28 }}>
               {confirmed ? '✅' : '='}
             </Text>
           </TouchableOpacity>
