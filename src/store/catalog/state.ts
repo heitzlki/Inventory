@@ -1,4 +1,4 @@
-export interface StockItem {
+export interface ProductState {
   id: string;
   createdAt: string;
   updatedAt: string;
@@ -7,4 +7,6 @@ export interface StockItem {
   unit: string;
 }
 
-export interface Stock extends Array<StockItem> {}
+interface CatalogState {
+  [key: string]: ProductState;
+}

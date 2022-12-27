@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import {
   Button,
   View,
@@ -9,11 +9,11 @@ import {
   Modal,
 } from 'react-native';
 
-import { itemAdd } from 'store/inventories';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from 'store/index';
+import {itemAdd} from 'store/inventories';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootState} from 'store/index';
 
-import type { RootStackScreenProps } from 'navigation/types';
+import type {RootStackScreenProps} from 'navigation/types';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -28,7 +28,7 @@ const SearchItemScreen = ({
   const dispatch = useDispatch();
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+    <View style={{flex: 1, backgroundColor: '#36393f'}}>
       <View
         style={{
           position: 'absolute',
@@ -44,7 +44,7 @@ const SearchItemScreen = ({
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', left: 10 }}>
+        <View style={{flexDirection: 'row', alignItems: 'center', left: 10}}>
           <Pressable style={{}} onPress={() => navigation.goBack()}>
             <MaterialCommunityIcon
               name="keyboard-backspace"
@@ -64,14 +64,14 @@ const SearchItemScreen = ({
         </View>
       </View>
 
-      <View style={{ flex: 1, paddingTop: 58, justifyContent: 'center' }}>
+      <View style={{flex: 1, paddingTop: 58, justifyContent: 'center'}}>
         <FlatList
           contentContainerStyle={{
             alignItems: 'center',
             paddingBottom: 80, // Bottom space for add button
           }}
           data={['A', 'B', 'C']}
-          renderItem={({ item, index }) => (
+          renderItem={({item, index}) => (
             <Pressable
               key={item}
               style={{
@@ -88,7 +88,7 @@ const SearchItemScreen = ({
                 alignItems: 'center',
               }}
               onPress={() => {
-                dispatch(itemAdd({ inventoryyId: route.params.inventoryyId }));
+                dispatch(itemAdd({inventoryId: route.params.inventoryId}));
                 navigation.goBack();
               }}>
               <View
@@ -112,7 +112,7 @@ const SearchItemScreen = ({
                   item
                 </Text>
               </View>
-              <View style={{ position: 'absolute', right: 0 }}>
+              <View style={{position: 'absolute', right: 0}}>
                 {/* <Pressable>
                   <MaterialCommunityIcon
                     name="dots-vertical"

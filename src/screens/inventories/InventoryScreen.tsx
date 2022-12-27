@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import {useRef, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,21 +8,21 @@ import {
   Pressable,
   TextInput,
 } from 'react-native';
-import type { RootStackScreenProps } from 'navigation/types';
+import type {RootStackScreenProps} from 'navigation/types';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { itemAdd, itemDelete, itemSetAmount } from 'store/inventories';
-import { RootState } from 'store/index';
+import {useSelector, useDispatch} from 'react-redux';
+import {itemAdd, itemDelete, itemSetAmount} from 'store/inventories';
+import {RootState} from 'store/index';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
+import BottomSheet, {BottomSheetRefProps} from 'components/BottomSheet';
 
 const InventoryScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'Inventory'>) => {
-  const inventoryyId = route.params.inventoryyId;
+  const inventoryId = route.params.inventoryId;
 
   const inventories = useSelector(
     (state: RootState) => state.inveturiesReducer,
@@ -34,7 +34,7 @@ const InventoryScreen = ({
   const [bottomSheetItemId, setBottomSheetItemId] = useState('');
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+    <View style={{flex: 1, backgroundColor: '#36393f'}}>
       <View
         style={{
           position: 'absolute',
@@ -49,7 +49,7 @@ const InventoryScreen = ({
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', left: 10 }}>
+        <View style={{flexDirection: 'row', alignItems: 'center', left: 10}}>
           <Pressable style={{}} onPress={() => navigation.goBack()}>
             <MaterialCommunityIcon
               name="keyboard-backspace"
@@ -64,7 +64,7 @@ const InventoryScreen = ({
               fontSize: 16,
               left: 4,
             }}>
-            {inventories[inventoryyId].name}
+            {inventories[inventoryId].name}
           </Text>
         </View>
         <View
@@ -109,19 +109,19 @@ const InventoryScreen = ({
               fontSize: 16,
               left: 4,
             }}>
-            {inventories[inventoryyId].name}
+            {inventories[inventoryId].name}
           </Text> */}
         </View>
       </View>
 
-      <View style={{ flex: 1, paddingTop: 58, justifyContent: 'center' }}>
+      <View style={{flex: 1, paddingTop: 58, justifyContent: 'center'}}>
         <FlatList
           contentContainerStyle={{
             alignItems: 'center',
             paddingBottom: 64, // Bottom space for add button
           }}
-          data={Object.keys(inventories[inventoryyId].items)}
-          renderItem={({ item, index }) => (
+          data={Object.keys(inventories[inventoryId].items)}
+          renderItem={({item, index}) => (
             <Pressable
               key={item}
               style={{
@@ -159,7 +159,7 @@ const InventoryScreen = ({
                     fontSize: 16,
                     left: 14,
                   }}>
-                  {inventories[inventoryyId].items[item].name}
+                  {inventories[inventoryId].items[item].name}
                 </Text>
               </View>
               <Pressable
@@ -172,10 +172,10 @@ const InventoryScreen = ({
                 onPress={() => {
                   dispatch(
                     itemSetAmount({
-                      inventoryyId,
-                      itemId: inventories[inventoryyId].items[item].id,
+                      inventoryId,
+                      itemId: inventories[inventoryId].items[item].id,
                       newAmount: eval(
-                        `${inventories[inventoryyId].items[item].amount} + 1`,
+                        `${inventories[inventoryId].items[item].amount} + 1`,
                       ).toString(),
                     }),
                   );
@@ -208,8 +208,8 @@ const InventoryScreen = ({
                   }}
                   onPress={() => {
                     navigation.navigate('AmountInput', {
-                      inventoryyId,
-                      itemId: inventories[inventoryyId].items[item].id,
+                      inventoryId,
+                      itemId: inventories[inventoryId].items[item].id,
                     });
                   }}>
                   <Text
@@ -218,7 +218,7 @@ const InventoryScreen = ({
                       fontWeight: '500',
                       fontSize: 16,
                     }}>
-                    {inventories[inventoryyId].items[item].amount}
+                    {inventories[inventoryId].items[item].amount}
                   </Text>
                 </Pressable>
                 <Pressable
@@ -234,10 +234,10 @@ const InventoryScreen = ({
                   onPress={() => {
                     dispatch(
                       itemSetAmount({
-                        inventoryyId,
-                        itemId: inventories[inventoryyId].items[item].id,
+                        inventoryId,
+                        itemId: inventories[inventoryId].items[item].id,
                         newAmount: eval(
-                          `${inventories[inventoryyId].items[item].amount} - 1`,
+                          `${inventories[inventoryId].items[item].amount} - 1`,
                         ).toString(),
                       }),
                     );
@@ -267,7 +267,7 @@ const InventoryScreen = ({
           borderRadius: 15,
           backgroundColor: '#202225',
         }}
-        onPress={() => navigation.navigate('SearchItem', { inventoryyId })}>
+        onPress={() => navigation.navigate('SearchItem', {inventoryId})}>
         <MaterialCommunityIcon name="plus" size={40} color="#DCDDDE" />
       </Pressable>
       <BottomSheet ref={bottomSheetRef}>
@@ -284,7 +284,7 @@ const InventoryScreen = ({
             backgroundColor: '#2f3136',
           }}
           onPress={() => {
-            // dispatch(inventoryyDelete({ inventoryyId: bottomSheetItemId }));
+            // dispatch(inventoryDelete({ inventoryId: bottomSheetItemId }));
             bottomSheetRef?.current?.activate();
           }}>
           {/* <MaterialCommunityIcon

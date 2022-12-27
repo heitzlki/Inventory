@@ -1,20 +1,20 @@
-import { useRef, useState } from 'react';
-import { View, Text, Pressable, FlatList } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {useRef, useState} from 'react';
+import {View, Text, Pressable, FlatList} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from 'store/index';
-import { activate } from 'store/drawer';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootState} from 'store/index';
+import {activate} from 'store/drawer';
 
-import { inventoryyAdd, inventoryyDelete } from 'store/inventories';
+import {inventoryAdd, inventoryDelete} from 'store/inventories';
 
-import type { RootStackScreenProps } from 'navigation/types';
+import type {RootStackScreenProps} from 'navigation/types';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
+import BottomSheet, {BottomSheetRefProps} from 'components/BottomSheet';
 
-const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
+const MainScreen = ({route, navigation}: RootStackScreenProps<'Main'>) => {
   const inventories = useSelector(
     (state: RootState) => state.inveturiesReducer,
   );
@@ -30,7 +30,7 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
       style={{
         flex: 1,
       }}>
-      <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+      <View style={{flex: 1, backgroundColor: '#36393f'}}>
         <View
           style={{
             position: 'absolute',
@@ -46,7 +46,7 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
           }}>
           <View>
             <Pressable
-              style={{ left: 10 }}
+              style={{left: 10}}
               onPress={() => {
                 navigation.navigate('Drawer');
                 dispatch(activate());
@@ -56,14 +56,14 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
           </View>
         </View>
 
-        <View style={{ flex: 1, paddingTop: 58, justifyContent: 'center' }}>
+        <View style={{flex: 1, paddingTop: 58, justifyContent: 'center'}}>
           <FlatList
             contentContainerStyle={{
               alignItems: 'center',
               paddingBottom: 80, // Bottom space for add button
             }}
             data={Object.keys(inventories)}
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <Pressable
                 key={item}
                 style={{
@@ -78,7 +78,7 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
                 }}
                 onPress={() =>
                   navigation.navigate('Inventory', {
-                    inventoryyId: inventories[item].id,
+                    inventoryId: inventories[item].id,
                   })
                 }>
                 <View
@@ -102,7 +102,7 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
                     {inventories[item].name}
                   </Text>
                 </View>
-                <View style={{ position: 'absolute', right: 0 }}>
+                <View style={{position: 'absolute', right: 0}}>
                   <Pressable
                     onPress={() => {
                       bottomSheetRef?.current?.activate();
@@ -133,7 +133,7 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
             borderRadius: 15,
             backgroundColor: '#202225',
           }}
-          onPress={() => dispatch(inventoryyAdd())}>
+          onPress={() => dispatch(inventoryAdd())}>
           <MaterialCommunityIcon name="plus" size={40} color="#DCDDDE" />
         </Pressable>
 
@@ -151,9 +151,7 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
               backgroundColor: '#2f3136',
             }}
             onPress={() => {
-              dispatch(
-                inventoryyDelete({ inventoryyId: bottomSheetInventoryId }),
-              );
+              dispatch(inventoryDelete({inventoryId: bottomSheetInventoryId}));
               bottomSheetRef?.current?.activate();
             }}>
             <MaterialCommunityIcon

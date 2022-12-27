@@ -1,22 +1,22 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, isAnyOf} from '@reduxjs/toolkit';
+import type {PayloadAction} from '@reduxjs/toolkit';
 
-import { middelware } from 'store/middelware';
+import {middelware} from 'store/middelware';
 
 import reducers from './reducers';
-import { InventoryiesState } from './state';
+import {InventoriesState} from './state';
 
 export const inventoriesSlice = createSlice({
   name: 'inventories',
-  initialState: {} as InventoryiesState,
+  initialState: {} as InventoriesState,
   reducers,
 });
 
 export const {
-  inventoryyAdd,
-  inventoryyDelete,
-  // inventoryyEditName,
-  // inventoryyUpdatedAt,
+  inventoryAdd,
+  inventoryDelete,
+  // inventoryEditName,
+  // inventoryUpdatedAt,
   itemAdd,
   // itemChangeOrder,
   itemDelete,
@@ -26,11 +26,11 @@ export const {
 export default inventoriesSlice.reducer;
 
 // middelware({
-//   matcher: isAnyOf(inventoryyEditName),
+//   matcher: isAnyOf(inventoryEditName),
 //   effect: async (action, listenerApi) => {
 //     let index = action?.payload.index;
 //     if (index) {
-//       listenerApi.dispatch(inventoryyUpdatedAt(index));
+//       listenerApi.dispatch(inventoryUpdatedAt(index));
 //     }
 //   },
 // });

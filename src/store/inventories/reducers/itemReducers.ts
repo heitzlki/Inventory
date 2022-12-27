@@ -1,43 +1,43 @@
 import {
-  InventoryiesState,
+  InventoriesState,
   InventoryState,
   ItemState,
 } from 'store/inventories/state';
-import { PayloadAction } from '@reduxjs/toolkit';
+import {PayloadAction} from '@reduxjs/toolkit';
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
 
 export const itemSetAmount = (
-  state: InventoryiesState,
+  state: InventoriesState,
   action: PayloadAction<{
-    inventoryyId: string;
+    inventoryId: string;
     itemId: string;
     newAmount: string;
   }>,
 ) => {
-  const { inventoryyId, itemId, newAmount } = action.payload;
-  state[inventoryyId].items[itemId].amount = newAmount;
+  const {inventoryId, itemId, newAmount} = action.payload;
+  state[inventoryId].items[itemId].amount = newAmount;
 };
 
 export const itemDelete = (
-  state: InventoryiesState,
-  action: PayloadAction<{ inventoryyId: string; itemId: string }>,
+  state: InventoriesState,
+  action: PayloadAction<{inventoryId: string; itemId: string}>,
 ) => {
-  const { inventoryyId, itemId } = action.payload;
-  delete state[inventoryyId].items[itemId];
+  const {inventoryId, itemId} = action.payload;
+  delete state[inventoryId].items[itemId];
 };
 
 export const itemAdd = (
-  state: InventoryiesState,
+  state: InventoriesState,
   action: PayloadAction<{
-    inventoryyId: string;
+    inventoryId: string;
   }>,
 ) => {
-  // const { inventoryyIndex, itemIndex, stockId, amount } = action.payload;
+  // const { inventoryIndex, itemIndex, stockId, amount } = action.payload;
 
   let id = `${uuid.v4()}`;
-  state[action.payload.inventoryyId].items = Object.assign(
+  state[action.payload.inventoryId].items = Object.assign(
     {
       [id]: {
         id,
@@ -45,26 +45,26 @@ export const itemAdd = (
         createdAt: moment().unix().toString(),
         updatedAt: moment().unix().toString(),
         name: `Item ${
-          Object.keys(state[action.payload.inventoryyId].items).length
+          Object.keys(state[action.payload.inventoryId].items).length
         }`,
         amount: 0,
       },
     },
-    state[action.payload.inventoryyId].items,
+    state[action.payload.inventoryId].items,
   );
 };
 
 // export const itemChangeOrder = (
-//   state: InventoryiesState,
+//   state: InventoriesState,
 //   action: PayloadAction<{
-//     inventoryyIndex: number;
+//     inventoryIndex: number;
 //     prevItemIndex: number;
 //     newItemIndex: number;
 //   }>,
 // ) => {
-//   const { inventoryyIndex, prevItemIndex, newItemIndex } = action.payload;
-//   let item: ItemState = state[inventoryyIndex].items[prevItemIndex];
+//   const { inventoryIndex, prevItemIndex, newItemIndex } = action.payload;
+//   let item: ItemState = state[inventoryIndex].items[prevItemIndex];
 
-//   state[inventoryyIndex].items.splice(prevItemIndex, 1);
-//   state[inventoryyIndex].items.splice(newItemIndex, 0, item);
+//   state[inventoryIndex].items.splice(prevItemIndex, 1);
+//   state[inventoryIndex].items.splice(newItemIndex, 0, item);
 // };

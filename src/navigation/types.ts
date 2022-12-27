@@ -1,11 +1,11 @@
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 export type AppStackParamList = {
   Main: undefined;
-  Inventory: { inventoryyId: string };
+  Inventory: {inventoryId: string};
   Settings: undefined;
-  SearchItem: { inventoryyId: string };
-  AmountInput: { inventoryyId: string; itemId: string };
+  SearchItem: {inventoryId: string};
+  AmountInput: {inventoryId: string; itemId: string};
   Drawer: undefined;
 };
 

@@ -1,12 +1,12 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, isAnyOf} from '@reduxjs/toolkit';
+import type {PayloadAction} from '@reduxjs/toolkit';
 import uuid from 'react-native-uuid';
 import moment from 'moment';
 
-import { middelware } from 'store/middelware';
+import {middelware} from 'store/middelware';
 
-import { ItemState, ItemsState, unit } from 'store/items/state';
-import { store } from '..';
+import {ItemState, ItemsState, unit} from 'store/items/state';
+import {store} from '..';
 
 const findStockItemById = (state: ItemsState, id: string) => {
   return state.find(item => item.id == id);
@@ -24,7 +24,7 @@ export const itemsSlice = createSlice({
   name: 'stock',
   initialState: [],
   reducers: {
-    updatedAt: (state: ItemsState, action: PayloadAction<{ id: string }>) => {
+    updatedAt: (state: ItemsState, action: PayloadAction<{id: string}>) => {
       let item = findItemById(state, action.payload.id);
       if (item) {
         item.updatedAt = moment().unix().toString();
@@ -33,7 +33,7 @@ export const itemsSlice = createSlice({
 
     loadItems: (
       state: ItemsState,
-      action: PayloadAction<{ items: ItemsState }>,
+      action: PayloadAction<{items: ItemsState}>,
     ) => {
       state = action.payload.items;
     },
@@ -44,7 +44,7 @@ export const itemsSlice = createSlice({
 
     setAmount: (
       state: ItemsState,
-      action: PayloadAction<{ id: string; amount: number }>,
+      action: PayloadAction<{id: string; amount: number}>,
     ) => {
       let item = findItemById(state, action.payload.id);
       if (item) {
@@ -52,10 +52,7 @@ export const itemsSlice = createSlice({
       }
     },
 
-    deleteItem: (
-      state: ItemsState,
-      action: PayloadAction<{ index: number }>,
-    ) => {
+    deleteItem: (state: ItemsState, action: PayloadAction<{index: number}>) => {
       state.splice(action.payload.index, 1);
     },
 
@@ -66,8 +63,8 @@ export const itemsSlice = createSlice({
         amount?: number;
       }>,
     ) => {
-      const { stockId, amount } = action.payload;
-      const stockItem = { name: 'Test', unit: unit.piece }; // stockItemById(stockId)
+      const {stockId, amount} = action.payload;
+      const stockItem = {name: 'Test', unit: unit.piece}; // stockItemById(stockId)
 
       let item: ItemState = {
         id: uuid.v4().toString(),
@@ -84,7 +81,7 @@ export const itemsSlice = createSlice({
 
     changeUnit: (
       state: ItemsState,
-      action: PayloadAction<{ id: string; unit: unit }>,
+      action: PayloadAction<{id: string; unit: unit}>,
     ) => {
       let item = findItemById(state, action.payload.id);
       if (item) {
@@ -94,7 +91,7 @@ export const itemsSlice = createSlice({
 
     changeOrder: (
       state: ItemsState,
-      action: PayloadAction<{ prevIndex: number; newIndex: number }>,
+      action: PayloadAction<{prevIndex: number; newIndex: number}>,
     ) => {
       let item: ItemState = state[action.payload.prevIndex];
 

@@ -1,23 +1,23 @@
 import {
   InventoryState,
-  InventoryiesState,
+  InventoriesState,
   ItemState,
 } from 'store/inventories/state';
 
-import { PayloadAction } from '@reduxjs/toolkit';
+import {PayloadAction} from '@reduxjs/toolkit';
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
 
-// export const inventoryyUpdatedAt = (
-//   state: InventoryiesState,
-//   action: PayloadAction<{ inventoryyIndex: number }>,
+// export const inventoryUpdatedAt = (
+//   state: InventoriesState,
+//   action: PayloadAction<{ inventoryIndex: number }>,
 // ) => {
-//   state[action.payload.inventoryyIndex].updatedAt = moment().unix().toString();
+//   state[action.payload.inventoryIndex].updatedAt = moment().unix().toString();
 // };
 
-export const inventoryyAdd = (
-  state: InventoryiesState,
+export const inventoryAdd = (
+  state: InventoriesState,
   // action: PayloadAction<{
   //   name?: string;
   // }>,
@@ -39,18 +39,18 @@ export const inventoryyAdd = (
   );
 };
 
-// state.unshift(inventoryy);
+// state.unshift(inventory);
 
-export const inventoryyDelete = (
-  state: InventoryiesState,
-  action: PayloadAction<{ inventoryyId: string }>,
+export const inventoryDelete = (
+  state: InventoriesState,
+  action: PayloadAction<{inventoryId: string}>,
 ) => {
-  delete state[action.payload.inventoryyId];
+  delete state[action.payload.inventoryId];
 };
 
-// export const inventoryyEditName = (
-//   state: InventoryiesState,
-//   action: PayloadAction<{ inventoryyIndex: number; name: string }>,
+// export const inventoryEditName = (
+//   state: InventoriesState,
+//   action: PayloadAction<{ inventoryIndex: number; name: string }>,
 // ) => {
-//   state[action.payload.inventoryyIndex].name = action.payload.name;
+//   state[action.payload.inventoryIndex].name = action.payload.name;
 // };

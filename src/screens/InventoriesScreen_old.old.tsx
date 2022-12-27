@@ -1,14 +1,14 @@
-import { View, Text, Button, PermissionsAndroid } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import {View, Text, Button, PermissionsAndroid} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 
 import XLSX from 'xlsx';
 import fs from 'react-native-fs';
 import uuid from 'react-native-uuid';
 import Share from 'react-native-share';
 
-import { store } from 'store/index';
+import {store} from 'store/index';
 
-import type { RootState } from 'store/index';
+import type {RootState} from 'store/index';
 import {
   loadItems,
   clearItems,
@@ -19,17 +19,17 @@ import {
   changeOrder,
   findItemById,
 } from 'store/items/index';
-import { unit } from 'store/items/state';
-import { itemList } from 'screens/inventoryy';
+import {unit} from 'store/items/state';
+import {itemList} from 'screens/inventory';
 
 // import { useNavigation } from '@react-navigation/native';
 
-import type { AppTabParamList, RootStackParamList } from 'navigation/types';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type {AppTabParamList, RootStackParamList} from 'navigation/types';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 type Props = NativeStackScreenProps<AppTabParamList, 'Inventoryies'>;
 
-import type { RootStackScreenProps } from 'navigation/types';
+import type {RootStackScreenProps} from 'navigation/types';
 
 const InventoryiesScreen = ({
   route,
@@ -43,7 +43,7 @@ const InventoryiesScreen = ({
     let wb = XLSX.utils.book_new();
     let ws = XLSX.utils.json_to_sheet(sample_data_to_export);
     XLSX.utils.book_append_sheet(wb, ws, 'Users');
-    const wbout = XLSX.write(wb, { type: 'binary', bookType: 'xlsx' });
+    const wbout = XLSX.write(wb, {type: 'binary', bookType: 'xlsx'});
 
     let uri = fs.CachesDirectoryPath + `/${uuid.v4()}.xlsx`;
 
@@ -69,7 +69,7 @@ const InventoryiesScreen = ({
   const shareFile = async (url: string) => {
     try {
       console.log(url);
-      const result = await Share.open({ url, message: url });
+      const result = await Share.open({url, message: url});
       // .share(
       //   { url, title: url },
       //   {
@@ -154,7 +154,7 @@ const InventoryiesScreen = ({
     dispatch(clearItems());
     dispatch(
       loadItems({
-        items: Array.from({ length: 20 }, (_, i) => ({
+        items: Array.from({length: 20}, (_, i) => ({
           name: itemList[Math.floor(Math.random() * itemList.length)].name,
           id: uuid.v4().toString(),
           stockId: '',
@@ -166,7 +166,7 @@ const InventoryiesScreen = ({
       }),
     );
 
-    // navigation.navigate('Inventory', { id: 'Tessttsts' }); // TODO Pass inventoryy ID and then all actions over inventoryy state
+    // navigation.navigate('Inventory', { id: 'Tessttsts' }); // TODO Pass inventory ID and then all actions over inventory state
   };
 
   return (

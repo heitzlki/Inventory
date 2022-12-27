@@ -1,8 +1,8 @@
 import {
-  inventoryyAdd,
-  inventoryyDelete,
-  // inventoryyEditName,
-  // inventoryyUpdatedAt,
+  inventoryAdd,
+  inventoryDelete,
+  // inventoryEditName,
+  // inventoryUpdatedAt,
 } from 'store/inventories/reducers/inventoryReducers';
 
 import {
@@ -12,10 +12,10 @@ import {
 } from 'store/inventories/reducers/itemReducers';
 
 const reducers = {
-  inventoryyAdd,
-  inventoryyDelete,
-  // inventoryyEditName,
-  // inventoryyUpdatedAt,
+  inventoryAdd,
+  inventoryDelete,
+  // inventoryEditName,
+  // inventoryUpdatedAt,
   itemAdd,
   // itemChangeOrder,
   itemDelete,

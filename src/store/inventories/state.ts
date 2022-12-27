@@ -19,6 +19,6 @@ export interface InventoryState {
   items: ItemsState;
 }
 
-export interface InventoryiesState {
+export interface InventoriesState {
   [key: string]: InventoryState;
 }
