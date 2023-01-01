@@ -10,6 +10,7 @@ module.exports = {
           store: './src/store',
           utils: './src/utils',
           components: './src/components',
+          hooks: './src/hooks',
           assets: './src/assets',
           styles: './src/styles',
           navigation: './src/navigation',
