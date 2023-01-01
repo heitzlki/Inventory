@@ -15,7 +15,7 @@ import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 
 const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
   const inventories = useSelector(
-    (state: RootState) => state.inveturiesReducer,
+    (state: RootState) => state.invetoriesReducer,
   );
   // const drawer = useSelector((state: RootState) => state.drawerReducer);
   const dispatch = useDispatch();
