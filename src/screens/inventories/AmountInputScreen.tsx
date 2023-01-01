@@ -71,7 +71,7 @@ const AmountInputScreen = ({
   const { inventoryId, itemId } = route.params;
 
   const inventories = useSelector(
-    (state: RootState) => state.inveturiesReducer,
+    (state: RootState) => state.invetoriesReducer,
   );
 
   const dispatch = useDispatch();

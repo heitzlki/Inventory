@@ -12,14 +12,14 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import authReducer from 'store/auth';
-import inveturiesReducer from 'store/inventories';
+import invetoriesReducer from 'store/inventories';
 import drawerReducer from 'store/drawer';
 import catalogReducer from 'store/catalog';
 import { listenerMiddleware } from 'store/middelware';
 
 const reducers = combineReducers({
   authReducer,
-  inveturiesReducer,
+  invetoriesReducer,
   drawerReducer,
   catalogReducer,
 });
