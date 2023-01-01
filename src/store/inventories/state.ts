@@ -7,7 +7,7 @@ export interface ItemState {
   amount: string;
 }
 
-interface ItemsState {
+export interface ItemsState {
   [key: string]: ItemState;
 }
 
