@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import { View, Text, Pressable, FlatList } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
