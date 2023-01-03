@@ -83,7 +83,9 @@ const AmountInputScreen = ({
   // }
 
   const [amount, setAmount] = useState(
-    inventories[inventoryId].items[itemId].amount,
+    route.params.prediction || route.params.prediction == ''
+      ? route.params.prediction
+      : inventories[inventoryId].items[itemId].amount,
   );
 
   const [confirmed, setConfirmed] = useState(true);
@@ -115,6 +117,10 @@ const AmountInputScreen = ({
       setConfirmed(false);
     }
   }, [amount]);
+
+  useEffect(() => {
+    console.log(route.params.prediction);
+  });
 
   return (
     <View style={{ flex: 1, backgroundColor: '#36393f' }}>

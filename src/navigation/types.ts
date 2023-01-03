@@ -5,7 +5,7 @@ export type AppStackParamList = {
   Inventory: { inventoryId: string };
   Settings: undefined;
   SearchItem: { inventoryId: string };
-  AmountInput: { inventoryId: string; itemId: string };
+  AmountInput: { inventoryId: string; itemId: string; prediction?: string };
   Catalog: undefined;
   Drawer: undefined;
 };
