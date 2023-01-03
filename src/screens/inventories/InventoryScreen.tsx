@@ -78,20 +78,6 @@ const InventoryScreen = ({
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <Pressable style={{}} onPress={() => navigation.goBack()}>
-            <MaterialCommunityIcon
-              name="chevron-left"
-              size={26}
-              color="#DCDDDE"
-            />
-          </Pressable>
-          <Pressable style={{}} onPress={() => navigation.goBack()}>
-            <MaterialCommunityIcon
-              name="chevron-right"
-              size={26}
-              color="#DCDDDE"
-            />
-          </Pressable>
           <Pressable style={{}} onPress={() => formatCreateAndShare()}>
             <MaterialCommunityIcon
               name="share-variant"
