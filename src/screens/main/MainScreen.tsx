@@ -1,11 +1,22 @@
-import { useRef, useState } from 'react';
-import { View, Text, Pressable, FlatList } from 'react-native';
+import { useRef, useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  Pressable,
+  FlatList,
+  TextInput,
+  BackHandler,
+} from 'react-native';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, useStore } from 'react-redux';
 import { RootState } from 'store/index';
 import { activate } from 'store/drawer';
 
-import { inventoryAdd, inventoryDelete } from 'store/inventories';
+import {
+  inventoryAdd,
+  inventoryDelete,
+  inventoryEdit,
+} from 'store/inventories';
 
 import type { RootStackScreenProps } from 'navigation/types';
 
@@ -23,6 +34,28 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
   const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
   const [bottomSheetInventoryId, setBottomSheetInventoryId] = useState('');
+
+  const editNameRef = useRef<TextInput>(null);
+
+  const store = useStore<RootState>();
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        if (bottomSheetRef.current?.isActive()) {
+          bottomSheetRef.current?.activate();
+          return true;
+        } else {
+          return false;
+        }
+      },
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#36393f' }}>
@@ -101,6 +134,7 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
                 <Pressable
                   onPress={() => {
                     bottomSheetRef?.current?.activate();
+
                     setBottomSheetInventoryId(item);
                   }}>
                   <MaterialCommunityIcon
@@ -128,25 +162,75 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
           borderRadius: 15,
           backgroundColor: '#202225',
         }}
-        onPress={() => dispatch(inventoryAdd())}>
+        onPress={() => {
+          dispatch(inventoryAdd());
+
+          const newInventoryId = Object.keys(
+            store.getState().invetoriesReducer,
+          )[0];
+          setBottomSheetInventoryId(newInventoryId);
+
+          bottomSheetRef?.current?.activate();
+          editNameRef?.current?.focus();
+        }}>
         <MaterialCommunityIcon name="plus" size={40} color="#DCDDDE" />
       </Pressable>
 
-      <BottomSheet ref={bottomSheetRef}>
+      <BottomSheet
+        ref={bottomSheetRef}
+        backgroundTapAction={() => editNameRef.current?.blur()}>
+        <View
+          style={{
+            height: 42,
+            width: '95%',
+            backgroundColor: '#2f3136',
+            marginVertical: 4,
+            borderRadius: 8,
+
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+
+            alignSelf: 'center',
+          }}>
+          <TextInput
+            ref={editNameRef}
+            style={{
+              marginLeft: 4,
+              color: '#DCDDDE',
+              fontWeight: '500',
+              fontSize: 16,
+              flex: 1,
+            }}
+            value={inventories[bottomSheetInventoryId]?.name || ''}
+            onChangeText={text => {
+              dispatch(
+                inventoryEdit({
+                  inventoryId: bottomSheetInventoryId,
+                  name: text,
+                }),
+              );
+            }}
+            onSubmitEditing={() => {
+              bottomSheetRef?.current?.activate();
+            }}
+          />
+        </View>
         <Pressable
           style={{
             alignSelf: 'center',
             alignItems: 'center',
             justifyContent: 'center',
 
-            borderRadius: 15,
+            borderRadius: 8,
 
-            height: 34,
+            height: 42,
             width: '95%',
             backgroundColor: '#2f3136',
           }}
           onPress={() => {
             dispatch(inventoryDelete({ inventoryId: bottomSheetInventoryId }));
+            editNameRef?.current?.blur();
             bottomSheetRef?.current?.activate();
           }}>
           <MaterialCommunityIcon
