@@ -15,11 +15,7 @@ import type { StyleProp, ViewStyle } from 'react-native';
 import type { RootStackScreenProps } from 'navigation/types';
 
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  inventoryItemAdd,
-  inventoryItemDelete,
-  inventoryItemSetAmount,
-} from 'store/inventories';
+import { inventoryItemSetAmount } from 'store/inventories';
 import { RootState } from 'store/index';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -118,15 +114,12 @@ const AmountInputScreen = ({
     }
   }, [amount]);
 
-  useEffect(() => {
-    console.log(route.params.prediction);
-  });
-
   return (
     <View style={{ flex: 1, backgroundColor: '#36393f' }}>
-      <View style={{ position: 'absolute', top: 20, width: '100%' }}>
-        <Text>{`${inventoryId}: ${inventories[inventoryId].name}`}</Text>
-        <Text>{`${itemId}: ${inventories[inventoryId].items[itemId].name}`}</Text>
+      <View style={{ position: 'absolute', top: 20, left: 20, width: '100%' }}>
+        <Text style={{ color: '#EBECED', fontWeight: '500', fontSize: 24 }}>
+          {inventories[inventoryId].items[itemId].name}
+        </Text>
       </View>
       <View
         style={{
