@@ -15,6 +15,7 @@ import authReducer from 'store/auth';
 import invetoriesReducer from 'store/inventories';
 import drawerReducer from 'store/drawer';
 import catalogReducer from 'store/catalog';
+import reminderReducer from 'store/reminder';
 import { listenerMiddleware } from 'store/middelware';
 
 const reducers = combineReducers({
@@ -22,6 +23,7 @@ const reducers = combineReducers({
   invetoriesReducer,
   drawerReducer,
   catalogReducer,
+  reminderReducer,
 });
 
 const persistConfig = {
