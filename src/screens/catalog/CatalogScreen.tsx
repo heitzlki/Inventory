@@ -1,29 +1,60 @@
-import { useRef, useState } from 'react';
-import { View, Text, Pressable, FlatList } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, Pressable, FlatList, TextInput } from 'react-native';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, useStore } from 'react-redux';
 import { RootState } from 'store/index';
-import { activate } from 'store/drawer';
 
 import { catalogProductAdd } from 'store/catalog';
+import type { ProductState } from 'store/catalog/state';
 
 import type { RootStackScreenProps } from 'navigation/types';
-
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const CatalogScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'Catalog'>) => {
   const catalog = useSelector((state: RootState) => state.catalogReducer);
-  // const drawer = useSelector((state: RootState) => state.drawerReducer);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<ProductState[]>([]);
+
+  useEffect(() => {
+    setSearchResults(Object.values(catalog));
+  }, [catalog]);
+
+  const store = useStore<RootState>();
+
   const dispatch = useDispatch();
 
-  const bottomSheetRef = useRef<BottomSheetRefProps>(null);
+  function search(query: string): ProductState[] {
+    if (query == '') {
+      return Object.values(catalog);
+    }
 
-  const [bottomSheetProductId, setBottomSheetProductId] = useState('');
+    // Convert the search query to lowercase to make the search case-insensitive
+    query = query.toLowerCase();
+
+    // Filter the catalog by products whose names contain the search query
+    const results: ProductState[] = Object.values(catalog).filter(
+      product => product.name.toLowerCase().indexOf(query) !== -1,
+    );
+
+    // Sort the results by the product name
+    return results.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  function handleSearchChange(query: string) {
+    setSearchQuery(query);
+    setSearchResults(search(query));
+  }
+
+  // useEffect(() => {
+  //   if (searchQuery == '') {
+  //     setSearchResults(Object.values(catalog));
+  //   }
+  // }, [catalog, handleSearchChange]);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#36393f' }}>
@@ -41,23 +72,52 @@ const CatalogScreen = ({
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', left: 10 }}>
-          <Pressable style={{}} onPress={() => navigation.goBack()}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: 8,
+          }}>
+          <Pressable
+            style={{ marginHorizontal: 10 }}
+            onPress={() => navigation.goBack()}>
             <MaterialCommunityIcon
               name="keyboard-backspace"
               size={26}
               color="#DCDDDE"
             />
           </Pressable>
-          <Text
+          <View
             style={{
-              color: '#DCDDDE',
-              fontWeight: '500',
-              fontSize: 16,
-              left: 4,
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: '#202225',
+              paddingHorizontal: 8,
+              flex: 1,
+              borderRadius: 15,
+              height: 42,
             }}>
-            Catalog
-          </Text>
+            <MaterialIcon name="search" size={26} color="#DCDDDE" />
+            <TextInput
+              style={{
+                color: '#DCDDDE',
+                fontWeight: '500',
+                fontSize: 16,
+                flex: 1,
+              }}
+              placeholderTextColor={'#ABB0B6'}
+              value={searchQuery}
+              onChangeText={handleSearchChange}
+              placeholder="Search"
+            />
+            <Pressable
+              onPress={() => {
+                setSearchQuery('');
+                setSearchResults(Object.values(catalog));
+              }}>
+              <MaterialIcon name="clear" size={26} color="#DCDDDE" />
+            </Pressable>
+          </View>
         </View>
       </View>
 
@@ -65,15 +125,14 @@ const CatalogScreen = ({
         <FlatList
           contentContainerStyle={{
             alignItems: 'center',
-            paddingBottom: 64, // Bottom space for add button
+            paddingBottom: 84,
           }}
-          data={Object.keys(catalog)}
+          data={searchResults}
           renderItem={({ item, index }) => (
             <Pressable
-              key={item}
+              key={item.id}
               style={{
                 height: 50,
-                maxWidth: '95%',
                 minWidth: '95%',
                 backgroundColor: '#2f3136',
                 marginVertical: 4,
@@ -82,113 +141,54 @@ const CatalogScreen = ({
                 flexDirection: 'row',
                 alignItems: 'center',
               }}
-              onPress={() => {
-                setBottomSheetProductId(item);
-                bottomSheetRef?.current?.activate();
-              }}>
+              onPress={() =>
+                navigation.navigate('CatalogEditProduct', {
+                  productId: item.id,
+                })
+              }>
               <View
                 style={{
-                  left: 0,
+                  left: 10,
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
+                <MaterialCommunityIcon name="leaf" size={24} color="#98f5e1" />
                 <Text
                   style={{
                     color: '#DCDDDE',
                     fontWeight: '500',
                     fontSize: 16,
-                    left: 14,
+                    left: 4,
                   }}>
-                  {catalog[item].name}
+                  {item.name}
                 </Text>
               </View>
-              <Pressable
+              <View
                 style={{
                   position: 'absolute',
                   right: 0,
                   flexDirection: 'row',
                   alignItems: 'center',
-                }}
-                onPress={() => {
-                  // dispatch(
-                  //   inventoryItemSetAmount({
-                  //     inventoryId,
-                  //     itemId: inventories[inventoryId].items[item].id,
-                  //     newAmount: eval(
-                  //       `${inventories[inventoryId].items[item].amount} + 1`,
-                  //     ).toString(),
-                  //   }),
-                  // );
+                  marginHorizontal: 10,
                 }}>
-                <View
+                <Text
                   style={{
-                    flex: 1,
-                    padding: 5,
-                    margin: 5,
-                    backgroundColor: '#292B2F',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 8,
+                    color: '#ABB0B6',
+                    fontWeight: '500',
+                    fontSize: 16,
+                    marginHorizontal: 10,
                   }}>
-                  <MaterialCommunityIcon
-                    name="plus"
-                    size={21}
-                    color="#DCDDDE"
-                  />
-                </View>
-                <Pressable
+                  {item.defaultAmount}
+                </Text>
+                <Text
                   style={{
-                    flex: 1,
-                    paddingVertical: 5,
-                    paddingHorizontal: 10,
-                    backgroundColor: '#202225',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 8,
-                  }}
-                  onPress={() => {
-                    // navigation.navigate('AmountInput', {
-                    //   inventoryId,
-                    //   itemId: inventories[inventoryId].items[item].id,
-                    // });
+                    color: '#ABB0B6',
+                    fontWeight: '500',
+                    fontSize: 16,
                   }}>
-                  <Text
-                    style={{
-                      color: '#DCDDDE',
-                      fontWeight: '500',
-                      fontSize: 16,
-                    }}>
-                    {/* {inventories[inventoryId].items[item].amount} */}
-                  </Text>
-                </Pressable>
-                <Pressable
-                  style={{
-                    flex: 1,
-                    padding: 5,
-                    margin: 5,
-                    backgroundColor: '#292B2F',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 8,
-                  }}
-                  onPress={() => {
-                    // dispatch(
-                    //   inventoryItemSetAmount({
-                    //     inventoryId,
-                    //     itemId: inventories[inventoryId].items[item].id,
-                    //     newAmount: eval(
-                    //       `${inventories[inventoryId].items[item].amount} - 1`,
-                    //     ).toString(),
-                    //   }),
-                    // );
-                  }}>
-                  <MaterialCommunityIcon
-                    name="minus"
-                    size={21}
-                    color="#DCDDDE"
-                  />
-                </Pressable>
-              </Pressable>
+                  {item.unit}
+                </Text>
+              </View>
             </Pressable>
           )}
         />
@@ -208,40 +208,16 @@ const CatalogScreen = ({
           backgroundColor: '#202225',
         }}
         onPress={() => {
-          dispatch(
-            catalogProductAdd({
-              name: `Prod ${Object.keys(catalog).length + 1}`,
-              defaultAmount: '0',
-              unit: 'g',
-            }),
-          );
+          dispatch(catalogProductAdd());
+
+          const newProductId = Object.keys(store.getState().catalogReducer)[0];
+
+          navigation.navigate('CatalogEditProduct', {
+            productId: newProductId,
+          });
         }}>
         <MaterialCommunityIcon name="plus" size={40} color="#DCDDDE" />
       </Pressable>
-      <BottomSheet ref={bottomSheetRef}>
-        <Pressable
-          style={{
-            alignSelf: 'center',
-            alignItems: 'center',
-            justifyContent: 'center',
-
-            borderRadius: 15,
-
-            height: 34,
-            width: '95%',
-            backgroundColor: '#2f3136',
-          }}
-          onPress={() => {
-            // dispatch(inventoryDelete({ inventoryId: bottomSheetItemId }));
-            bottomSheetRef?.current?.activate();
-          }}>
-          {/* <MaterialCommunityIcon
-          name="trash-can-outline"
-          size={25}
-          color="#DCDDDE"
-        /> */}
-        </Pressable>
-      </BottomSheet>
     </View>
   );
 };
