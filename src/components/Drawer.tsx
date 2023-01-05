@@ -186,13 +186,13 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
       [0.0, 0.8],
     );
 
-    const width = translateX.value == 0 ? 0 : '100%';
+    let width = activeReal ? '100%' : '0%';
 
     return {
-      backgroundColor: `rgba(0, 0, 0, ${opacity})`,
       width,
+      backgroundColor: `rgba(0, 0, 0, ${opacity})`,
     };
-  }, []);
+  }, [activeReal]);
 
   useEffect(() => {
     activateAnimation();
