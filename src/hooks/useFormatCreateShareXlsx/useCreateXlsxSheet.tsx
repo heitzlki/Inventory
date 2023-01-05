@@ -4,7 +4,7 @@ import XLSX from 'xlsx';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
 
-export function useCreateXlsxSheet(inventoryId: string, data: string[][]) {
+export function useCreateXlsxSheet(name: string, data: string[][]) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filePath, setFilePath] = useState('');
@@ -16,7 +16,7 @@ export function useCreateXlsxSheet(inventoryId: string, data: string[][]) {
 
     try {
       // Create the xlsx sheet
-      const fileName = `${inventoryId}_${moment().unix().toString()}.xlsx`;
+      const fileName = `${name}_${moment().unix().toString()}.xlsx`;
       const filePathStr = `${RNFS.CachesDirectoryPath}/${fileName}`;
 
       const ws = XLSX.utils.aoa_to_sheet(data);
