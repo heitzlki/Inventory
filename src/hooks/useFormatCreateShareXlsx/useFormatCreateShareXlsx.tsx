@@ -11,6 +11,8 @@ export function useFormatCreateAndShareXlsx(inventoryId: string) {
     (state: RootState) => state.invetoriesReducer,
   );
 
+  const name: string = inventories[inventoryId].name;
+
   const items: ItemsState | {} = inventories[inventoryId]?.items || {};
 
   const { formattedData, formatData } = useFormatXlsx(items);
@@ -20,7 +22,7 @@ export function useFormatCreateAndShareXlsx(inventoryId: string) {
     filePath,
     loading: creating,
     error: createError,
-  } = useCreateXlsxSheet(inventoryId, formattedData);
+  } = useCreateXlsxSheet(name, formattedData);
 
   const {
     shareFile,
@@ -29,7 +31,7 @@ export function useFormatCreateAndShareXlsx(inventoryId: string) {
   } = useShareFile(filePath);
 
   async function formatCreateAndShare() {
-    formatData();
+    await formatData();
     await createSheet();
     await shareFile();
   }
