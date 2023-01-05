@@ -10,16 +10,7 @@ export const catalogSlice = createSlice({
   name: 'catalog',
   initialState: {} as CatalogState,
   reducers: {
-    catalogProductAdd: (
-      state: CatalogState,
-      action: PayloadAction<{
-        name: string;
-        defaultAmount: string;
-        unit: string;
-      }>,
-    ): CatalogState => {
-      const { name, defaultAmount, unit } = action.payload;
-
+    catalogProductAdd: (state: CatalogState): CatalogState => {
       let id = `${uuid.v4()}`;
       return Object.assign(
         {
@@ -27,13 +18,32 @@ export const catalogSlice = createSlice({
             id,
             createdAt: moment().unix().toString(),
             updatedAt: moment().unix().toString(),
-            name,
-            defaultAmount,
-            unit,
+            name: `Prod ${Object.keys(state).length + 1}`,
+            defaultAmount: '0',
+            unit: 'pcs',
           },
         },
         state,
       );
+    },
+
+    catalogProductEdit: (
+      state: CatalogState,
+      action: PayloadAction<{
+        productId: string;
+        name?: string;
+        defaultAmount?: string;
+        unit?: string;
+      }>,
+    ) => {
+      const { productId, name, defaultAmount, unit } = action.payload;
+
+      state[productId] = {
+        ...state[productId],
+        name: name || state[productId].name,
+        defaultAmount: defaultAmount || state[productId].defaultAmount,
+        unit: unit || state[productId].unit,
+      };
     },
 
     catalogProductDelete: (
@@ -45,6 +55,7 @@ export const catalogSlice = createSlice({
   },
 });
 
-export const { catalogProductAdd, catalogProductDelete } = catalogSlice.actions;
+export const { catalogProductAdd, catalogProductEdit, catalogProductDelete } =
+  catalogSlice.actions;
 
 export default catalogSlice.reducer;
