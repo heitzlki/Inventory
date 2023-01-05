@@ -17,9 +17,7 @@ import { RootState } from 'store/index';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
-import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 import { useFormatCreateAndShareXlsx } from 'hooks/useFormatCreateShareXlsx/useFormatCreateShareXlsx';
-import Swipeable from 'components/Swipeable';
 
 const InventoryScreen = ({
   route,
@@ -32,8 +30,7 @@ const InventoryScreen = ({
   );
   const dispatch = useDispatch();
 
-  const { formatCreateAndShare, creating, createError, sharing, shareError } =
-    useFormatCreateAndShareXlsx(inventoryId);
+  const formatCreateAndShare = useFormatCreateAndShareXlsx(inventoryId);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#36393f' }}>
