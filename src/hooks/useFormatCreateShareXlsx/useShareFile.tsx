@@ -40,7 +40,6 @@ export function useShareFile(filePath: string) {
       // Share the file
       const options = {
         url: `file://${filePath}`,
-        message: `${filePath}`,
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       };
 
