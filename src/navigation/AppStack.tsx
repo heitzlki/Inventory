@@ -6,6 +6,8 @@ import SettingsScreen from 'screens/settings/SettingsScreen';
 import SearchItemScreen from 'screens/inventories/SearchItemScreen';
 import AmountInputScreen from 'screens/inventories/AmountInputScreen';
 import CatalogScreen from 'screens/catalog/CatalogScreen';
+import CatalogEditProductScreen from 'screens/catalog/CatalogEditProduct';
+import ReminderScreen from 'screens/reminder/ReminderScreen';
 import Drawer from 'components/Drawer';
 
 const AppStack = () => (
@@ -18,6 +20,11 @@ const AppStack = () => (
     <Stack.Screen name="SearchItem" component={SearchItemScreen} />
     <Stack.Screen name="AmountInput" component={AmountInputScreen} />
     <Stack.Screen name="Catalog" component={CatalogScreen} />
+    <Stack.Screen
+      name="CatalogEditProduct"
+      component={CatalogEditProductScreen}
+    />
+    <Stack.Screen name="Reminder" component={ReminderScreen} />
     <Stack.Screen
       name="Drawer"
       options={{ presentation: 'transparentModal' }}
