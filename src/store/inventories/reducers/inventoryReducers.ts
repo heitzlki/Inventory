@@ -22,6 +22,16 @@ export const inventoryAdd = (state: InventoriesState) => {
   );
 };
 
+export const inventoryEdit = (
+  state: InventoriesState,
+  action: PayloadAction<{ inventoryId: string; name: string }>,
+) => {
+  state[action.payload.inventoryId] = {
+    ...state[action.payload.inventoryId],
+    name: action.payload.name,
+  };
+};
+
 export const inventoryDelete = (
   state: InventoriesState,
   action: PayloadAction<{ inventoryId: string }>,

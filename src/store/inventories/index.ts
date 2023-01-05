@@ -11,6 +11,7 @@ export const inventoriesSlice = createSlice({
 
 export const {
   inventoryAdd,
+  inventoryEdit,
   inventoryDelete,
   inventoryItemAdd,
   inventoryItemDelete,

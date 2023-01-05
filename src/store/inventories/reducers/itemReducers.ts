@@ -25,6 +25,7 @@ export const inventoryItemDelete = (
   action: PayloadAction<{ inventoryId: string; itemId: string }>,
 ) => {
   const { inventoryId, itemId } = action.payload;
+
   delete state[inventoryId].items[itemId];
 };
 
@@ -32,23 +33,22 @@ export const inventoryItemAdd = (
   state: InventoriesState,
   action: PayloadAction<{
     inventoryId: string;
-    id?: string;
+    productId: string;
+    name: string;
   }>,
 ) => {
-  let { inventoryId, id } = action.payload;
+  const { inventoryId, productId, name } = action.payload;
 
-  if (!id) {
-    id = `${uuid.v4()}`;
-  }
+  const id = `${uuid.v4()}`;
 
   state[inventoryId].items = Object.assign(
     {
       [id]: {
         id,
-        productId: '',
+        productId,
         createdAt: moment().unix().toString(),
         updatedAt: moment().unix().toString(),
-        name: `Item ${Object.keys(state[inventoryId].items).length}`,
+        name,
         amount: 0,
       },
     },

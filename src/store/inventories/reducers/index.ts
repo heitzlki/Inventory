@@ -1,7 +1,7 @@
 import {
   inventoryAdd,
+  inventoryEdit,
   inventoryDelete,
-  // inventoryEditName,
 } from 'store/inventories/reducers/inventoryReducers';
 
 import {
@@ -12,6 +12,7 @@ import {
 
 const reducers = {
   inventoryAdd,
+  inventoryEdit,
   inventoryDelete,
   inventoryItemAdd,
   inventoryItemDelete,
