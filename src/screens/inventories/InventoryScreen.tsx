@@ -11,13 +11,15 @@ import {
 import type { RootStackScreenProps } from 'navigation/types';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { inventoryItemSetAmount } from 'store/inventories';
+import { inventoryItemSetAmount, inventoryItemDelete } from 'store/inventories';
 import { RootState } from 'store/index';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 import { useFormatCreateAndShareXlsx } from 'hooks/useFormatCreateShareXlsx/useFormatCreateShareXlsx';
+import Swipeable from 'components/Swipeable';
 
 const InventoryScreen = ({
   route,
@@ -29,10 +31,6 @@ const InventoryScreen = ({
     (state: RootState) => state.invetoriesReducer,
   );
   const dispatch = useDispatch();
-
-  const bottomSheetRef = useRef<BottomSheetRefProps>(null);
-
-  const [bottomSheetItemId, setBottomSheetItemId] = useState('');
 
   const { formatCreateAndShare, creating, createError, sharing, shareError } =
     useFormatCreateAndShareXlsx(inventoryId);
@@ -79,28 +77,8 @@ const InventoryScreen = ({
             alignItems: 'center',
           }}>
           <Pressable style={{}} onPress={() => formatCreateAndShare()}>
-            <MaterialCommunityIcon
-              name="share-variant"
-              size={20}
-              color="#DCDDDE"
-            />
+            <MaterialIcon name="ios-share" size={26} color="#DCDDDE" />
           </Pressable>
-          <Pressable style={{}} onPress={() => navigation.goBack()}>
-            <MaterialCommunityIcon
-              name="dots-vertical"
-              size={26}
-              color="#DCDDDE"
-            />
-          </Pressable>
-          {/* <Text
-            style={{
-              color: '#DCDDDE',
-              fontWeight: '500',
-              fontSize: 16,
-              left: 4,
-            }}>
-            {inventories[inventoryId].name}
-          </Text> */}
         </View>
       </View>
 
@@ -108,7 +86,7 @@ const InventoryScreen = ({
         <FlatList
           contentContainerStyle={{
             alignItems: 'center',
-            paddingBottom: 64, // Bottom space for add button
+            paddingBottom: 84,
           }}
           data={Object.keys(inventories[inventoryId].items)}
           renderItem={({ item, index }) => (
@@ -116,7 +94,6 @@ const InventoryScreen = ({
               key={item}
               style={{
                 height: 50,
-                maxWidth: '95%',
                 minWidth: '95%',
                 backgroundColor: '#2f3136',
                 marginVertical: 4,
@@ -124,10 +101,6 @@ const InventoryScreen = ({
 
                 flexDirection: 'row',
                 alignItems: 'center',
-              }}
-              onPress={() => {
-                setBottomSheetItemId(item);
-                bottomSheetRef?.current?.activate();
               }}>
               <View
                 style={{
@@ -135,42 +108,35 @@ const InventoryScreen = ({
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                {/* <Pressable style={{}} onPress={() => {}}>
+                <Pressable
+                  style={{ marginLeft: 4 }}
+                  onPress={() =>
+                    dispatch(inventoryItemDelete({ inventoryId, itemId: item }))
+                  }>
                   <MaterialCommunityIcon
-                    name="dots-vertical"
+                    name="trash-can-outline"
                     size={24}
                     color="#DCDDDE"
                   />
-                </Pressable> */}
+                </Pressable>
                 <Text
                   style={{
                     color: '#DCDDDE',
                     fontWeight: '500',
                     fontSize: 16,
-                    left: 14,
+                    marginLeft: 4,
                   }}>
                   {inventories[inventoryId].items[item].name}
                 </Text>
               </View>
-              <Pressable
+              <View
                 style={{
                   position: 'absolute',
                   right: 0,
                   flexDirection: 'row',
                   alignItems: 'center',
-                }}
-                onPress={() => {
-                  dispatch(
-                    inventoryItemSetAmount({
-                      inventoryId,
-                      itemId: inventories[inventoryId].items[item].id,
-                      newAmount: eval(
-                        `${inventories[inventoryId].items[item].amount} + 1`,
-                      ).toString(),
-                    }),
-                  );
                 }}>
-                <View
+                <Pressable
                   style={{
                     flex: 1,
                     padding: 5,
@@ -179,13 +145,24 @@ const InventoryScreen = ({
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 8,
+                  }}
+                  onPress={() => {
+                    dispatch(
+                      inventoryItemSetAmount({
+                        inventoryId,
+                        itemId: inventories[inventoryId].items[item].id,
+                        newAmount: eval(
+                          `${inventories[inventoryId].items[item].amount} + 1`,
+                        ).toString(),
+                      }),
+                    );
                   }}>
                   <MaterialCommunityIcon
                     name="plus"
                     size={21}
                     color="#DCDDDE"
                   />
-                </View>
+                </Pressable>
                 <Pressable
                   style={{
                     flex: 1,
@@ -238,7 +215,7 @@ const InventoryScreen = ({
                     color="#DCDDDE"
                   />
                 </Pressable>
-              </Pressable>
+              </View>
             </Pressable>
           )}
         />
@@ -260,31 +237,6 @@ const InventoryScreen = ({
         onPress={() => navigation.navigate('SearchItem', { inventoryId })}>
         <MaterialCommunityIcon name="plus" size={40} color="#DCDDDE" />
       </Pressable>
-      <BottomSheet ref={bottomSheetRef}>
-        <Pressable
-          style={{
-            alignSelf: 'center',
-            alignItems: 'center',
-            justifyContent: 'center',
-
-            borderRadius: 15,
-
-            height: 34,
-            width: '95%',
-            backgroundColor: '#2f3136',
-          }}
-          onPress={() => {
-            // dispatch(inventoryDelete({ inventoryId: bottomSheetItemId }));
-            bottomSheetRef?.current?.activate();
-          }}>
-          {/* <MaterialCommunityIcon
-            name="trash-can-outline"
-            size={25}
-            color="#DCDDDE"
-          /> */}
-          <Text>{bottomSheetItemId}</Text>
-        </Pressable>
-      </BottomSheet>
     </View>
   );
 };
