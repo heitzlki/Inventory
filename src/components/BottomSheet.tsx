@@ -13,26 +13,30 @@ import Animated, {
   useSharedValue,
   withTiming,
   Extrapolate,
+  runOnJS,
 } from 'react-native-reanimated';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT;
-const SNAP_MAX_TRANSLATE_Y = -SCREEN_HEIGHT * 0.5;
-const SNAP_MIN_TRANSLATE_Y = -SCREEN_HEIGHT * 0.25;
-const ACTIVATE_TRANSLATE_Y = -SCREEN_HEIGHT * 0.375;
+const SNAP_MAX_TRANSLATE_Y = -SCREEN_HEIGHT * 0.9;
+const SNAP_MIN_TRANSLATE_Y = -SCREEN_HEIGHT * 0.5;
+const ACTIVATE_TRANSLATE_Y = -SCREEN_HEIGHT * 0.8;
 
 type BottomSheetProps = {
   children?: React.ReactNode;
+  backgroundTapAction?: () => void;
 };
 
 export type BottomSheetRefProps = {
   activate: () => void;
+  isActive: () => boolean;
 };
 
 const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
-  ({ children }, ref) => {
+  ({ children, backgroundTapAction }, ref) => {
     const translateY = useSharedValue(0);
+    const active = useSharedValue(false);
 
     const panGestureEvent = useAnimatedGestureHandler<
       PanGestureHandlerGestureEvent,
@@ -51,8 +55,10 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
       onEnd: () => {
         if (translateY.value < SNAP_MAX_TRANSLATE_Y) {
           translateY.value = withTiming(-SCREEN_HEIGHT, { duration: 400 });
+          active.value = true;
         } else if (translateY.value > SNAP_MIN_TRANSLATE_Y) {
           translateY.value = withTiming(0, { duration: 400 });
+          active.value = false;
         }
       },
     });
@@ -75,17 +81,29 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
 
       if (translateY.value == 0) {
         translateY.value = withTiming(ACTIVATE_TRANSLATE_Y, { duration: 400 });
+        active.value = true;
       } else {
         translateY.value = withTiming(0, { duration: 400 });
+        active.value = false;
       }
     }, []);
 
-    useImperativeHandle(ref, () => ({ activate }), [activate]);
+    const isActive = useCallback(() => {
+      return active.value;
+    }, []);
+
+    useImperativeHandle(ref, () => ({ activate, isActive }), [
+      activate,
+      isActive,
+    ]);
 
     const tapGestureEvent =
       useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
         onEnd: () => {
           activate();
+          if (backgroundTapAction) {
+            runOnJS(backgroundTapAction)();
+          }
         },
       });
 

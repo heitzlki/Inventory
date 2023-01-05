@@ -216,18 +216,26 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
           <DrawerRoute
             action={() => {
               handleNav(() => {
-                navigation.navigate('Settings');
-              });
-            }}
-            title={'Settings'}
-          />
-          <DrawerRoute
-            action={() => {
-              handleNav(() => {
                 navigation.navigate('Catalog');
               });
             }}
             title={'Catalog'}
+          />
+          <DrawerRoute
+            action={() => {
+              handleNav(() => {
+                navigation.navigate('Reminder');
+              });
+            }}
+            title={'Reminder'}
+          />
+          <DrawerRoute
+            action={() => {
+              handleNav(() => {
+                navigation.navigate('Settings');
+              });
+            }}
+            title={'Settings'}
           />
         </Animated.View>
       </PanGestureHandler>
