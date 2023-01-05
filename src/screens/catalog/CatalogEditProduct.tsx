@@ -175,7 +175,7 @@ const CatalogEditProductScreen = ({
               fontSize: 16,
               flex: 1,
             }}>
-            Amount:
+            Unit:
           </Text>
           <View
             style={{
