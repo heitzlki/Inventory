@@ -2,25 +2,27 @@ import { useState } from 'react';
 
 import { ItemsState } from 'store/inventories/state';
 
-const sheetStructure = [
-  ['id', 'productId', 'createdAt', 'updatedAt', 'name', 'amount'],
-];
+const sheetStructure = [['name', 'amount']];
 
 export function useFormatXlsx(items: ItemsState) {
   const [formattedData, setFormattedData] =
     useState<Array<Array<string>>>(sheetStructure);
 
-  function formatData() {
-    if (Object.keys(items).length > 0) {
-      const dataArray = [
-        ...sheetStructure,
-        ...Object.keys(items).map((key: string): string[] =>
-          Object.values(items[key]),
-        ),
-      ];
+  async function formatData() {
+    return new Promise((resolve, reject) => {
+      if (Object.keys(items).length > 0) {
+        const dataArray = [
+          ...sheetStructure,
+          ...Object.values(items).map(item => [item.name, item.amount]),
+        ];
 
-      setFormattedData(dataArray);
-    }
+        setFormattedData(dataArray);
+        resolve(true);
+      } else {
+        setFormattedData(sheetStructure);
+        resolve(true);
+      }
+    });
   }
 
   return { formattedData, formatData };
