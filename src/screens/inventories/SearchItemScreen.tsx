@@ -14,9 +14,12 @@ import uuid from 'react-native-uuid';
 
 import { useFocusEffect } from '@react-navigation/native';
 
-import { inventoryItemAdd } from 'store/inventories';
+import inventories, {
+  inventoryItemAdd,
+  inventoryItemDelete,
+} from 'store/inventories';
 import type { ProductState } from 'store/catalog/state';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, useStore } from 'react-redux';
 import { RootState } from 'store/index';
 
 import type { RootStackScreenProps } from 'navigation/types';
@@ -34,6 +37,8 @@ const SearchItemScreen = ({
   const [searchResults, setSearchResults] = useState<ProductState[]>([]);
 
   const catalog = useSelector((state: RootState) => state.catalogReducer);
+
+  const store = useStore<RootState>();
 
   const dispatch = useDispatch();
 
@@ -88,7 +93,9 @@ const SearchItemScreen = ({
             alignItems: 'center',
             paddingHorizontal: 8,
           }}>
-          <Pressable onPress={() => navigation.goBack()}>
+          <Pressable
+            style={{ marginHorizontal: 10 }}
+            onPress={() => navigation.goBack()}>
             <MaterialCommunityIcon
               name="keyboard-backspace"
               size={26}
@@ -114,7 +121,7 @@ const SearchItemScreen = ({
                 fontSize: 16,
                 flex: 1,
               }}
-              placeholderTextColor={'#BCBFC5'}
+              placeholderTextColor={'#ABB0B6'}
               value={searchQuery}
               onChangeText={handleSearchChange}
               placeholder="Search"
@@ -138,23 +145,32 @@ const SearchItemScreen = ({
               key={item.id}
               style={{
                 height: 50,
-                maxWidth: '95%',
                 minWidth: '95%',
                 backgroundColor: '#2f3136',
                 marginVertical: 4,
                 borderRadius: 8,
+
                 flexDirection: 'row',
                 alignItems: 'center',
               }}
               onPress={() => {
-                let itemId = uuid.v4().toString();
-                dispatch(inventoryItemAdd({ inventoryId, id: itemId }));
+                dispatch(
+                  inventoryItemAdd({
+                    inventoryId,
+                    productId: item.id,
+                    name: item.name,
+                  }),
+                );
+                const newItemId = Object.keys(
+                  store.getState().invetoriesReducer[inventoryId].items,
+                )[0];
 
                 navigation.goBack();
                 navigation.navigate('AmountInput', {
                   inventoryId,
-                  itemId,
-                  prediction: '',
+                  itemId: newItemId,
+                  prediction:
+                    item.defaultAmount == '0' ? '' : item.defaultAmount,
                 });
               }}>
               <View
@@ -163,11 +179,7 @@ const SearchItemScreen = ({
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <MaterialCommunityIcon
-                  name="archive"
-                  size={24}
-                  color="#c1d3fe"
-                />
+                <MaterialCommunityIcon name="leaf" size={24} color="#98f5e1" />
                 <Text
                   style={{
                     color: '#DCDDDE',
@@ -178,17 +190,46 @@ const SearchItemScreen = ({
                   {item.name}
                 </Text>
               </View>
-              <View style={{ position: 'absolute', right: 0 }}>
-                {/* <Pressable>
-                  <MaterialCommunityIcon
-                    name="dots-vertical"
-                    size={28}
-                    color="#DCDDDE"
-                  />
-                </Pressable> */}
+              <View
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginHorizontal: 10,
+                }}>
+                <Text
+                  style={{
+                    color: '#ABB0B6',
+                    fontWeight: '500',
+                    fontSize: 16,
+                    marginHorizontal: 10,
+                  }}>
+                  {item.defaultAmount}
+                </Text>
+                <Text
+                  style={{
+                    color: '#ABB0B6',
+                    fontWeight: '500',
+                    fontSize: 16,
+                  }}>
+                  {item.unit}
+                </Text>
               </View>
             </Pressable>
           )}
+          ListFooterComponent={
+            <Text
+              style={{
+                color: '#ABB0B6',
+                fontWeight: '500',
+                fontSize: 16,
+                marginVertical: 10,
+              }}
+              onPress={() => navigation.navigate('Catalog')}>
+              Create new
+            </Text>
+          }
         />
       </View>
     </View>
