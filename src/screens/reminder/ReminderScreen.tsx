@@ -9,8 +9,11 @@ import { reminderActivate, reminderSetTime } from 'store/reminder';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DatePicker from 'react-native-date-picker';
-import moment from 'moment';
-// import notifee from '@notifee/react-native';
+import notifee, {
+  TimestampTrigger,
+  TriggerType,
+  RepeatFrequency,
+} from '@notifee/react-native';
 
 const ReminderScreen = ({
   route,
@@ -20,30 +23,51 @@ const ReminderScreen = ({
   const reminder = useSelector((state: RootState) => state.reminderReducer);
 
   const [open, setOpen] = useState(false);
-  // async function onDisplayNotification() {
-  //   // Request permissions (required for iOS)
-  //   await notifee.requestPermission();
 
-  //   // Create a channel (required for Android)
-  //   const channelId = await notifee.createChannel({
-  //     id: 'default',
-  //     name: 'Default Channel',
-  //   });
+  const activateNotification = async () => {
+    // Request permissions (required for iOS)
+    await notifee.requestPermission();
 
-  //   // Display a notification
-  //   await notifee.displayNotification({
-  //     title: 'Notification Title',
-  //     body: 'Main body content of the notification',
-  //     android: {
-  //       channelId,
-  //       smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
-  //       // pressAction is needed if you want the notification to open the app when pressed
-  //       pressAction: {
-  //         id: 'default',
-  //       },
-  //     },
-  //   });
-  // }
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+
+    const date = new Date(reminder.time); // get date of reminder
+    const notifyDate = new Date(); // get current date
+    notifyDate.setDate(notifyDate.getDate() + 1); // Add one day
+    notifyDate.setHours(date.getHours()); // set the hours of reminder
+    notifyDate.setMinutes(date.getMinutes()); // set the minutes of remidner
+
+    const trigger: TimestampTrigger = {
+      type: TriggerType.TIMESTAMP,
+      timestamp: notifyDate.getTime(),
+      repeatFrequency: RepeatFrequency.DAILY,
+    };
+
+    // Display a notification
+    await notifee.createTriggerNotification(
+      {
+        id: '0',
+        title: 'Inventory notification!',
+        body: "It's time for inventory",
+        android: {
+          channelId,
+          pressAction: {
+            id: 'default',
+          },
+        },
+      },
+      trigger,
+    );
+  };
+
+  const cancelNotification = () => {
+    notifee
+      .getTriggerNotificationIds()
+      .then(async ids => await notifee.cancelTriggerNotifications(ids));
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#36393f' }}>
@@ -92,7 +116,14 @@ const ReminderScreen = ({
             flexDirection: 'row',
             alignItems: 'center',
           }}
-          onPress={() => dispatch(reminderActivate())}>
+          onPress={() => {
+            if (!reminder.active) {
+              activateNotification();
+            } else {
+              cancelNotification();
+            }
+            dispatch(reminderActivate());
+          }}>
           <Text
             style={{
               marginLeft: 10,
@@ -103,6 +134,7 @@ const ReminderScreen = ({
             Active: {reminder.active ? 'yes' : 'no'}
           </Text>
         </Pressable>
+
         <View
           style={{
             height: 42,
@@ -121,7 +153,10 @@ const ReminderScreen = ({
               fontWeight: '500',
               fontSize: 16,
             }}>
-            {moment(reminder.time).format('HH:mm')}
+            {new Date(reminder.time).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
           </Text>
         </View>
         <Pressable
@@ -152,11 +187,14 @@ const ReminderScreen = ({
         <DatePicker
           modal
           open={open}
-          date={new Date(reminder.time)}
+          date={new Date(Date.now())}
           mode={'time'}
           onConfirm={date => {
             setOpen(false);
             dispatch(reminderSetTime({ newTime: date.toString() }));
+            if (reminder.active) {
+              activateNotification();
+            }
           }}
           onCancel={() => {
             setOpen(false);
