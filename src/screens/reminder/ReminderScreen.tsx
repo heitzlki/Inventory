@@ -15,6 +15,21 @@ import notifee, {
   RepeatFrequency,
 } from '@notifee/react-native';
 
+function getNextTimestamp(serializedDate: string): number {
+  const currentDate = new Date();
+  const scheduledDate = new Date(Date.parse(serializedDate));
+
+  // If the scheduled date has already passed, add a day to it
+  if (scheduledDate < currentDate) {
+    scheduledDate.setDate(scheduledDate.getDate() + 1);
+  }
+
+  // Convert the scheduled date to a timestamp
+  const timestamp = scheduledDate.getTime();
+
+  return timestamp;
+}
+
 const ReminderScreen = ({
   route,
   navigation,
@@ -34,16 +49,13 @@ const ReminderScreen = ({
       name: 'Default Channel',
     });
 
-    const date = new Date(reminder.time); // get date of reminder
-    const notifyDate = new Date(); // get current date
-    notifyDate.setDate(notifyDate.getDate() + 1); // Add one day
-    notifyDate.setHours(date.getHours()); // set the hours of reminder
-    notifyDate.setMinutes(date.getMinutes()); // set the minutes of remidner
-
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
-      timestamp: notifyDate.getTime(),
+      timestamp: getNextTimestamp(reminder.date),
       repeatFrequency: RepeatFrequency.DAILY,
+      alarmManager: {
+        allowWhileIdle: true,
+      },
     };
 
     // Display a notification
@@ -153,7 +165,7 @@ const ReminderScreen = ({
               fontWeight: '500',
               fontSize: 16,
             }}>
-            {new Date(reminder.time).toLocaleTimeString([], {
+            {new Date(Date.parse(reminder.date)).toLocaleTimeString([], {
               hour: '2-digit',
               minute: '2-digit',
             })}
@@ -191,7 +203,7 @@ const ReminderScreen = ({
           mode={'time'}
           onConfirm={date => {
             setOpen(false);
-            dispatch(reminderSetTime({ newTime: date.toString() }));
+            dispatch(reminderSetTime({ newTime: date.toISOString() }));
             if (reminder.active) {
               activateNotification();
             }
