@@ -16,10 +16,14 @@ export const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigator = () => {
   const auth = useSelector((state: RootState) => state.authReducer);
+  const theme = useSelector((state: RootState) => state.themeReducer);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <StatusBar backgroundColor="#292B2F" barStyle="dark-content" />
+      <StatusBar
+        backgroundColor={theme.style.colorSix}
+        barStyle="dark-content"
+      />
       {auth.signedIn ? <AppStack /> : <AuthStack />}
     </GestureHandlerRootView>
   );
