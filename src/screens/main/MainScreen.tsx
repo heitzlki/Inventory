@@ -24,6 +24,8 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 
 import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 
+import MyBackground from 'components/custom/MyBackground';
+
 const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
   const inventories = useSelector(
     (state: RootState) => state.invetoriesReducer,
@@ -58,7 +60,7 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
   }, []);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+    <MyBackground>
       <View
         style={{
           position: 'absolute',
@@ -83,7 +85,6 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
           </Pressable>
         </View>
       </View>
-
       <View style={{ flex: 1, paddingTop: 58, justifyContent: 'center' }}>
         <FlatList
           contentContainerStyle={{
@@ -148,7 +149,6 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
           )}
         />
       </View>
-
       <Pressable
         style={{
           position: 'absolute',
@@ -175,7 +175,6 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
         }}>
         <MaterialCommunityIcon name="plus" size={40} color="#DCDDDE" />
       </Pressable>
-
       <BottomSheet
         ref={bottomSheetRef}
         backgroundTapAction={() => editNameRef.current?.blur()}>
@@ -240,7 +239,7 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
           />
         </Pressable>
       </BottomSheet>
-    </View>
+    </MyBackground>
   );
 };
 
