@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import uuid from 'react-native-uuid';
+import MyBackground from 'components/custom/MyBackground';
 
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -71,7 +72,7 @@ const SearchItemScreen = ({
   );
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+    <MyBackground>
       <View
         style={{
           position: 'absolute',
@@ -232,7 +233,7 @@ const SearchItemScreen = ({
           }
         />
       </View>
-    </View>
+    </MyBackground>
   );
 };
 

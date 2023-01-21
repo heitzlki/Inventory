@@ -7,6 +7,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { signIn } from 'store/auth';
 import { RootState } from 'store/index';
 
+import MyBackground from 'components/custom/MyBackground';
+
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SignUpScreen = ({
@@ -14,7 +16,7 @@ const SignUpScreen = ({
   navigation,
 }: RootStackScreenProps<'SignUp'>) => {
   return (
-    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+    <MyBackground>
       <View
         style={{
           position: 'absolute',
@@ -116,7 +118,7 @@ const SignUpScreen = ({
           Sign In
         </Text>
       </View>
-    </View>
+    </MyBackground>
   );
 };
 

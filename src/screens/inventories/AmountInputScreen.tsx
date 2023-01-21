@@ -22,6 +22,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 
 import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 
+import MyBackground from 'components/custom/MyBackground';
 interface ButtonProps {
   onPress: () => void;
   title: string;
@@ -115,7 +116,7 @@ const AmountInputScreen = ({
   }, [amount]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+    <MyBackground>
       <View style={{ position: 'absolute', top: 20, left: 20, width: '100%' }}>
         <Text style={{ color: '#EBECED', fontWeight: '500', fontSize: 24 }}>
           {inventories[inventoryId].items[itemId].name}
@@ -313,7 +314,7 @@ const AmountInputScreen = ({
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </MyBackground>
   );
 };
 

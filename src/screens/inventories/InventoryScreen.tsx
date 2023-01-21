@@ -17,6 +17,8 @@ import { RootState } from 'store/index';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
+import MyBackground from 'components/custom/MyBackground';
+
 import { useFormatCreateAndShareXlsx } from 'hooks/useFormatCreateShareXlsx/useFormatCreateShareXlsx';
 
 const InventoryScreen = ({
@@ -33,7 +35,7 @@ const InventoryScreen = ({
   const formatCreateAndShare = useFormatCreateAndShareXlsx(inventoryId);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+    <MyBackground>
       <View
         style={{
           position: 'absolute',
@@ -234,7 +236,7 @@ const InventoryScreen = ({
         onPress={() => navigation.navigate('SearchItem', { inventoryId })}>
         <MaterialCommunityIcon name="plus" size={40} color="#DCDDDE" />
       </Pressable>
-    </View>
+    </MyBackground>
   );
 };
 

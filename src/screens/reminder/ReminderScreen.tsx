@@ -7,6 +7,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
 import { reminderActivate, reminderSetTime } from 'store/reminder';
 
+import MyBackground from 'components/custom/MyBackground';
+
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DatePicker from 'react-native-date-picker';
 import notifee, {
@@ -82,7 +84,7 @@ const ReminderScreen = ({
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+    <MyBackground>
       <View
         style={{
           position: 'absolute',
@@ -213,7 +215,7 @@ const ReminderScreen = ({
           }}
         />
       </View>
-    </View>
+    </MyBackground>
   );
 };
 

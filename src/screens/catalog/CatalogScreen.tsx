@@ -11,6 +11,8 @@ import type { RootStackScreenProps } from 'navigation/types';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
+import MyBackground from 'components/custom/MyBackground';
+
 const CatalogScreen = ({
   route,
   navigation,
@@ -57,7 +59,7 @@ const CatalogScreen = ({
   // }, [catalog, handleSearchChange]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+    <MyBackground>
       <View
         style={{
           position: 'absolute',
@@ -218,7 +220,7 @@ const CatalogScreen = ({
         }}>
         <MaterialCommunityIcon name="plus" size={40} color="#DCDDDE" />
       </Pressable>
-    </View>
+    </MyBackground>
   );
 };
 

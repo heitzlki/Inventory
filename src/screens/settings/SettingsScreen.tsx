@@ -11,6 +11,8 @@ import { setTheme } from 'store/theme';
 import { RootState } from 'store/index';
 import MyBackground from 'components/custom/MyBackground';
 import MyTopBar from 'components/custom/MyTopBar';
+import MyButton from 'components/custom/MyButton';
+import MyText from 'components/custom/MyText';
 const SettingsScreen = ({
   route,
   navigation,
@@ -20,69 +22,35 @@ const SettingsScreen = ({
 
   return (
     <MyBackground>
-      <MyTopBar>
-        <Pressable style={{}} onPress={() => navigation.goBack()}>
-          <MaterialCommunityIcon
-            name="keyboard-backspace"
-            size={26}
-            color="#DCDDDE"
+      <MyTopBar backButton={true} title="Settings" />
+      <View style={{ alignItems: 'center' }}>
+        <MyButton
+          onPressAction={() => {
+            dispatch(signOut());
+          }}
+          style={{ marginTop: 8 }}>
+          <MyText
+            style={{
+              marginLeft: 10,
+              fontWeight: '500',
+              fontSize: 16,
+            }}
+            text="Sign Out"
           />
-        </Pressable>
-        <Text
-          style={{
-            color: '#DCDDDE',
-            fontWeight: '500',
-            fontSize: 16,
-            left: 4,
+        </MyButton>
+        <MyButton
+          onPressAction={() => {
+            dispatch(setTheme({}));
           }}>
-          Settings
-        </Text>
-      </MyTopBar>
-      <View style={{ top: 58, alignItems: 'center' }}>
-        <Pressable
-          style={{
-            height: 42,
-            width: '95%',
-            backgroundColor: '#2f3136',
-            marginVertical: 4,
-            borderRadius: 8,
-
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-          onPress={() => dispatch(signOut())}>
-          <Text
+          <MyText
             style={{
               marginLeft: 10,
-              color: '#DCDDDE',
               fontWeight: '500',
               fontSize: 16,
-            }}>
-            Sign Out
-          </Text>
-        </Pressable>
-        <Pressable
-          style={{
-            height: 42,
-            width: '95%',
-            backgroundColor: '#2f3136',
-            marginVertical: 4,
-            borderRadius: 8,
-
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-          onPress={() => dispatch(setTheme({}))}>
-          <Text
-            style={{
-              marginLeft: 10,
-              color: '#DCDDDE',
-              fontWeight: '500',
-              fontSize: 16,
-            }}>
-            Theme: {theme.theme}
-          </Text>
-        </Pressable>
+            }}
+            text={`Theme: ${theme.theme}`}
+          />
+        </MyButton>
       </View>
     </MyBackground>
   );

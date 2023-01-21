@@ -19,6 +19,8 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 import { ProductState } from 'store/catalog/state';
 
+import MyBackground from 'components/custom/MyBackground';
+
 const CatalogEditProductScreen = ({
   route,
   navigation,
@@ -68,7 +70,7 @@ const CatalogEditProductScreen = ({
   }, [editProduct]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#36393f' }}>
+    <MyBackground>
       <View
         style={{
           position: 'absolute',
@@ -333,7 +335,7 @@ const CatalogEditProductScreen = ({
           </Text>
         </Pressable>
       </View>
-    </View>
+    </MyBackground>
   );
 };
 
