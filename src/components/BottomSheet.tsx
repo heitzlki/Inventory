@@ -1,5 +1,7 @@
 import { Dimensions, StyleSheet, View } from 'react-native';
 import React, { useCallback, useImperativeHandle } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/index';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
@@ -35,6 +37,37 @@ export type BottomSheetRefProps = {
 
 const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
   ({ children, backgroundTapAction }, ref) => {
+    const theme = useSelector((state: RootState) => state.themeReducer);
+
+    const styles = StyleSheet.create({
+      bottomSheetBackGround: {
+        flex: 1,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: 3,
+      },
+      bottomSheetContainer: {
+        height: SCREEN_HEIGHT,
+        width: '100%',
+        backgroundColor: theme.style.colorThree,
+        position: 'absolute',
+        top: SCREEN_HEIGHT,
+        borderRadius: 25,
+        zIndex: 4,
+      },
+      line: {
+        width: 75,
+        height: 4,
+        backgroundColor: theme.style.text,
+        alignSelf: 'center',
+        marginVertical: 15,
+        borderRadius: 2,
+      },
+    });
+
     const translateY = useSharedValue(0);
     const active = useSharedValue(false);
 
@@ -140,34 +173,5 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
     );
   },
 );
-
-const styles = StyleSheet.create({
-  bottomSheetBackGround: {
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: 3,
-  },
-  bottomSheetContainer: {
-    height: SCREEN_HEIGHT,
-    width: '100%',
-    backgroundColor: '#36393f',
-    position: 'absolute',
-    top: SCREEN_HEIGHT,
-    borderRadius: 25,
-    zIndex: 4,
-  },
-  line: {
-    width: 75,
-    height: 4,
-    backgroundColor: '#DCDDDE',
-    alignSelf: 'center',
-    marginVertical: 15,
-    borderRadius: 2,
-  },
-});
 
 export default BottomSheet;
