@@ -6,12 +6,14 @@ import { RootState } from 'store/index';
 
 import { catalogProductAdd } from 'store/catalog';
 import type { ProductState } from 'store/catalog/state';
+import { useSync } from 'hooks/useSync';
 
 import type { RootStackScreenProps } from 'navigation/types';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import MyBackground from 'components/custom/MyBackground';
+import MyPressableIcon from 'components/custom/MyPressableIcon';
 
 const CatalogScreen = ({
   route,
@@ -52,11 +54,7 @@ const CatalogScreen = ({
     setSearchResults(search(query));
   }
 
-  // useEffect(() => {
-  //   if (searchQuery == '') {
-  //     setSearchResults(Object.values(catalog));
-  //   }
-  // }, [catalog, handleSearchChange]);
+  const { sync } = useSync();
 
   return (
     <MyBackground>
@@ -89,6 +87,15 @@ const CatalogScreen = ({
               color="#DCDDDE"
             />
           </Pressable>
+          <MyPressableIcon
+            style={{ marginRight: 10 }}
+            onPress={() => {
+              sync();
+            }}
+            set="MaterialCommunityIcons"
+            name="sync"
+            size={24}
+          />
           <View
             style={{
               flexDirection: 'row',
