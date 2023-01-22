@@ -19,7 +19,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import MyBackground from 'components/custom/MyBackground';
 
-import { useFormatCreateAndShareXlsx } from 'hooks/useFormatCreateShareXlsx/useFormatCreateShareXlsx';
+import { useFormatCreateAndShareXlsx } from 'hooks/useFormatCreateShareXlsx';
 
 const InventoryScreen = ({
   route,
