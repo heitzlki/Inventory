@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View, ViewStyle } from 'react-native';
 import React, { useCallback, useImperativeHandle } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/index';
@@ -17,17 +17,20 @@ import Animated, {
   Extrapolate,
   runOnJS,
 } from 'react-native-reanimated';
+import { AnimateStyle } from 'react-native-reanimated';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT;
-const SNAP_MAX_TRANSLATE_Y = -SCREEN_HEIGHT * 0.9;
-const SNAP_MIN_TRANSLATE_Y = -SCREEN_HEIGHT * 0.5;
-const ACTIVATE_TRANSLATE_Y = -SCREEN_HEIGHT * 0.8;
 
 type BottomSheetProps = {
   children?: React.ReactNode;
   backgroundTapAction?: () => void;
+  snapMaxTranslateY: number;
+  snapMinTranslateY: number;
+  activateTranslateY: number;
+  bottomSheetBackgroundStyle?: AnimateStyle<ViewStyle>;
+  bottomSheetContainerStyle?: AnimateStyle<ViewStyle>;
 };
 
 export type BottomSheetRefProps = {
@@ -36,11 +39,28 @@ export type BottomSheetRefProps = {
 };
 
 const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
-  ({ children, backgroundTapAction }, ref) => {
+  (
+    {
+      children,
+      backgroundTapAction,
+      snapMaxTranslateY,
+      snapMinTranslateY,
+      activateTranslateY,
+      bottomSheetBackgroundStyle,
+      bottomSheetContainerStyle,
+    },
+    ref,
+  ) => {
+    const SNAP_MAX_TRANSLATE_Y = -SCREEN_HEIGHT * snapMaxTranslateY;
+    const SNAP_MIN_TRANSLATE_Y = -SCREEN_HEIGHT * snapMinTranslateY;
+    const ACTIVATE_TRANSLATE_Y = -SCREEN_HEIGHT * activateTranslateY;
+
     const theme = useSelector((state: RootState) => state.themeReducer);
 
-    const styles = StyleSheet.create({
-      bottomSheetBackGround: {
+    const bottomSheetBackgroundCombinedStyle = StyleSheet.flatten<
+      AnimateStyle<ViewStyle>
+    >([
+      {
         flex: 1,
         position: 'absolute',
         top: 0,
@@ -49,7 +69,13 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
         height: '100%',
         zIndex: 3,
       },
-      bottomSheetContainer: {
+      bottomSheetBackgroundStyle,
+    ]);
+
+    const bottomSheetContainerCombinedStyle = StyleSheet.flatten<
+      AnimateStyle<ViewStyle>
+    >([
+      {
         height: SCREEN_HEIGHT,
         width: '100%',
         backgroundColor: theme.style.colorThree,
@@ -58,15 +84,8 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
         borderRadius: 25,
         zIndex: 4,
       },
-      line: {
-        width: 75,
-        height: 4,
-        backgroundColor: theme.style.text,
-        alignSelf: 'center',
-        marginVertical: 15,
-        borderRadius: 2,
-      },
-    });
+      bottomSheetContainerStyle,
+    ]);
 
     const translateY = useSharedValue(0);
     const active = useSharedValue(false);
@@ -140,7 +159,7 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
         },
       });
 
-    const rBottomSheetBackGroundStyle = useAnimatedStyle(() => {
+    const rBottomSheetBackgroundStyle = useAnimatedStyle(() => {
       const opacity = interpolate(
         translateY.value,
         [0, MAX_TRANSLATE_Y],
@@ -159,13 +178,15 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
       <>
         <TapGestureHandler onGestureEvent={tapGestureEvent}>
           <Animated.View
-            style={[styles.bottomSheetBackGround, rBottomSheetBackGroundStyle]}
+            style={[
+              bottomSheetBackgroundCombinedStyle,
+              rBottomSheetBackgroundStyle,
+            ]}
           />
         </TapGestureHandler>
         <PanGestureHandler onGestureEvent={panGestureEvent}>
           <Animated.View
-            style={[styles.bottomSheetContainer, rBottomSheetStyle]}>
-            <View style={styles.line} />
+            style={[bottomSheetContainerCombinedStyle, rBottomSheetStyle]}>
             {children}
           </Animated.View>
         </PanGestureHandler>

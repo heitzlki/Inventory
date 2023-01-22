@@ -1,9 +1,9 @@
-import { View, ViewProps, StyleSheet } from 'react-native';
+import { View, ViewProps } from 'react-native';
 
-import { useRef, useState, useEffect } from 'react';
-import { Pressable, TextInput, BackHandler } from 'react-native';
+import { useEffect } from 'react';
+import { TextInput, BackHandler } from 'react-native';
 
-import { useSelector, useDispatch, useStore } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
 
 import { inventoryDelete, inventoryEdit } from 'store/inventories';
@@ -24,14 +24,9 @@ const MyBottomSheet = ({
   inventoryId,
   bottomSheetRef,
   editNameRef,
-  style,
-  ...props
 }: Props) => {
   const theme = useSelector((state: RootState) => state.themeReducer);
-  const combinedStyles = StyleSheet.flatten([
-    { flex: 1, backgroundColor: theme.style.colorTwo },
-    style,
-  ]);
+
   const inventories = useSelector(
     (state: RootState) => state.invetoriesReducer,
   );
@@ -59,7 +54,20 @@ const MyBottomSheet = ({
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      backgroundTapAction={() => editNameRef.current?.blur()}>
+      backgroundTapAction={() => editNameRef.current?.blur()}
+      snapMaxTranslateY={0.9}
+      snapMinTranslateY={0.5}
+      activateTranslateY={0.8}>
+      <View
+        style={{
+          width: 75,
+          height: 4,
+          backgroundColor: theme.style.text,
+          alignSelf: 'center',
+          marginVertical: 15,
+          borderRadius: 2,
+        }}
+      />
       <View
         style={{
           height: 42,
