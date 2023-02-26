@@ -18,6 +18,7 @@ import Animated, {
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
 
+import MyText from 'components/custom/MyText';
 import type { SharedValue } from 'react-native-reanimated';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -61,12 +62,14 @@ const DrawerRoute = ({
   action?: () => void;
   title: string;
 }) => {
+  const theme = useSelector((state: RootState) => state.themeReducer);
+
   return (
     <Pressable
       style={{
         height: 34,
         width: '95%',
-        backgroundColor: '#2f3136',
+        backgroundColor: theme.style.colorFour,
         borderTopRightRadius: 8,
         borderBottomRightRadius: 8,
         flexDirection: 'row',
@@ -74,20 +77,16 @@ const DrawerRoute = ({
         marginTop: 10,
       }}
       onPress={action}>
-      <Text
-        style={{
-          color: '#DCDDDE',
-          fontWeight: '500',
-          fontSize: 16,
-          left: 4,
-        }}>
-        {title}
-      </Text>
+      <MyText
+        text={title}
+        style={{ fontWeight: '500', fontSize: 16, marginLeft: 4 }}
+      />
     </Pressable>
   );
 };
 
 const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
+  const theme = useSelector((state: RootState) => state.themeReducer);
   const drawer = useSelector((state: RootState) => state.drawerReducer);
   const dispatch = useDispatch();
 
@@ -198,6 +197,31 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
     activateAnimation();
   }, [drawer.active]);
 
+  const styles = StyleSheet.create({
+    drawerSheetBackGround: {
+      flex: 1,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: 3,
+    },
+    drawerSheetContainer: {
+      position: 'absolute',
+      top: 0,
+      width: MAX_TRANSLATE_X,
+      height: '100%',
+      backgroundColor: theme.style.colorThree,
+      right: SCREEN_WIDTH,
+      borderTopRightRadius: 25,
+      borderBottomRightRadius: 25,
+      zIndex: 4,
+      flex: 1,
+      alignItems: 'flex-start',
+    },
+  });
+
   return (
     <>
       <TapGestureHandler onGestureEvent={tapGestureEvent}>
@@ -242,30 +266,5 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  drawerSheetBackGround: {
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: 3,
-  },
-  drawerSheetContainer: {
-    position: 'absolute',
-    top: 0,
-    width: MAX_TRANSLATE_X,
-    height: '100%',
-    backgroundColor: '#36393f',
-    right: SCREEN_WIDTH,
-    borderTopRightRadius: 25,
-    borderBottomRightRadius: 25,
-    zIndex: 4,
-    flex: 1,
-    alignItems: 'flex-start',
-  },
-});
 
 export default Drawer;
