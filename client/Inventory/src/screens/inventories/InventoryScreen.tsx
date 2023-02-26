@@ -14,10 +14,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { inventoryItemSetAmount, inventoryItemDelete } from 'store/inventories';
 import { RootState } from 'store/index';
 
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-
-import MyBackground from 'components/custom/MyBackground';
+import {
+  MyBackground,
+  MyTopBar,
+  MyAddButton,
+  MyPressableIcon,
+  MyText,
+  MyIcon,
+} from 'components/custom';
 
 import { useFormatCreateAndShareXlsx } from 'hooks/useFormatCreateShareXlsx';
 
@@ -25,6 +29,7 @@ const InventoryScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'Inventory'>) => {
+  const theme = useSelector((state: RootState) => state.themeReducer);
   const inventoryId = route.params.inventoryId;
 
   const inventories = useSelector(
@@ -36,59 +41,285 @@ const InventoryScreen = ({
 
   return (
     <MyBackground>
-      <View
-        style={{
-          position: 'absolute',
-          zIndex: 2,
-          top: 0,
-          width: '100%',
-          height: 58,
-
-          backgroundColor: '#292B2F',
-          borderBottomLeftRadius: 15,
-          borderBottomRightRadius: 15,
-          flexDirection: 'row',
+      <MyTopBar backButton={true} title={inventories[inventoryId].name}>
+        <MyPressableIcon
+          style={{ position: 'absolute', marginHorizontal: 20, right: 0 }}
+          onPress={() => formatCreateAndShare()}
+          set="MaterialIcons"
+          name="ios-share"
+        />
+      </MyTopBar>
+      <FlatList
+        contentContainerStyle={{
           alignItems: 'center',
-        }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', left: 10 }}>
-          <Pressable style={{}} onPress={() => navigation.goBack()}>
-            <MaterialCommunityIcon
-              name="keyboard-backspace"
-              size={26}
-              color="#DCDDDE"
-            />
-          </Pressable>
-          <Text
-            style={{
-              color: '#DCDDDE',
-              fontWeight: '500',
-              fontSize: 16,
-              left: 4,
-            }}>
-            {inventories[inventoryId].name}
-          </Text>
-        </View>
-        <View
-          style={{
-            position: 'absolute',
-            right: 10,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <Pressable style={{}} onPress={() => formatCreateAndShare()}>
-            <MaterialIcon name="ios-share" size={26} color="#DCDDDE" />
-          </Pressable>
-        </View>
-      </View>
+          paddingBottom: 84,
+        }}
+        data={Object.keys(inventories[inventoryId].items)}
+        renderItem={({ item, index }) =>
+          inventories[inventoryId].items[item].amountType === 'double' ? (
+            <Pressable
+              key={item}
+              style={{
+                height: 84,
+                minWidth: '95%',
+                backgroundColor: theme.style.colorFour,
+                marginVertical: 4,
+                borderRadius: 8,
 
-      <View style={{ flex: 1, paddingTop: 58, justifyContent: 'center' }}>
-        <FlatList
-          contentContainerStyle={{
-            alignItems: 'center',
-            paddingBottom: 84,
-          }}
-          data={Object.keys(inventories[inventoryId].items)}
-          renderItem={({ item, index }) => (
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  marginLeft: 4,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <MyPressableIcon
+                  set="MaterialCommunityIcons"
+                  name="trash-can-outline"
+                  size={24}
+                  onPress={() =>
+                    dispatch(inventoryItemDelete({ inventoryId, itemId: item }))
+                  }
+                />
+                <View
+                  style={{
+                    flexDirection: 'column',
+                  }}>
+                  <View
+                    style={{
+                      marginLeft: 4,
+                      marginVertical: 2,
+                    }}>
+                    <MyText
+                      style={{
+                        fontWeight: '500',
+                        fontSize: 16,
+                      }}
+                      text={inventories[inventoryId].items[item].name}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      marginLeft: 4,
+                      marginVertical: 2,
+                      backgroundColor: '#02ab8ad6',
+                      borderRadius: 4,
+                      borderColor: '#27fdd4ff',
+                      borderWidth: 2,
+                      paddingHorizontal: 4,
+                    }}>
+                    <MyText
+                      style={{
+                        fontWeight: '500',
+                        fontSize: 13.5,
+                      }}
+                      text={'Frisch- und TK-Ware (2)'}
+                    />
+                  </View>
+                </View>
+              </View>
+              <View
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <MyPressableIcon
+                      set="MaterialCommunityIcons"
+                      name="plus"
+                      size={21}
+                      style={{
+                        flex: 1,
+                        padding: 5,
+                        margin: 5,
+                        backgroundColor: theme.style.colorFive,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 8,
+                      }}
+                      onPress={() => {
+                        dispatch(
+                          inventoryItemSetAmount({
+                            inventoryId,
+                            itemId: inventories[inventoryId].items[item].id,
+                            newAmount: eval(
+                              `${inventories[inventoryId].items[item].amount} + 1`,
+                            ).toString(),
+                          }),
+                        );
+                      }}
+                    />
+                    <Pressable
+                      style={{
+                        flex: 1,
+                        paddingVertical: 5,
+                        paddingHorizontal: 5,
+                        borderColor: '#2ad6ffd6',
+                        borderWidth: 2,
+                        backgroundColor: theme.style.colorSix,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 8,
+                      }}
+                      onPress={() => {
+                        navigation.navigate('AmountInput', {
+                          inventoryId,
+                          itemId: inventories[inventoryId].items[item].id,
+                        });
+                      }}>
+                      <MyText
+                        style={{
+                          fontWeight: '500',
+                          fontSize: 16,
+                        }}
+                        text={inventories[inventoryId].items[item].amount}
+                      />
+                    </Pressable>
+                    <MyPressableIcon
+                      set="MaterialCommunityIcons"
+                      name="minus"
+                      size={21}
+                      style={{
+                        flex: 1,
+                        padding: 5,
+                        margin: 5,
+                        backgroundColor: theme.style.colorFive,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 8,
+                      }}
+                      onPress={() => {
+                        dispatch(
+                          inventoryItemSetAmount({
+                            inventoryId,
+                            itemId: inventories[inventoryId].items[item].id,
+                            newAmount: eval(
+                              `${inventories[inventoryId].items[item].amount} - 1`,
+                            ).toString(),
+                          }),
+                        );
+                      }}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <MyPressableIcon
+                      set="MaterialCommunityIcons"
+                      name="plus"
+                      size={21}
+                      style={{
+                        flex: 1,
+                        padding: 5,
+                        margin: 5,
+                        backgroundColor: theme.style.colorFive,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 8,
+                      }}
+                      onPress={() => {
+                        dispatch(
+                          inventoryItemSetAmount({
+                            inventoryId,
+                            itemId: inventories[inventoryId].items[item].id,
+                            newAmount: eval(
+                              `${inventories[inventoryId].items[item].amount} + 1`,
+                            ).toString(),
+                          }),
+                        );
+                      }}
+                    />
+                    <Pressable
+                      style={{
+                        flex: 1,
+                        paddingVertical: 5,
+                        paddingHorizontal: 5,
+                        borderColor: '#ffd42ad6',
+                        borderWidth: 2,
+                        backgroundColor: theme.style.colorSix,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 8,
+                      }}
+                      onPress={() => {
+                        navigation.navigate('AmountInput', {
+                          inventoryId,
+                          itemId: inventories[inventoryId].items[item].id,
+                        });
+                      }}>
+                      <MyText
+                        style={{
+                          fontWeight: '500',
+                          fontSize: 16,
+                        }}
+                        text={inventories[inventoryId].items[item].amount}
+                      />
+                    </Pressable>
+                    <MyPressableIcon
+                      set="MaterialCommunityIcons"
+                      name="minus"
+                      size={21}
+                      style={{
+                        flex: 1,
+                        padding: 5,
+                        margin: 5,
+                        backgroundColor: theme.style.colorFive,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 8,
+                      }}
+                      onPress={() => {
+                        dispatch(
+                          inventoryItemSetAmount({
+                            inventoryId,
+                            itemId: inventories[inventoryId].items[item].id,
+                            newAmount: eval(
+                              `${inventories[inventoryId].items[item].amount} - 1`,
+                            ).toString(),
+                          }),
+                        );
+                      }}
+                    />
+                  </View>
+                </View>
+
+                <View
+                  style={{
+                    paddingVertical: 5,
+                    paddingHorizontal: 5,
+                    backgroundColor: theme.style.colorSix,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 8,
+                    marginRight: 5,
+                    height: 72,
+                  }}>
+                  <MyText
+                    style={{
+                      fontWeight: '600',
+                      fontSize: 17,
+                    }}
+                    text={inventories[inventoryId].items[item].amount}
+                  />
+                </View>
+              </View>
+            </Pressable>
+          ) : (
             <Pressable
               key={item}
               style={{
@@ -112,7 +343,8 @@ const InventoryScreen = ({
                   onPress={() =>
                     dispatch(inventoryItemDelete({ inventoryId, itemId: item }))
                   }>
-                  <MaterialCommunityIcon
+                  <MyIcon
+                    set="MaterialCommunityIcons"
                     name="trash-can-outline"
                     size={24}
                     color="#DCDDDE"
@@ -156,7 +388,8 @@ const InventoryScreen = ({
                       }),
                     );
                   }}>
-                  <MaterialCommunityIcon
+                  <MyIcon
+                    set="MaterialCommunityIcons"
                     name="plus"
                     size={21}
                     color="#DCDDDE"
@@ -208,7 +441,8 @@ const InventoryScreen = ({
                       }),
                     );
                   }}>
-                  <MaterialCommunityIcon
+                  <MyIcon
+                    set="MaterialCommunityIcons"
                     name="minus"
                     size={21}
                     color="#DCDDDE"
@@ -216,26 +450,13 @@ const InventoryScreen = ({
                 </Pressable>
               </View>
             </Pressable>
-          )}
-        />
-      </View>
+          )
+        }
+      />
 
-      <Pressable
-        style={{
-          position: 'absolute',
-          alignSelf: 'flex-end',
-          bottom: 20,
-          right: 20,
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 60,
-          height: 60,
-          borderRadius: 15,
-          backgroundColor: '#202225',
-        }}
-        onPress={() => navigation.navigate('SearchItem', { inventoryId })}>
-        <MaterialCommunityIcon name="plus" size={40} color="#DCDDDE" />
-      </Pressable>
+      <MyAddButton
+        onPress={() => navigation.navigate('SearchItem', { inventoryId })}
+      />
     </MyBackground>
   );
 };
