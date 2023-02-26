@@ -5,9 +5,10 @@ export interface ProductState {
   createdAt: string;
   updatedAt: string;
   name: string;
-  defaultAmount: string;
   unit: string;
   amountType: AmountType;
+  defaultAmountOne: string;
+  defaultAmountTwo: string;
   category: CategoryType;
 }
 

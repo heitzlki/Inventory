@@ -15,8 +15,9 @@ export interface ItemState {
   createdAt: string;
   updatedAt: string;
   name: string;
-  amount: string;
   amountType: AmountType;
+  amountOne: string;
+  amountTwo: string;
   category: CategoryType;
 }
 
