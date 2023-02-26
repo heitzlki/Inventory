@@ -19,7 +19,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 import { ProductState } from 'store/catalog/state';
 
-import MyBackground from 'components/custom/MyBackground';
+import { MyBackground } from 'components/custom';
 
 const CatalogEditProductScreen = ({
   route,
