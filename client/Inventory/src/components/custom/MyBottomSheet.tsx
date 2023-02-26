@@ -55,8 +55,8 @@ const MyBottomSheet = ({
     <BottomSheet
       ref={bottomSheetRef}
       backgroundTapAction={() => editNameRef.current?.blur()}
-      snapMaxTranslateY={0.9}
-      snapMinTranslateY={0.5}
+      snapMaxTranslateY={0.85}
+      snapMinTranslateY={0.75}
       activateTranslateY={0.8}>
       <View
         style={{
