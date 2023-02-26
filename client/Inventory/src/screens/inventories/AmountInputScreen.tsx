@@ -1,15 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-  FlatList,
-  Pressable,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
 
 import type { RootStackScreenProps } from 'navigation/types';
@@ -18,11 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { inventoryItemSetAmount } from 'store/inventories';
 import { RootState } from 'store/index';
 
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { MyBackground } from 'components/custom';
 
-import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
-
-import MyBackground from 'components/custom/MyBackground';
 interface ButtonProps {
   onPress: () => void;
   title: string;
