@@ -1,4 +1,5 @@
 import {
+  AmountType,
   InventoriesState,
   InventoryState,
   ItemState,
@@ -35,9 +36,10 @@ export const inventoryItemAdd = (
     inventoryId: string;
     productId: string;
     name: string;
+    amountType: AmountType;
   }>,
 ) => {
-  const { inventoryId, productId, name } = action.payload;
+  const { inventoryId, productId, name, amountType } = action.payload;
 
   const id = `${uuid.v4()}`;
 
@@ -50,6 +52,7 @@ export const inventoryItemAdd = (
         updatedAt: moment().unix().toString(),
         name,
         amount: 0,
+        amountType: amountType,
       },
     },
     state[inventoryId].items,

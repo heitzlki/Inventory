@@ -1,3 +1,5 @@
+import { AmountType, CategoryType } from 'store/inventories/state';
+
 export interface ProductState {
   id: string;
   createdAt: string;
@@ -5,6 +7,8 @@ export interface ProductState {
   name: string;
   defaultAmount: string;
   unit: string;
+  amountType: AmountType;
+  category: CategoryType;
 }
 
 export interface CatalogState {

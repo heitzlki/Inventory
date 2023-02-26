@@ -5,6 +5,7 @@ import { CatalogState, ProductState } from 'store/catalog/state';
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
+import { AmountType, CategoryType } from 'store/inventories/state';
 
 export const catalogSlice = createSlice({
   name: 'catalog',
@@ -19,19 +20,16 @@ export const catalogSlice = createSlice({
 
     catalogProductAdd: (state: CatalogState): CatalogState => {
       let id = `${uuid.v4()}`;
-      return Object.assign(
-        {
-          [id]: {
-            id,
-            createdAt: moment().unix().toString(),
-            updatedAt: moment().unix().toString(),
-            name: `Prod ${Object.keys(state).length + 1}`,
-            defaultAmount: '0',
-            unit: 'pcs',
-          },
-        },
-        state,
-      );
+      let newProduct: ProductState = {
+        id,
+        createdAt: moment().unix().toString(),
+        updatedAt: moment().unix().toString(),
+        name: `Prod ${Object.keys(state).length + 1}`,
+        defaultAmount: '0',
+        amountType: 'double',
+        category: 'Aktionsprodukte',
+      };
+      return { [id]: newProduct, ...state };
     },
 
     catalogProductEdit: (
@@ -41,16 +39,21 @@ export const catalogSlice = createSlice({
         name?: string;
         defaultAmount?: string;
         unit?: string;
+        amountType?: AmountType;
+        category?: CategoryType;
       }>,
     ) => {
-      const { productId, name, defaultAmount, unit } = action.payload;
+      const { productId, name, defaultAmount, unit, amountType, category } =
+        action.payload;
 
       state[productId] = {
         ...state[productId],
         updatedAt: moment().unix().toString(),
         name: name || state[productId].name,
         defaultAmount: defaultAmount || state[productId].defaultAmount,
+        amountType: amountType || state[productId].amountType,
         unit: unit || state[productId].unit,
+        category: category || state[productId].category,
       };
     },
 
