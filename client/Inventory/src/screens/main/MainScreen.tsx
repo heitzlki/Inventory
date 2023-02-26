@@ -30,10 +30,9 @@ import MyPressableIcon from 'components/custom/MyPressableIcon';
 import MyAddButton from 'components/custom/MyAddButton';
 import MyBottomSheet from 'components/custom/MyBottomSheet';
 
+import InventoryList from 'components/inventory/InventoryList';
+
 const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
-  const inventories = useSelector(
-    (state: RootState) => state.invetoriesReducer,
-  );
   const dispatch = useDispatch();
 
   const [bottomSheetInventoryId, setBottomSheetInventoryId] = useState('');
@@ -57,63 +56,9 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
       </MyTopBar>
       <View style={{ alignItems: 'center' }}></View>
 
-      <FlatList
-        contentContainerStyle={{
-          alignItems: 'center',
-          paddingBottom: 80, // Bottom space for add button
-        }}
-        data={Object.keys(inventories)}
-        renderItem={({ item, index }) => (
-          <Pressable
-            key={item}
-            style={{
-              height: 50,
-              maxWidth: '95%',
-              minWidth: '95%',
-              backgroundColor: '#2f3136',
-              marginVertical: 4,
-              borderRadius: 8,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-            onPress={() =>
-              navigation.navigate('Inventory', {
-                inventoryId: inventories[item].id,
-              })
-            }>
-            <View
-              style={{
-                left: 10,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <MaterialCommunityIcon name="archive" size={24} color="#c1d3fe" />
-              <Text
-                style={{
-                  color: '#DCDDDE',
-                  fontWeight: '500',
-                  fontSize: 16,
-                  left: 4,
-                }}>
-                {inventories[item].name}
-              </Text>
-            </View>
-            <View style={{ position: 'absolute', right: 0 }}>
-              <Pressable
-                onPress={() => {
-                  bottomSheetRef?.current?.activate();
-
-                  setBottomSheetInventoryId(item);
-                }}>
-                <MaterialCommunityIcon
-                  name="dots-vertical"
-                  size={28}
-                  color="#DCDDDE"
-                />
-              </Pressable>
-            </View>
-          </Pressable>
-        )}
+      <InventoryList
+        bottomSheetRef={bottomSheetRef}
+        setBottomSheetInventoryId={setBottomSheetInventoryId}
       />
 
       <MyBottomSheet
