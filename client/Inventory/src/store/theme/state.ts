@@ -9,6 +9,7 @@ export const darkTheme: Style = {
   colorFour: '#2F3136',
   colorFive: '#292B2F',
   colorSix: '#202225',
+  colorBlue: '#c1d3fe',
 };
 
 export const lightTheme: Style = {
@@ -20,6 +21,7 @@ export const lightTheme: Style = {
   colorFour: '#d0cec9',
   colorFive: '#d6d4d0',
   colorSix: '#dfddda',
+  colorBlue: '#4848ff',
 };
 
 export interface Style {
@@ -31,6 +33,7 @@ export interface Style {
   colorFour: string;
   colorFive: string;
   colorSix: string;
+  colorBlue: string;
 }
 
 export interface ThemeState {
