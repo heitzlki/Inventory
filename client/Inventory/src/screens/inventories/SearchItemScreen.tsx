@@ -15,6 +15,9 @@ import MyBackground from 'components/custom/MyBackground';
 
 import { useFocusEffect } from '@react-navigation/native';
 
+import useSearch from 'hooks/useSearch';
+
+
 import inventories, {
   inventoryItemAdd,
   inventoryItemDelete,
@@ -34,35 +37,18 @@ const SearchItemScreen = ({
 }: RootStackScreenProps<'SearchItem'>) => {
   const { inventoryId } = route.params;
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<ProductState[]>([]);
 
-  const catalog = useSelector((state: RootState) => state.catalogReducer);
 
   const store = useStore<RootState>();
 
   const dispatch = useDispatch();
 
-  function search(query: string): ProductState[] {
-    // Convert the search query to lowercase to make the search case-insensitive
-    query = query.toLowerCase();
+  const [searchResults, handleSearchChange, searchQuery, setSearchQuery] = useSearch()
 
-    // Filter the catalog by products whose names contain the search query
-    const results: ProductState[] = Object.values(catalog).filter(
-      product => product.name.toLowerCase().indexOf(query) !== -1,
-    );
-
-    // Sort the results by the product name
-    return results.sort((a, b) => a.name.localeCompare(b.name));
-  }
-
-  function handleSearchChange(query: string) {
-    setSearchQuery(query);
-    setSearchResults(search(query));
-  }
 
   const inputRef = useRef<TextInput>(null);
 
+  // focus input on 
   useFocusEffect(
     useCallback(() => {
       setTimeout(() => {
@@ -127,7 +113,7 @@ const SearchItemScreen = ({
               onChangeText={handleSearchChange}
               placeholder="Search"
             />
-            <Pressable onPress={() => setSearchQuery('')}>
+            <Pressable onPress={() => setSearchQuery("")}>
               <MaterialIcon name="clear" size={26} color="#DCDDDE" />
             </Pressable>
           </View>
