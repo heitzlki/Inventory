@@ -25,7 +25,9 @@ export const catalogSlice = createSlice({
         createdAt: moment().unix().toString(),
         updatedAt: moment().unix().toString(),
         name: `Prod ${Object.keys(state).length + 1}`,
-        defaultAmount: '0',
+        defaultAmountOne: '0',
+        defaultAmountTwo: '0',
+        unit: 'kg',
         amountType: 'double',
         category: 'Aktionsprodukte',
       };
@@ -37,20 +39,29 @@ export const catalogSlice = createSlice({
       action: PayloadAction<{
         productId: string;
         name?: string;
-        defaultAmount?: string;
+        defaultAmountOne?: string;
+        defaultAmountTwo?: string;
         unit?: string;
         amountType?: AmountType;
         category?: CategoryType;
       }>,
     ) => {
-      const { productId, name, defaultAmount, unit, amountType, category } =
-        action.payload;
+      const {
+        productId,
+        name,
+        defaultAmountOne,
+        defaultAmountTwo,
+        unit,
+        amountType,
+        category,
+      } = action.payload;
 
       state[productId] = {
         ...state[productId],
         updatedAt: moment().unix().toString(),
         name: name || state[productId].name,
-        defaultAmount: defaultAmount || state[productId].defaultAmount,
+        defaultAmountOne: defaultAmountOne || state[productId].defaultAmountOne,
+        defaultAmountTwo: defaultAmountTwo || state[productId].defaultAmountTwo,
         amountType: amountType || state[productId].amountType,
         unit: unit || state[productId].unit,
         category: category || state[productId].category,
