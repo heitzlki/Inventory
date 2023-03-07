@@ -1,30 +1,85 @@
-import { CatalogState } from 'store/catalog/state';
+import { CatalogState, ProductState } from 'store/catalog/state';
 import { useApi } from 'hooks/useApi';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
 import { catalogUpdate } from 'store/catalog';
+import { CategoryType } from 'store/inventories/state';
 
-const isValidCatalogState = (data: any): data is CatalogState => {
-  if (typeof data !== 'object') {
-    return false;
+type APIResponse = Array<Array<string | number>>;
+
+const validCategories: CategoryType[] = [
+  'Aktionsprodukte',
+  'Frisch- und TK-Ware (1)',
+  'Frisch- und TK-Ware (2)',
+  'Soßen, Dips und Dressings',
+  'Dosen- und Trockenware',
+  'Getränke',
+  'Verpackungen',
+  'Desserts (TK)',
+];
+
+function convertToCatalogState(apiResponse: APIResponse): CatalogState {
+  const [header, ...rows] = apiResponse;
+
+  if (
+    header.length !== 9 ||
+    header[0] !== 'id' ||
+    header[1] !== 'createdAt' ||
+    header[2] !== 'updatedAt' ||
+    header[3] !== 'name' ||
+    header[4] !== 'unit' ||
+    header[5] !== 'amountType' ||
+    header[6] !== 'defaultAmountOne' ||
+    header[7] !== 'defaultAmountTwo' ||
+    header[8] !== 'category'
+  ) {
+    throw new Error('Invalid API response format');
   }
 
-  for (const key in data) {
-    const item = data[key];
+  const catalogState: CatalogState = {};
+
+  for (const row of rows) {
+    const [
+      id,
+      createdAt,
+      updatedAt,
+      name,
+      unit,
+      amountType,
+      defaultAmountOne,
+      defaultAmountTwo,
+      category,
+    ] = row;
+
     if (
-      typeof item !== 'object' ||
-      typeof item.id !== 'string' ||
-      typeof item.createdAt !== 'string' ||
-      typeof item.updatedAt !== 'string' ||
-      typeof item.name !== 'string' ||
-      typeof item.defaultAmount !== 'string' ||
-      typeof item.unit !== 'string'
+      typeof id !== 'string' ||
+      typeof createdAt !== 'string' ||
+      typeof updatedAt !== 'string' ||
+      typeof name !== 'string' ||
+      typeof unit !== 'string' ||
+      (amountType !== 'single' && amountType !== 'double') ||
+      typeof defaultAmountOne !== 'string' ||
+      typeof defaultAmountTwo !== 'string' ||
+      !validCategories.includes(category as CategoryType)
     ) {
-      return false;
+      continue;
     }
+
+    catalogState[id] = {
+      id,
+      createdAt,
+      updatedAt,
+      name,
+      unit,
+      amountType,
+      defaultAmountOne,
+      defaultAmountTwo,
+      category: category as CategoryType,
+    };
   }
-  return true;
-};
+
+  return catalogState;
+}
 
 function updateCatalog(data: CatalogState, products: CatalogState) {
   const updatedProducts = { ...products };
@@ -50,11 +105,18 @@ export const useSync = () => {
   const dispatch = useDispatch();
 
   const sync = async () => {
-    const data = await api('http://10.0.2.2:3000/catalog');
-    console.log(data);
-    if (isValidCatalogState(data)) {
-      dispatch(catalogUpdate(updateCatalog(data as CatalogState, products)));
-    }
+    const fetchData = async () => {
+      try {
+        const response: APIResponse = await api(
+          'https://script.google.com/macros/s/AKfycbzWzX44U8AGtGaUX9cqxj5bdEmnHDdyGWdZDdm1S5XHXvNo-wEwN-9R_-rRAAqE9GaD/exec',
+        );
+        const catalogData = convertToCatalogState(response);
+        dispatch(catalogUpdate(updateCatalog(catalogData, products)));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
   };
   return { sync };
 };
