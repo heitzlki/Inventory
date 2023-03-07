@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import type { RootStackScreenProps } from 'navigation/types';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, useStore } from 'react-redux';
 import { inventoryItemSetAmount, inventoryItemDelete } from 'store/inventories';
 import { RootState } from 'store/index';
 
@@ -23,7 +23,10 @@ import {
   MyIcon,
 } from 'components/custom';
 
+import { ActionCreatorWithPayload, AnyAction } from '@reduxjs/toolkit';
+
 import { useFormatCreateAndShareXlsx } from 'hooks/useFormatCreateShareXlsx';
+import { AmountType } from 'store/inventories/state';
 
 const InventoryScreen = ({
   route,
@@ -38,6 +41,53 @@ const InventoryScreen = ({
   const dispatch = useDispatch();
 
   const formatCreateAndShare = useFormatCreateAndShareXlsx(inventoryId);
+
+  const updateAmount = (
+    itemId: string,
+    firstAmount: boolean = true,
+    operator: string,
+    amount: string,
+  ) => {
+    // let item = inventories[inventoryId].items[itemId];
+    let item = store.getState().invetoriesReducer[inventoryId].items[itemId];
+    dispatch(
+      inventoryItemSetAmount({
+        inventoryId,
+        itemId,
+        newAmountOne: firstAmount
+          ? eval(`${item.amountOne} ${operator} ${amount}`).toString()
+          : item.amountOne,
+        newAmountTwo: !firstAmount
+          ? eval(`${item.amountTwo} ${operator} ${amount}`)
+          : item.amountTwo,
+      }),
+    );
+  };
+
+  const [intervalId, setIntervalId] = useState<number>(0);
+
+  const store = useStore<RootState>();
+
+  const handlePressIn = (
+    itemId: string,
+    firstAmount: boolean = true,
+    operator: string,
+    amount: string,
+  ) => {
+    updateAmount(itemId, firstAmount, operator, amount);
+    let startI = 0;
+    const id = setInterval(() => {
+      startI >= 8
+        ? updateAmount(itemId, firstAmount, operator, amount)
+        : (startI += 1);
+    }, 125);
+    setIntervalId(id);
+  };
+
+  const handlePressOut = () => {
+    clearInterval(intervalId);
+    setIntervalId(0);
+  };
 
   return (
     <MyBackground>
@@ -150,17 +200,8 @@ const InventoryScreen = ({
                         justifyContent: 'center',
                         borderRadius: 8,
                       }}
-                      onPress={() => {
-                        dispatch(
-                          inventoryItemSetAmount({
-                            inventoryId,
-                            itemId: inventories[inventoryId].items[item].id,
-                            newAmountOne: eval(
-                              `${inventories[inventoryId].items[item].amountOne} + 1`,
-                            ).toString(),
-                          }),
-                        );
-                      }}
+                      onPressIn={() => handlePressIn(item, true, '+', '1')}
+                      onPressOut={handlePressOut}
                     />
                     <Pressable
                       style={{
@@ -201,17 +242,8 @@ const InventoryScreen = ({
                         justifyContent: 'center',
                         borderRadius: 8,
                       }}
-                      onPress={() => {
-                        dispatch(
-                          inventoryItemSetAmount({
-                            inventoryId,
-                            itemId: inventories[inventoryId].items[item].id,
-                            newAmountOne: eval(
-                              `${inventories[inventoryId].items[item].amountOne} - 1`,
-                            ).toString(),
-                          }),
-                        );
-                      }}
+                      onPressIn={() => handlePressIn(item, true, '-', '1')}
+                      onPressOut={handlePressOut}
                     />
                   </View>
                   <View
@@ -232,17 +264,8 @@ const InventoryScreen = ({
                         justifyContent: 'center',
                         borderRadius: 8,
                       }}
-                      onPress={() => {
-                        dispatch(
-                          inventoryItemSetAmount({
-                            inventoryId,
-                            itemId: inventories[inventoryId].items[item].id,
-                            newAmountTwo: eval(
-                              `${inventories[inventoryId].items[item].amountTwo} + 1`,
-                            ).toString(),
-                          }),
-                        );
-                      }}
+                      onPressIn={() => handlePressIn(item, false, '+', '1')}
+                      onPressOut={handlePressOut}
                     />
                     <Pressable
                       style={{
@@ -283,17 +306,8 @@ const InventoryScreen = ({
                         justifyContent: 'center',
                         borderRadius: 8,
                       }}
-                      onPress={() => {
-                        dispatch(
-                          inventoryItemSetAmount({
-                            inventoryId,
-                            itemId: inventories[inventoryId].items[item].id,
-                            newAmountTwo: eval(
-                              `${inventories[inventoryId].items[item].amountTwo} - 1`,
-                            ).toString(),
-                          }),
-                        );
-                      }}
+                      onPressIn={() => handlePressIn(item, false, '-', '1')}
+                      onPressOut={handlePressOut}
                     />
                   </View>
                 </View>
@@ -379,17 +393,8 @@ const InventoryScreen = ({
                     justifyContent: 'center',
                     borderRadius: 8,
                   }}
-                  onPress={() => {
-                    dispatch(
-                      inventoryItemSetAmount({
-                        inventoryId,
-                        itemId: inventories[inventoryId].items[item].id,
-                        newAmountOne: eval(
-                          `${inventories[inventoryId].items[item].amountOne} + 1`,
-                        ).toString(),
-                      }),
-                    );
-                  }}>
+                  onPressIn={() => handlePressIn(item, true, '+', '1')}
+                  onPressOut={handlePressOut}>
                   <MyIcon
                     set="MaterialCommunityIcons"
                     name="plus"
@@ -432,17 +437,8 @@ const InventoryScreen = ({
                     justifyContent: 'center',
                     borderRadius: 8,
                   }}
-                  onPress={() => {
-                    dispatch(
-                      inventoryItemSetAmount({
-                        inventoryId,
-                        itemId: inventories[inventoryId].items[item].id,
-                        newAmountOne: eval(
-                          `${inventories[inventoryId].items[item].amountOne} - 1`,
-                        ).toString(),
-                      }),
-                    );
-                  }}>
+                  onPressIn={() => handlePressIn(item, true, '-', '1')}
+                  onPressOut={handlePressOut}>
                   <MyIcon
                     set="MaterialCommunityIcons"
                     name="minus"
