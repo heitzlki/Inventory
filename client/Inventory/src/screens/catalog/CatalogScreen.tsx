@@ -169,7 +169,7 @@ const CatalogScreen = ({
                   fontSize: 16,
                   marginHorizontal: 10,
                 }}>
-                {item.defaultAmount}
+                {item.defaultAmountOne}
               </Text>
               <Text
                 style={{

@@ -155,8 +155,8 @@ const InventoryScreen = ({
                           inventoryItemSetAmount({
                             inventoryId,
                             itemId: inventories[inventoryId].items[item].id,
-                            newAmount: eval(
-                              `${inventories[inventoryId].items[item].amount} + 1`,
+                            newAmountOne: eval(
+                              `${inventories[inventoryId].items[item].amountOne} + 1`,
                             ).toString(),
                           }),
                         );
@@ -185,7 +185,7 @@ const InventoryScreen = ({
                           fontWeight: '500',
                           fontSize: 16,
                         }}
-                        text={inventories[inventoryId].items[item].amount}
+                        text={inventories[inventoryId].items[item].amountOne}
                       />
                     </Pressable>
                     <MyPressableIcon
@@ -206,8 +206,8 @@ const InventoryScreen = ({
                           inventoryItemSetAmount({
                             inventoryId,
                             itemId: inventories[inventoryId].items[item].id,
-                            newAmount: eval(
-                              `${inventories[inventoryId].items[item].amount} - 1`,
+                            newAmountOne: eval(
+                              `${inventories[inventoryId].items[item].amountOne} - 1`,
                             ).toString(),
                           }),
                         );
@@ -237,8 +237,8 @@ const InventoryScreen = ({
                           inventoryItemSetAmount({
                             inventoryId,
                             itemId: inventories[inventoryId].items[item].id,
-                            newAmount: eval(
-                              `${inventories[inventoryId].items[item].amount} + 1`,
+                            newAmountTwo: eval(
+                              `${inventories[inventoryId].items[item].amountTwo} + 1`,
                             ).toString(),
                           }),
                         );
@@ -267,7 +267,7 @@ const InventoryScreen = ({
                           fontWeight: '500',
                           fontSize: 16,
                         }}
-                        text={inventories[inventoryId].items[item].amount}
+                        text={inventories[inventoryId].items[item].amountTwo}
                       />
                     </Pressable>
                     <MyPressableIcon
@@ -288,8 +288,8 @@ const InventoryScreen = ({
                           inventoryItemSetAmount({
                             inventoryId,
                             itemId: inventories[inventoryId].items[item].id,
-                            newAmount: eval(
-                              `${inventories[inventoryId].items[item].amount} - 1`,
+                            newAmountTwo: eval(
+                              `${inventories[inventoryId].items[item].amountTwo} - 1`,
                             ).toString(),
                           }),
                         );
@@ -314,7 +314,9 @@ const InventoryScreen = ({
                       fontWeight: '600',
                       fontSize: 17,
                     }}
-                    text={inventories[inventoryId].items[item].amount}
+                    text={eval(
+                      `${inventories[inventoryId].items[item].amountOne} + ${inventories[inventoryId].items[item].amountTwo}`,
+                    )}
                   />
                 </View>
               </View>
@@ -382,8 +384,8 @@ const InventoryScreen = ({
                       inventoryItemSetAmount({
                         inventoryId,
                         itemId: inventories[inventoryId].items[item].id,
-                        newAmount: eval(
-                          `${inventories[inventoryId].items[item].amount} + 1`,
+                        newAmountOne: eval(
+                          `${inventories[inventoryId].items[item].amountOne} + 1`,
                         ).toString(),
                       }),
                     );
@@ -417,7 +419,7 @@ const InventoryScreen = ({
                       fontWeight: '500',
                       fontSize: 16,
                     }}>
-                    {inventories[inventoryId].items[item].amount}
+                    {inventories[inventoryId].items[item].amountOne}
                   </Text>
                 </Pressable>
                 <Pressable
@@ -435,8 +437,8 @@ const InventoryScreen = ({
                       inventoryItemSetAmount({
                         inventoryId,
                         itemId: inventories[inventoryId].items[item].id,
-                        newAmount: eval(
-                          `${inventories[inventoryId].items[item].amount} - 1`,
+                        newAmountOne: eval(
+                          `${inventories[inventoryId].items[item].amountOne} - 1`,
                         ).toString(),
                       }),
                     );

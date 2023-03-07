@@ -25,7 +25,7 @@ export function useFormatCreateAndShareXlsx(inventoryId: string) {
     if (Object.keys(items).length > 0) {
       return [
         ...sheetStructure,
-        ...Object.values(items).map(item => [item.name, item.amount]),
+        ...Object.values(items).map(item => [item.name, item.amountOne]),
       ];
     } else {
       return sheetStructure;
@@ -38,7 +38,6 @@ export function useFormatCreateAndShareXlsx(inventoryId: string) {
         .format('YYYY_MM_DD_HH_mm')
         .toString()}.xlsx`;
 
-      console.log(fileName);
       const filePathStr = `${RNFS.CachesDirectoryPath}/${fileName}`;
 
       const ws = XLSX.utils.aoa_to_sheet(data);
