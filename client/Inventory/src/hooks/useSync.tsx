@@ -87,7 +87,7 @@ function updateCatalog(data: CatalogState, products: CatalogState) {
     const newProduct = data[key];
     if (updatedProducts[newProduct.id]) {
       if (
-        Number(newProduct.updatedAt) >
+        Number(newProduct.updatedAt) >=
         Number(updatedProducts[newProduct.id].updatedAt)
       ) {
         updatedProducts[newProduct.id] = newProduct;
