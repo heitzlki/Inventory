@@ -10,7 +10,8 @@ import {
   TextInput,
 } from 'react-native';
 
-import uuid from 'react-native-uuid';
+import useSearch from 'hooks/useSearch';
+
 import MyBackground from 'components/custom/MyBackground';
 
 import { useFocusEffect } from '@react-navigation/native';
@@ -41,33 +42,12 @@ const SearchItemScreen = ({
   const theme = useSelector((state: RootState) => state.themeReducer);
   const { inventoryId } = route.params;
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<ProductState[]>([]);
-
-  const catalog = useSelector((state: RootState) => state.catalogReducer);
-
   const store = useStore<RootState>();
 
   const dispatch = useDispatch();
 
-  function search(query: string): ProductState[] {
-    // Convert the search query to lowercase to make the search case-insensitive
-    query = query.toLowerCase();
-
-    // Filter the catalog by products whose names contain the search query
-    const results: ProductState[] = Object.values(catalog).filter(
-      product => product.name.toLowerCase().indexOf(query) !== -1,
-    );
-
-    // Sort the results by the product name
-    return results.sort((a, b) => a.name.localeCompare(b.name));
-  }
-
-  function handleSearchChange(query: string) {
-    setSearchQuery(query);
-    setSearchResults(search(query));
-  }
-
+  const [searchResults, handleSearchChange, searchQuery, setSearchQuery] =
+    useSearch();
   const inputRef = useRef<TextInput>(null);
 
   useFocusEffect(
@@ -77,10 +57,6 @@ const SearchItemScreen = ({
       }, 0);
     }, [inputRef]),
   );
-
-  useEffect(() => {
-    setSearchResults(Object.values(catalog));
-  }, [catalog]);
 
   const [topBarHeight, setTopBarHeight] = useState<number>();
 
@@ -128,7 +104,6 @@ const SearchItemScreen = ({
               style={{ paddingHorizontal: 8 }}
               onPress={() => {
                 setSearchQuery('');
-                setSearchResults(Object.values(catalog));
               }}
               set="MaterialIcons"
               name="clear"
