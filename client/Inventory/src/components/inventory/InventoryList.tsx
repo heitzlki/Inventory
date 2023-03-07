@@ -49,8 +49,6 @@ const InventoryList = ({
 
   const navigation = useNavigation();
 
-  console.log(theme.style.text);
-
   return (
     <FlatList
       contentContainerStyle={{
