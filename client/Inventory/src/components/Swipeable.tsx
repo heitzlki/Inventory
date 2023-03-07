@@ -36,18 +36,9 @@ const Swipeable = ({
     onActive: (event, context) => {
       'worklet';
       translateX.value = event.translationX + context.x;
-      console.log(translateX.value);
       translateX.value =
         translateX.value <= -activation ? -activation : translateX.value;
       translateX.value = translateX.value >= 0 ? 0 : translateX.value;
-
-      // if (event.translationX <= -activation) {
-      //   console.log('Test');
-
-      //   // runOnJS(action)();
-
-      //   console.log('Test');
-      // }
     },
     onEnd: () => {
       if (translateX.value != -activation) {

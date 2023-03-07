@@ -1,12 +1,17 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector, useStore } from 'react-redux';
-import { useDispatch } from 'react-redux';
 
 import { RootState } from 'store/index';
 import { ProductState } from 'store/catalog/state';
 import { useDebounce } from 'hooks/useDebounce';
 
-export const useSearch = (): [ProductState[], (query: string) => void, string, React.Dispatch<React.SetStateAction<string>>] => {
+export const useSearch = (): [
+  ProductState[],
+  (query: string) => void,
+  string,
+  React.Dispatch<React.SetStateAction<string>>,
+] => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<ProductState[]>([]);

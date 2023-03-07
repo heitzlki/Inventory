@@ -1,7 +1,10 @@
 import {
+  AmountType,
+  CategoryType,
   InventoriesState,
   InventoryState,
   ItemState,
+  ItemsState,
 } from 'store/inventories/state';
 import { PayloadAction } from '@reduxjs/toolkit';
 
@@ -13,11 +16,15 @@ export const inventoryItemSetAmount = (
   action: PayloadAction<{
     inventoryId: string;
     itemId: string;
-    newAmount: string;
+    newAmountOne?: string;
+    newAmountTwo?: string;
   }>,
 ) => {
-  const { inventoryId, itemId, newAmount } = action.payload;
-  state[inventoryId].items[itemId].amount = newAmount;
+  const { inventoryId, itemId, newAmountOne, newAmountTwo } = action.payload;
+  state[inventoryId].items[itemId].amountOne =
+    newAmountOne || state[inventoryId].items[itemId].amountOne;
+  state[inventoryId].items[itemId].amountTwo =
+    newAmountTwo || state[inventoryId].items[itemId].amountTwo;
 };
 
 export const inventoryItemDelete = (
@@ -35,23 +42,32 @@ export const inventoryItemAdd = (
     inventoryId: string;
     productId: string;
     name: string;
+    amountType: AmountType;
+    category: CategoryType;
   }>,
 ) => {
-  const { inventoryId, productId, name } = action.payload;
+  const { inventoryId, productId, name, amountType, category } = action.payload;
 
-  const id = `${uuid.v4()}`;
+  let id = `${uuid.v4()}`;
+  let newItem: ItemState = {
+    id,
+    productId,
+    createdAt: moment().unix().toString(),
+    updatedAt: moment().unix().toString(),
+    name,
+    amountOne: '0',
+    amountTwo: '0',
+    amountType,
+    category,
+  };
 
-  state[inventoryId].items = Object.assign(
+  let newItems: ItemsState = Object.assign(
     {
-      [id]: {
-        id,
-        productId,
-        createdAt: moment().unix().toString(),
-        updatedAt: moment().unix().toString(),
-        name,
-        amount: 0,
-      },
+      [id]: newItem,
     },
+
     state[inventoryId].items,
   );
+
+  state[inventoryId].items = newItems;
 };

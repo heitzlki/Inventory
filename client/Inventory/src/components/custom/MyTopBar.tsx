@@ -22,7 +22,7 @@ const MyTopBar = ({ children, backButton, title, style, ...props }: Props) => {
       top: 0,
       width: '100%',
       height: 58,
-      backgroundColor: theme.style.colorSix,
+      backgroundColor: theme.style.colorFive,
       borderBottomLeftRadius: 15,
       borderBottomRightRadius: 15,
       flexDirection: 'row',

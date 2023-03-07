@@ -21,7 +21,7 @@ const Navigator = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <StatusBar
-        backgroundColor={theme.style.colorSix}
+        backgroundColor={theme.style.colorFive}
         barStyle="dark-content"
       />
       {auth.signedIn ? <AppStack /> : <AuthStack />}

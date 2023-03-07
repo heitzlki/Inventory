@@ -19,7 +19,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
 import { ProductState } from 'store/catalog/state';
 
-import MyBackground from 'components/custom/MyBackground';
+import { MyBackground } from 'components/custom';
 
 const CatalogEditProductScreen = ({
   route,
@@ -33,7 +33,7 @@ const CatalogEditProductScreen = ({
 
   const [editProduct, setEditProduct] = useState({
     name: product.name,
-    defaultAmount: product.defaultAmount,
+    defaultAmountOne: product.defaultAmountOne,
     unit: product.unit,
   });
 
@@ -46,7 +46,7 @@ const CatalogEditProductScreen = ({
       return false;
     }
 
-    if (!/^[-+]?\d*\.?\d+$/.test(editProduct.defaultAmount)) {
+    if (!/^[-+]?\d*\.?\d+$/.test(editProduct.defaultAmountOne)) {
       return false;
     }
 
@@ -151,9 +151,9 @@ const CatalogEditProductScreen = ({
               fontSize: 16,
               flex: 1,
             }}
-            value={editProduct.defaultAmount}
+            value={editProduct.defaultAmountOne}
             onChangeText={text => {
-              setEditProduct({ ...editProduct, defaultAmount: text });
+              setEditProduct({ ...editProduct, defaultAmountOne: text });
             }}
           />
         </View>
@@ -293,7 +293,7 @@ const CatalogEditProductScreen = ({
                 catalogProductEdit({
                   productId: product.id,
                   name: editProduct.name,
-                  defaultAmount: editProduct.defaultAmount,
+                  defaultAmountOne: editProduct.defaultAmountOne,
                   unit: editProduct.unit,
                 }),
               );

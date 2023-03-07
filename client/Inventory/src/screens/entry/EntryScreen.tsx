@@ -1,9 +1,6 @@
 import { Pressable, Text, View } from 'react-native';
 import type { RootStackScreenProps } from 'navigation/types';
-import MyBackground from 'components/custom/MyBackground';
-import MyTopBar from 'components/custom/MyTopBar';
-import MyText from 'components/custom/MyText';
-import MyButton from 'components/custom/MyButton';
+import { MyBackground, MyTopBar, MyText, MyButton } from 'components/custom';
 
 const EntryScreen = ({ navigation }: RootStackScreenProps<'Entry'>) => (
   <MyBackground>

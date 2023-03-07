@@ -1,15 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-  FlatList,
-  Pressable,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
 
 import type { RootStackScreenProps } from 'navigation/types';
@@ -18,11 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { inventoryItemSetAmount } from 'store/inventories';
 import { RootState } from 'store/index';
 
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { MyBackground } from 'components/custom';
 
-import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
-
-import MyBackground from 'components/custom/MyBackground';
 interface ButtonProps {
   onPress: () => void;
   title: string;
@@ -79,22 +66,22 @@ const AmountInputScreen = ({
   //   return
   // }
 
-  const [amount, setAmount] = useState(
+  const [amountOne, setAmountOne] = useState(
     route.params.prediction || route.params.prediction == ''
       ? route.params.prediction
-      : inventories[inventoryId].items[itemId].amount,
+      : inventories[inventoryId].items[itemId].amountOne,
   );
 
   const [confirmed, setConfirmed] = useState(true);
 
   const displayFirstNumber = () => {
-    return amount;
+    return amountOne;
   };
 
   const displaySecondNumber = () => {
     try {
-      if (!confirmed && amount != '') {
-        return evalAndFormat(amount);
+      if (!confirmed && amountOne != '') {
+        return evalAndFormat(amountOne);
       } else {
         return '';
       }
@@ -105,7 +92,7 @@ const AmountInputScreen = ({
 
   useEffect(() => {
     try {
-      if (evalAndFormat(amount) == amount) {
+      if (evalAndFormat(amountOne) == amountOne) {
         setConfirmed(true);
       } else {
         setConfirmed(false);
@@ -113,7 +100,7 @@ const AmountInputScreen = ({
     } catch {
       setConfirmed(false);
     }
-  }, [amount]);
+  }, [amountOne]);
 
   return (
     <MyBackground>
@@ -153,26 +140,26 @@ const AmountInputScreen = ({
           <AmountCalcButton
             title="1"
             onPress={() => {
-              setAmount(`${amount}1`);
+              setAmountOne(`${amountOne}1`);
             }}
           />
           <AmountCalcButton
             title="2"
             onPress={() => {
-              setAmount(`${amount}2`);
+              setAmountOne(`${amountOne}2`);
             }}
           />
           <AmountCalcButton
             title="3"
             onPress={() => {
-              setAmount(`${amount}3`);
+              setAmountOne(`${amountOne}3`);
             }}
           />
           <AmountCalcButton
             style={{ backgroundColor: '#292B2F' }}
             title="÷"
             onPress={() => {
-              setAmount(`${amount}/`);
+              setAmountOne(`${amountOne}/`);
             }}
           />
         </View>
@@ -185,26 +172,26 @@ const AmountInputScreen = ({
           <AmountCalcButton
             title="4"
             onPress={() => {
-              setAmount(`${amount}4`);
+              setAmountOne(`${amountOne}4`);
             }}
           />
           <AmountCalcButton
             title="5"
             onPress={() => {
-              setAmount(`${amount}5`);
+              setAmountOne(`${amountOne}5`);
             }}
           />
           <AmountCalcButton
             title="6"
             onPress={() => {
-              setAmount(`${amount}6`);
+              setAmountOne(`${amountOne}6`);
             }}
           />
           <AmountCalcButton
             style={{ backgroundColor: '#292B2F' }}
             title="×"
             onPress={() => {
-              setAmount(`${amount}*`);
+              setAmountOne(`${amountOne}*`);
             }}
           />
         </View>
@@ -217,26 +204,26 @@ const AmountInputScreen = ({
           <AmountCalcButton
             title="7"
             onPress={() => {
-              setAmount(`${amount}7`);
+              setAmountOne(`${amountOne}7`);
             }}
           />
           <AmountCalcButton
             title="8"
             onPress={() => {
-              setAmount(`${amount}8`);
+              setAmountOne(`${amountOne}8`);
             }}
           />
           <AmountCalcButton
             title="9"
             onPress={() => {
-              setAmount(`${amount}9`);
+              setAmountOne(`${amountOne}9`);
             }}
           />
           <AmountCalcButton
             style={{ backgroundColor: '#292B2F' }}
             title="+"
             onPress={() => {
-              setAmount(`${amount}+`);
+              setAmountOne(`${amountOne}+`);
             }}
           />
         </View>
@@ -249,26 +236,26 @@ const AmountInputScreen = ({
           <AmountCalcButton
             title=","
             onPress={() => {
-              setAmount(`${amount}.`);
+              setAmountOne(`${amountOne}.`);
             }}
           />
           <AmountCalcButton
             title="0"
             onPress={() => {
-              setAmount(`${amount}0`);
+              setAmountOne(`${amountOne}0`);
             }}
           />
           <AmountCalcButton
             title="⌫"
             onPress={() => {
-              setAmount(`${amount}`.slice(0, -1));
+              setAmountOne(`${amountOne}`.slice(0, -1));
             }}
           />
           <AmountCalcButton
             style={{ backgroundColor: '#292B2F' }}
             title="-"
             onPress={() => {
-              setAmount(`${amount}-`);
+              setAmountOne(`${amountOne}-`);
             }}
           />
         </View>
@@ -291,14 +278,14 @@ const AmountInputScreen = ({
             }}
             onPress={() => {
               try {
-                if (amount != '') {
-                  setAmount(evalAndFormat(amount));
+                if (amountOne != '') {
+                  setAmountOne(evalAndFormat(amountOne));
                   if (confirmed) {
                     dispatch(
                       inventoryItemSetAmount({
                         inventoryId,
                         itemId,
-                        newAmount: amount,
+                        newAmountOne: amountOne,
                       }),
                     );
                     navigation.goBack();

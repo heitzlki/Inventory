@@ -8,54 +8,24 @@ import { signIn } from 'store/auth';
 import { RootState } from 'store/index';
 
 import MyBackground from 'components/custom/MyBackground';
-
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MyTopBar from 'components/custom/MyTopBar';
+import MyButton from 'components/custom/MyButton';
+import MyText from 'components/custom/MyText';
 
 const SignUpScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'SignUp'>) => {
+  const theme = useSelector((state: RootState) => state.themeReducer);
   return (
     <MyBackground>
-      <View
-        style={{
-          position: 'absolute',
-          zIndex: 2,
-          top: 0,
-          width: '100%',
-          height: 58,
-
-          backgroundColor: '#292B2F',
-          borderBottomLeftRadius: 15,
-          borderBottomRightRadius: 15,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', left: 10 }}>
-          <Pressable style={{}} onPress={() => navigation.goBack()}>
-            <MaterialCommunityIcon
-              name="keyboard-backspace"
-              size={26}
-              color="#DCDDDE"
-            />
-          </Pressable>
-          <Text
-            style={{
-              color: '#DCDDDE',
-              fontWeight: '500',
-              fontSize: 16,
-              left: 4,
-            }}>
-            Sign Up
-          </Text>
-        </View>
-      </View>
-      <View style={{ top: 58, alignItems: 'center' }}>
+      <MyTopBar backButton={true} title="Sign Up" />
+      <View style={{ alignItems: 'center' }}>
         <View
           style={{
             height: 42,
             width: '95%',
-            backgroundColor: '#202225',
+            backgroundColor: theme.style.colorSix,
             marginVertical: 4,
             borderRadius: 8,
 
@@ -66,50 +36,40 @@ const SignUpScreen = ({
           <TextInput
             style={{
               marginLeft: 4,
-              color: '#DCDDDE',
+              color: theme.style.text,
               fontWeight: '500',
               fontSize: 16,
               flex: 1,
             }}
-            placeholderTextColor={'#ABB0B6'}
-            placeholder="Not aviable!"
-            editable={false}
+            placeholderTextColor={theme.style.textDim}
+            placeholder="Not aviailable"
           />
         </View>
-        <Pressable
+        <MyButton
+          onPressAction={() => {}}
           style={{
-            height: 42,
-            width: '95%',
-            backgroundColor: '#2f3136',
-            marginVertical: 4,
-            borderRadius: 8,
-
-            flexDirection: 'row',
-            alignItems: 'center',
             justifyContent: 'center',
-          }}
-          onPress={() => {}}>
-          <Text
+          }}>
+          <MyText
             style={{
-              color: '#DCDDDE',
               fontWeight: '500',
               fontSize: 16,
-            }}>
-            Sign Up
-          </Text>
-        </Pressable>
+            }}
+            text={'Sign Up'}
+          />
+        </MyButton>
         <View
           style={{
             height: 2,
             width: '95%',
-            backgroundColor: '#ABB0B6',
+            backgroundColor: theme.style.textDim,
             marginVertical: 10,
             borderRadius: 8,
           }}
         />
         <Text
           style={{
-            color: '#ABB0B6',
+            color: theme.style.textDim,
             fontWeight: '500',
             fontSize: 16,
             marginVertical: 10,
