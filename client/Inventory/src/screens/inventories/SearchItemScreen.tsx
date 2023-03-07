@@ -193,6 +193,7 @@ const SearchItemScreen = ({
                   productId: item.id,
                   name: item.name,
                   amountType: item.amountType,
+                  category: item.category,
                 }),
               );
               const newItemId = Object.keys(
@@ -203,7 +204,8 @@ const SearchItemScreen = ({
               navigation.navigate('AmountInput', {
                 inventoryId,
                 itemId: newItemId,
-                prediction: item.defaultAmount == '0' ? '' : item.defaultAmount,
+                prediction:
+                  item.defaultAmountOne == '0' ? '' : item.defaultAmountOne,
               });
             }}>
             <View
@@ -238,7 +240,7 @@ const SearchItemScreen = ({
                   fontSize: 16,
                   marginHorizontal: 10,
                 }}>
-                {item.defaultAmount}
+                {item.defaultAmountOne}
               </Text>
               <Text
                 style={{
