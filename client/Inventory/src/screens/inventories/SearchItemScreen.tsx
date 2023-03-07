@@ -16,6 +16,9 @@ import MyBackground from 'components/custom/MyBackground';
 
 import { useFocusEffect } from '@react-navigation/native';
 
+import useSearch from 'hooks/useSearch';
+
+
 import inventories, {
   inventoryItemAdd,
   inventoryItemDelete,
@@ -46,10 +49,13 @@ const SearchItemScreen = ({
 
   const dispatch = useDispatch();
 
+
   const [searchResults, handleSearchChange, searchQuery, setSearchQuery] =
     useSearch();
+
   const inputRef = useRef<TextInput>(null);
 
+  // focus input on 
   useFocusEffect(
     useCallback(() => {
       setTimeout(() => {
@@ -100,6 +106,7 @@ const SearchItemScreen = ({
               onChangeText={handleSearchChange}
               placeholder="Search"
             />
+
             <MyPressableIcon
               style={{ paddingHorizontal: 8 }}
               onPress={() => {
@@ -139,6 +146,7 @@ const SearchItemScreen = ({
                 <MyText text={item} />
               </View>
             ))}
+
           </View>
         </View>
       </MyTopBar>

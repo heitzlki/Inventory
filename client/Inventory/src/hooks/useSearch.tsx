@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector, useStore } from 'react-redux';
 
@@ -11,6 +12,7 @@ export const useSearch = (): [
   string,
   React.Dispatch<React.SetStateAction<string>>,
 ] => {
+
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<ProductState[]>([]);
 
