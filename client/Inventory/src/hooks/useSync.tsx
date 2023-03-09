@@ -24,14 +24,18 @@ function convertToCatalogState(apiResponse: APIResponse): CatalogState {
   if (
     header.length !== 9 ||
     header[0] !== 'id' ||
-    header[1] !== 'createdAt' ||
-    header[2] !== 'updatedAt' ||
-    header[3] !== 'name' ||
-    header[4] !== 'unit' ||
-    header[5] !== 'amountType' ||
-    header[6] !== 'defaultAmountOne' ||
-    header[7] !== 'defaultAmountTwo' ||
-    header[8] !== 'category'
+    header[1] !== 'name' ||
+    header[2] !== 'category' ||
+    header[3] !== 'unit' ||
+    header[4] !== 'amountType' ||
+    header[5] !== 'defaultAmountOne' ||
+    header[6] !== 'defaultAmountTwo' ||
+    header[7] !== 'createdAt' ||
+    header[8] !== 'updatedAt'
+
+
+
+    
   ) {
     throw new Error('Invalid API response format');
   }
@@ -39,43 +43,50 @@ function convertToCatalogState(apiResponse: APIResponse): CatalogState {
   const catalogState: CatalogState = {};
 
   for (const row of rows) {
+    // change the order 
     const [
       id,
-      createdAt,
-      updatedAt,
       name,
+
+      category,
       unit,
       amountType,
       defaultAmountOne,
       defaultAmountTwo,
-      category,
+      createdAt,
+      updatedAt,
     ] = row;
 
-    if (
+
+
+
+    if(
       typeof id !== 'string' ||
-      typeof createdAt !== 'string' ||
-      typeof updatedAt !== 'string' ||
       typeof name !== 'string' ||
+      !validCategories.includes(category as CategoryType) ||
       typeof unit !== 'string' ||
       (amountType !== 'single' && amountType !== 'double') ||
       typeof defaultAmountOne !== 'string' ||
       typeof defaultAmountTwo !== 'string' ||
-      !validCategories.includes(category as CategoryType)
+      typeof createdAt !== 'string' ||
+      typeof updatedAt !== 'string' 
+      
     ) {
       continue;
     }
 
     catalogState[id] = {
       id,
-      createdAt,
-      updatedAt,
       name,
+      category: category as CategoryType,
       unit,
       amountType,
       defaultAmountOne,
       defaultAmountTwo,
-      category: category as CategoryType,
+      createdAt,
+      updatedAt,
     };
+
   }
 
   return catalogState;
