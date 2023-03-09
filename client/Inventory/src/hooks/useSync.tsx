@@ -3,20 +3,10 @@ import { useApi } from 'hooks/useApi';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
 import { catalogUpdate } from 'store/catalog';
-import { CategoryType } from 'store/inventories/state';
+import { validUnits, validAmounts, validCategories, UnitType, AmountType, CategoryType  } from 'store/catalog/state';
 
 type APIResponse = Array<Array<string | number>>;
 
-const validCategories: CategoryType[] = [
-  'Aktionsprodukte',
-  'Frisch- und TK-Ware (1)',
-  'Frisch- und TK-Ware (2)',
-  'Soßen, Dips und Dressings',
-  'Dosen- und Trockenware',
-  'Getränke',
-  'Verpackungen',
-  'Desserts (TK)',
-];
 
 function convertToCatalogState(apiResponse: APIResponse): CatalogState {
   const [header, ...rows] = apiResponse;
@@ -32,10 +22,6 @@ function convertToCatalogState(apiResponse: APIResponse): CatalogState {
     header[6] !== 'defaultAmountTwo' ||
     header[7] !== 'createdAt' ||
     header[8] !== 'updatedAt'
-
-
-
-    
   ) {
     throw new Error('Invalid API response format');
   }
@@ -43,11 +29,9 @@ function convertToCatalogState(apiResponse: APIResponse): CatalogState {
   const catalogState: CatalogState = {};
 
   for (const row of rows) {
-    // change the order 
     const [
       id,
       name,
-
       category,
       unit,
       amountType,
@@ -57,15 +41,12 @@ function convertToCatalogState(apiResponse: APIResponse): CatalogState {
       updatedAt,
     ] = row;
 
-
-
-
     if(
       typeof id !== 'string' ||
       typeof name !== 'string' ||
       !validCategories.includes(category as CategoryType) ||
-      typeof unit !== 'string' ||
-      (amountType !== 'single' && amountType !== 'double') ||
+      !validUnits.includes(unit as UnitType) ||
+      !validAmounts.includes(amountType as AmountType)||
       typeof defaultAmountOne !== 'string' ||
       typeof defaultAmountTwo !== 'string' ||
       typeof createdAt !== 'string' ||
@@ -79,8 +60,8 @@ function convertToCatalogState(apiResponse: APIResponse): CatalogState {
       id,
       name,
       category: category as CategoryType,
-      unit,
-      amountType,
+      unit: unit as UnitType,
+      amountType: amountType as AmountType,
       defaultAmountOne,
       defaultAmountTwo,
       createdAt,
