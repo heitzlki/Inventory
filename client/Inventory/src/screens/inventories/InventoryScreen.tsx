@@ -1,12 +1,9 @@
-import { useRef, useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
-  StyleSheet,
   View,
   Text,
-  Button,
   FlatList,
   Pressable,
-  TextInput,
 } from 'react-native';
 import type { RootStackScreenProps } from 'navigation/types';
 
@@ -23,10 +20,8 @@ import {
   MyIcon,
 } from 'components/custom';
 
-import { ActionCreatorWithPayload, AnyAction } from '@reduxjs/toolkit';
-
 import { useFormatCreateAndShareXlsx } from 'hooks/useFormatCreateShareXlsx';
-import { AmountType } from 'store/inventories/state';
+import { ItemState } from 'store/inventories/state';
 
 const InventoryScreen = ({
   route,
@@ -38,6 +33,7 @@ const InventoryScreen = ({
   const inventories = useSelector(
     (state: RootState) => state.invetoriesReducer,
   );
+  const products = useSelector((state: RootState) => state.catalogReducer);
   const dispatch = useDispatch();
 
   const formatCreateAndShare = useFormatCreateAndShareXlsx(inventoryId);
@@ -105,10 +101,12 @@ const InventoryScreen = ({
           paddingBottom: 84,
         }}
         data={Object.keys(inventories[inventoryId].items)}
-        renderItem={({ item, index }) =>
-          inventories[inventoryId].items[item].amountType === 'double' ? (
+        renderItem={({ item: itemId }) => {
+        let item: ItemState = inventories[inventoryId].items[itemId];
+        if(products[itemId].amountType === "double") {
+        return (
             <Pressable
-              key={item}
+              key={itemId}
               style={{
                 height: 84,
                 minWidth: '95%',
@@ -130,7 +128,7 @@ const InventoryScreen = ({
                   name="trash-can-outline"
                   size={24}
                   onPress={() =>
-                    dispatch(inventoryItemDelete({ inventoryId, itemId: item }))
+                    dispatch(inventoryItemDelete({ inventoryId, itemId }))
                   }
                 />
                 <View
@@ -147,7 +145,7 @@ const InventoryScreen = ({
                         fontWeight: '500',
                         fontSize: 16,
                       }}
-                      text={inventories[inventoryId].items[item].name}
+                      text={item.name}
                     />
                   </View>
                   <View
@@ -200,7 +198,7 @@ const InventoryScreen = ({
                         justifyContent: 'center',
                         borderRadius: 8,
                       }}
-                      onPressIn={() => handlePressIn(item, true, '+', '1')}
+                      onPressIn={() => handlePressIn(itemId, true, '+', '1')}
                       onPressOut={handlePressOut}
                     />
                     <Pressable
@@ -218,7 +216,7 @@ const InventoryScreen = ({
                       onPress={() => {
                         navigation.navigate('AmountInput', {
                           inventoryId,
-                          itemId: inventories[inventoryId].items[item].id,
+                          itemId: itemId
                         });
                       }}>
                       <MyText
@@ -226,7 +224,7 @@ const InventoryScreen = ({
                           fontWeight: '500',
                           fontSize: 16,
                         }}
-                        text={inventories[inventoryId].items[item].amountOne}
+                        text={item.amountOne}
                       />
                     </Pressable>
                     <MyPressableIcon
@@ -242,7 +240,7 @@ const InventoryScreen = ({
                         justifyContent: 'center',
                         borderRadius: 8,
                       }}
-                      onPressIn={() => handlePressIn(item, true, '-', '1')}
+                      onPressIn={() => handlePressIn(itemId, true, '-', '1')}
                       onPressOut={handlePressOut}
                     />
                   </View>
@@ -264,7 +262,7 @@ const InventoryScreen = ({
                         justifyContent: 'center',
                         borderRadius: 8,
                       }}
-                      onPressIn={() => handlePressIn(item, false, '+', '1')}
+                      onPressIn={() => handlePressIn(itemId, false, '+', '1')}
                       onPressOut={handlePressOut}
                     />
                     <Pressable
@@ -282,7 +280,7 @@ const InventoryScreen = ({
                       onPress={() => {
                         navigation.navigate('AmountInput', {
                           inventoryId,
-                          itemId: inventories[inventoryId].items[item].id,
+                          itemId,
                         });
                       }}>
                       <MyText
@@ -290,7 +288,7 @@ const InventoryScreen = ({
                           fontWeight: '500',
                           fontSize: 16,
                         }}
-                        text={inventories[inventoryId].items[item].amountTwo}
+                        text={item.amountTwo}
                       />
                     </Pressable>
                     <MyPressableIcon
@@ -306,7 +304,7 @@ const InventoryScreen = ({
                         justifyContent: 'center',
                         borderRadius: 8,
                       }}
-                      onPressIn={() => handlePressIn(item, false, '-', '1')}
+                      onPressIn={() => handlePressIn(itemId, false, '-', '1')}
                       onPressOut={handlePressOut}
                     />
                   </View>
@@ -329,15 +327,15 @@ const InventoryScreen = ({
                       fontSize: 17,
                     }}
                     text={eval(
-                      `${inventories[inventoryId].items[item].amountOne} + ${inventories[inventoryId].items[item].amountTwo}`,
+                      `${item.amountOne} + ${item.amountTwo}`,
                     )}
                   />
                 </View>
               </View>
             </Pressable>
-          ) : (
-            <Pressable
-              key={item}
+          )} else if(products[itemId].amountType === "single") {
+            return (<Pressable
+              key={itemId}
               style={{
                 height: 50,
                 minWidth: '95%',
@@ -357,7 +355,7 @@ const InventoryScreen = ({
                 <Pressable
                   style={{ marginLeft: 4 }}
                   onPress={() =>
-                    dispatch(inventoryItemDelete({ inventoryId, itemId: item }))
+                    dispatch(inventoryItemDelete({ inventoryId, itemId }))
                   }>
                   <MyIcon
                     set="MaterialCommunityIcons"
@@ -373,7 +371,7 @@ const InventoryScreen = ({
                     fontSize: 16,
                     marginLeft: 4,
                   }}>
-                  {inventories[inventoryId].items[item].name}
+                  {item.name}
                 </Text>
               </View>
               <View
@@ -393,7 +391,7 @@ const InventoryScreen = ({
                     justifyContent: 'center',
                     borderRadius: 8,
                   }}
-                  onPressIn={() => handlePressIn(item, true, '+', '1')}
+                  onPressIn={() => handlePressIn(itemId, true, '+', '1')}
                   onPressOut={handlePressOut}>
                   <MyIcon
                     set="MaterialCommunityIcons"
@@ -415,7 +413,7 @@ const InventoryScreen = ({
                   onPress={() => {
                     navigation.navigate('AmountInput', {
                       inventoryId,
-                      itemId: inventories[inventoryId].items[item].id,
+                      itemId,
                     });
                   }}>
                   <Text
@@ -424,7 +422,7 @@ const InventoryScreen = ({
                       fontWeight: '500',
                       fontSize: 16,
                     }}>
-                    {inventories[inventoryId].items[item].amountOne}
+                    {item.amountOne}
                   </Text>
                 </Pressable>
                 <Pressable
@@ -437,7 +435,7 @@ const InventoryScreen = ({
                     justifyContent: 'center',
                     borderRadius: 8,
                   }}
-                  onPressIn={() => handlePressIn(item, true, '-', '1')}
+                  onPressIn={() => handlePressIn(itemId, true, '-', '1')}
                   onPressOut={handlePressOut}>
                   <MyIcon
                     set="MaterialCommunityIcons"
@@ -447,9 +445,8 @@ const InventoryScreen = ({
                   />
                 </Pressable>
               </View>
-            </Pressable>
-          )
-        }
+            </Pressable>)} else {
+              return null}}}
       />
 
       <MyAddButton
