@@ -1,10 +1,5 @@
 import { useState } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  Pressable,
-} from 'react-native';
+import { View, Text, FlatList, Pressable } from 'react-native';
 import type { RootStackScreenProps } from 'navigation/types';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
@@ -64,26 +59,26 @@ const InventoryScreen = ({
 
   const store = useStore<RootState>();
 
-  const handlePressIn = (
-    itemId: string,
-    firstAmount: boolean = true,
-    operator: string,
-    amount: string,
-  ) => {
-    updateAmount(itemId, firstAmount, operator, amount);
-    let startI = 0;
-    const id = setInterval(() => {
-      startI >= 8
-        ? updateAmount(itemId, firstAmount, operator, amount)
-        : (startI += 1);
-    }, 125);
-    setIntervalId(id);
-  };
+  // const handlePressIn = (
+  //   itemId: string,
+  //   firstAmount: boolean = true,
+  //   operator: string,
+  //   amount: string,
+  // ) => {
+  //   updateAmount(itemId, firstAmount, operator, amount);
+  //   let startI = 0;
+  //   const id = setInterval(() => {
+  //     startI >= 8
+  //       ? updateAmount(itemId, firstAmount, operator, amount)
+  //       : (startI += 1);
+  //   }, 125);
+  //   setIntervalId(id);
+  // };
 
-  const handlePressOut = () => {
-    clearInterval(intervalId);
-    setIntervalId(0);
-  };
+  // const handlePressOut = () => {
+  //   clearInterval(intervalId);
+  //   setIntervalId(0);
+  // };
 
   return (
     <MyBackground>
@@ -102,351 +97,357 @@ const InventoryScreen = ({
         }}
         data={Object.keys(inventories[inventoryId].items)}
         renderItem={({ item: itemId }) => {
-        let item: ItemState = inventories[inventoryId].items[itemId];
-        if(products[itemId].amountType === "double") {
-        return (
-            <Pressable
-              key={itemId}
-              style={{
-                height: 84,
-                minWidth: '95%',
-                backgroundColor: theme.style.colorFour,
-                marginVertical: 4,
-                borderRadius: 8,
+          let item: ItemState = inventories[inventoryId].items[itemId];
+          if (products[item.productId].amountType === 'double') {
+            return (
+              <Pressable
+                key={itemId}
+                style={{
+                  height: 84,
+                  minWidth: '95%',
+                  backgroundColor: theme.style.colorFour,
+                  marginVertical: 4,
+                  borderRadius: 8,
 
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  marginLeft: 4,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <MyPressableIcon
-                  set="MaterialCommunityIcons"
-                  name="trash-can-outline"
-                  size={24}
-                  onPress={() =>
-                    dispatch(inventoryItemDelete({ inventoryId, itemId }))
-                  }
-                />
-                <View
-                  style={{
-                    flexDirection: 'column',
-                  }}>
-                  <View
-                    style={{
-                      marginLeft: 4,
-                      marginVertical: 2,
-                    }}>
-                    <MyText
-                      style={{
-                        fontWeight: '500',
-                        fontSize: 16,
-                      }}
-                      text={item.name}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 4,
-                      marginVertical: 2,
-                      backgroundColor: '#02ab8ad6',
-                      borderRadius: 4,
-                      borderColor: '#27fdd4ff',
-                      borderWidth: 2,
-                      paddingHorizontal: 4,
-                    }}>
-                    <MyText
-                      style={{
-                        fontWeight: '500',
-                        fontSize: 13.5,
-                      }}
-                      text={'Frisch- und TK-Ware (2)'}
-                    />
-                  </View>
-                </View>
-              </View>
-              <View
-                style={{
-                  position: 'absolute',
-                  right: 0,
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
                 <View
                   style={{
-                    flexDirection: 'column',
+                    marginLeft: 4,
+                    flexDirection: 'row',
                     alignItems: 'center',
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
-                    <MyPressableIcon
-                      set="MaterialCommunityIcons"
-                      name="plus"
-                      size={21}
-                      style={{
-                        flex: 1,
-                        padding: 5,
-                        margin: 5,
-                        backgroundColor: theme.style.colorFive,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 8,
-                      }}
-                      onPressIn={() => handlePressIn(itemId, true, '+', '1')}
-                      onPressOut={handlePressOut}
-                    />
-                    <Pressable
-                      style={{
-                        flex: 1,
-                        paddingVertical: 5,
-                        paddingHorizontal: 5,
-                        borderColor: '#2ad6ffd6',
-                        borderWidth: 2,
-                        backgroundColor: theme.style.colorSix,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 8,
-                      }}
-                      onPress={() => {
-                        navigation.navigate('AmountInput', {
-                          inventoryId,
-                          itemId: itemId
-                        });
-                      }}>
-                      <MyText
-                        style={{
-                          fontWeight: '500',
-                          fontSize: 16,
-                        }}
-                        text={item.amountOne}
-                      />
-                    </Pressable>
-                    <MyPressableIcon
-                      set="MaterialCommunityIcons"
-                      name="minus"
-                      size={21}
-                      style={{
-                        flex: 1,
-                        padding: 5,
-                        margin: 5,
-                        backgroundColor: theme.style.colorFive,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 8,
-                      }}
-                      onPressIn={() => handlePressIn(itemId, true, '-', '1')}
-                      onPressOut={handlePressOut}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
-                    <MyPressableIcon
-                      set="MaterialCommunityIcons"
-                      name="plus"
-                      size={21}
-                      style={{
-                        flex: 1,
-                        padding: 5,
-                        margin: 5,
-                        backgroundColor: theme.style.colorFive,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 8,
-                      }}
-                      onPressIn={() => handlePressIn(itemId, false, '+', '1')}
-                      onPressOut={handlePressOut}
-                    />
-                    <Pressable
-                      style={{
-                        flex: 1,
-                        paddingVertical: 5,
-                        paddingHorizontal: 5,
-                        borderColor: '#ffd42ad6',
-                        borderWidth: 2,
-                        backgroundColor: theme.style.colorSix,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 8,
-                      }}
-                      onPress={() => {
-                        navigation.navigate('AmountInput', {
-                          inventoryId,
-                          itemId,
-                        });
-                      }}>
-                      <MyText
-                        style={{
-                          fontWeight: '500',
-                          fontSize: 16,
-                        }}
-                        text={item.amountTwo}
-                      />
-                    </Pressable>
-                    <MyPressableIcon
-                      set="MaterialCommunityIcons"
-                      name="minus"
-                      size={21}
-                      style={{
-                        flex: 1,
-                        padding: 5,
-                        margin: 5,
-                        backgroundColor: theme.style.colorFive,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 8,
-                      }}
-                      onPressIn={() => handlePressIn(itemId, false, '-', '1')}
-                      onPressOut={handlePressOut}
-                    />
-                  </View>
-                </View>
-
-                <View
-                  style={{
-                    paddingVertical: 5,
-                    paddingHorizontal: 5,
-                    backgroundColor: theme.style.colorSix,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 8,
-                    marginRight: 5,
-                    height: 72,
-                  }}>
-                  <MyText
-                    style={{
-                      fontWeight: '600',
-                      fontSize: 17,
-                    }}
-                    text={eval(
-                      `${item.amountOne} + ${item.amountTwo}`,
-                    )}
-                  />
-                </View>
-              </View>
-            </Pressable>
-          )} else if(products[itemId].amountType === "single") {
-            return (<Pressable
-              key={itemId}
-              style={{
-                height: 50,
-                minWidth: '95%',
-                backgroundColor: '#2f3136',
-                marginVertical: 4,
-                borderRadius: 8,
-
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  left: 0,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Pressable
-                  style={{ marginLeft: 4 }}
-                  onPress={() =>
-                    dispatch(inventoryItemDelete({ inventoryId, itemId }))
-                  }>
-                  <MyIcon
+                  <MyPressableIcon
                     set="MaterialCommunityIcons"
                     name="trash-can-outline"
                     size={24}
-                    color="#DCDDDE"
+                    onPress={() =>
+                      dispatch(inventoryItemDelete({ inventoryId, itemId }))
+                    }
                   />
-                </Pressable>
-                <Text
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                    }}>
+                    <View
+                      style={{
+                        marginLeft: 4,
+                        marginVertical: 2,
+                      }}>
+                      <MyText
+                        style={{
+                          fontWeight: '500',
+                          fontSize: 16,
+                        }}
+                        text={item.name}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        marginLeft: 4,
+                        marginVertical: 2,
+                        backgroundColor: '#02ab8ad6',
+                        borderRadius: 4,
+                        borderColor: '#27fdd4ff',
+                        borderWidth: 2,
+                        paddingHorizontal: 4,
+                      }}>
+                      <MyText
+                        style={{
+                          fontWeight: '500',
+                          fontSize: 13.5,
+                        }}
+                        text={'Frisch- und TK-Ware (2)'}
+                      />
+                    </View>
+                  </View>
+                </View>
+                <View
                   style={{
-                    color: '#DCDDDE',
-                    fontWeight: '500',
-                    fontSize: 16,
-                    marginLeft: 4,
+                    position: 'absolute',
+                    right: 0,
+                    flexDirection: 'row',
+                    alignItems: 'center',
                   }}>
-                  {item.name}
-                </Text>
-              </View>
-              <View
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <MyPressableIcon
+                        set="MaterialCommunityIcons"
+                        name="plus"
+                        size={21}
+                        style={{
+                          flex: 1,
+                          padding: 5,
+                          margin: 5,
+                          backgroundColor: theme.style.colorFive,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: 8,
+                        }}
+                        onPress={() => updateAmount(itemId, true, '+', '1')}
+                        // onPressOut={handlePressOut}
+                      />
+                      <Pressable
+                        style={{
+                          flex: 1,
+                          paddingVertical: 5,
+                          paddingHorizontal: 5,
+                          borderColor: '#2ad6ffd6',
+                          borderWidth: 2,
+                          backgroundColor: theme.style.colorSix,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: 8,
+                        }}
+                        onPress={() => {
+                          navigation.navigate('AmountInput', {
+                            inventoryId,
+                            itemId: itemId,
+                          });
+                        }}>
+                        <MyText
+                          style={{
+                            fontWeight: '500',
+                            fontSize: 16,
+                          }}
+                          text={item.amountOne}
+                        />
+                      </Pressable>
+                      <MyPressableIcon
+                        set="MaterialCommunityIcons"
+                        name="minus"
+                        size={21}
+                        style={{
+                          flex: 1,
+                          padding: 5,
+                          margin: 5,
+                          backgroundColor: theme.style.colorFive,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: 8,
+                        }}
+                        onPress={() => updateAmount(itemId, true, '-', '1')}
+                        // onPressOut={handlePressOut}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <MyPressableIcon
+                        set="MaterialCommunityIcons"
+                        name="plus"
+                        size={21}
+                        style={{
+                          flex: 1,
+                          padding: 5,
+                          margin: 5,
+                          backgroundColor: theme.style.colorFive,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: 8,
+                        }}
+                        onPress={() => updateAmount(itemId, false, '+', '1')}
+                        // onPressOut={handlePressOut}
+                      />
+                      <Pressable
+                        style={{
+                          flex: 1,
+                          paddingVertical: 5,
+                          paddingHorizontal: 5,
+                          borderColor: '#ffd42ad6',
+                          borderWidth: 2,
+                          backgroundColor: theme.style.colorSix,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: 8,
+                        }}
+                        onPress={() => {
+                          navigation.navigate('AmountInput', {
+                            inventoryId,
+                            itemId,
+                          });
+                        }}>
+                        <MyText
+                          style={{
+                            fontWeight: '500',
+                            fontSize: 16,
+                          }}
+                          text={item.amountTwo}
+                        />
+                      </Pressable>
+                      <MyPressableIcon
+                        set="MaterialCommunityIcons"
+                        name="minus"
+                        size={21}
+                        style={{
+                          flex: 1,
+                          padding: 5,
+                          margin: 5,
+                          backgroundColor: theme.style.colorFive,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: 8,
+                        }}
+                        onPress={() => updateAmount(itemId, false, '-', '1')}
+                        // onPressOut={handlePressOut}
+                      />
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      paddingVertical: 5,
+                      paddingHorizontal: 5,
+                      backgroundColor: theme.style.colorSix,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 8,
+                      marginRight: 5,
+                      height: 72,
+                    }}>
+                    <MyText
+                      style={{
+                        fontWeight: '600',
+                        fontSize: 17,
+                      }}
+                      text={eval(`${item.amountOne} + ${item.amountTwo}`)}
+                    />
+                  </View>
+                </View>
+              </Pressable>
+            );
+          } else if (products[item.productId].amountType === 'single') {
+            return (
+              <Pressable
+                key={itemId}
                 style={{
-                  position: 'absolute',
-                  right: 0,
+                  height: 50,
+                  minWidth: '95%',
+                  backgroundColor: '#2f3136',
+                  marginVertical: 4,
+                  borderRadius: 8,
+
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <Pressable
+                <View
                   style={{
-                    flex: 1,
-                    padding: 5,
-                    margin: 5,
-                    backgroundColor: '#292B2F',
+                    left: 0,
+                    flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 8,
-                  }}
-                  onPressIn={() => handlePressIn(itemId, true, '+', '1')}
-                  onPressOut={handlePressOut}>
-                  <MyIcon
-                    set="MaterialCommunityIcons"
-                    name="plus"
-                    size={21}
-                    color="#DCDDDE"
-                  />
-                </Pressable>
-                <Pressable
-                  style={{
-                    flex: 1,
-                    paddingVertical: 5,
-                    paddingHorizontal: 10,
-                    backgroundColor: '#202225',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 8,
-                  }}
-                  onPress={() => {
-                    navigation.navigate('AmountInput', {
-                      inventoryId,
-                      itemId,
-                    });
                   }}>
+                  <Pressable
+                    style={{ marginLeft: 4 }}
+                    onPress={() =>
+                      dispatch(inventoryItemDelete({ inventoryId, itemId }))
+                    }>
+                    <MyIcon
+                      set="MaterialCommunityIcons"
+                      name="trash-can-outline"
+                      size={24}
+                      color="#DCDDDE"
+                    />
+                  </Pressable>
                   <Text
                     style={{
                       color: '#DCDDDE',
                       fontWeight: '500',
                       fontSize: 16,
+                      marginLeft: 4,
                     }}>
-                    {item.amountOne}
+                    {item.name}
                   </Text>
-                </Pressable>
-                <Pressable
+                </View>
+                <View
                   style={{
-                    flex: 1,
-                    padding: 5,
-                    margin: 5,
-                    backgroundColor: '#292B2F',
+                    position: 'absolute',
+                    right: 0,
+                    flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 8,
-                  }}
-                  onPressIn={() => handlePressIn(itemId, true, '-', '1')}
-                  onPressOut={handlePressOut}>
-                  <MyIcon
-                    set="MaterialCommunityIcons"
-                    name="minus"
-                    size={21}
-                    color="#DCDDDE"
-                  />
-                </Pressable>
-              </View>
-            </Pressable>)} else {
-              return null}}}
+                  }}>
+                  <Pressable
+                    style={{
+                      flex: 1,
+                      padding: 5,
+                      margin: 5,
+                      backgroundColor: '#292B2F',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 8,
+                    }}
+                    onPress={() => updateAmount(itemId, true, '+', '1')}
+                    // onPressOut={handlePressOut}
+                  >
+                    <MyIcon
+                      set="MaterialCommunityIcons"
+                      name="plus"
+                      size={21}
+                      color="#DCDDDE"
+                    />
+                  </Pressable>
+                  <Pressable
+                    style={{
+                      flex: 1,
+                      paddingVertical: 5,
+                      paddingHorizontal: 10,
+                      backgroundColor: '#202225',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 8,
+                    }}
+                    onPress={() => {
+                      navigation.navigate('AmountInput', {
+                        inventoryId,
+                        itemId,
+                      });
+                    }}>
+                    <Text
+                      style={{
+                        color: '#DCDDDE',
+                        fontWeight: '500',
+                        fontSize: 16,
+                      }}>
+                      {item.amountOne}
+                    </Text>
+                  </Pressable>
+                  <Pressable
+                    style={{
+                      flex: 1,
+                      padding: 5,
+                      margin: 5,
+                      backgroundColor: '#292B2F',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 8,
+                    }}
+                    onPress={() => updateAmount(itemId, true, '-', '1')}
+                    // onPressOut={handlePressOut}
+                  >
+                    <MyIcon
+                      set="MaterialCommunityIcons"
+                      name="minus"
+                      size={21}
+                      color="#DCDDDE"
+                    />
+                  </Pressable>
+                </View>
+              </Pressable>
+            );
+          } else {
+            return null;
+          }
+        }}
       />
 
       <MyAddButton
