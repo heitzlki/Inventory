@@ -55,9 +55,8 @@ const InventoryScreen = ({
     );
   };
 
-  const [intervalId, setIntervalId] = useState<number>(0);
-
   const store = useStore<RootState>();
+  // const [intervalId, setIntervalId] = useState<number>(0);
 
   // const handlePressIn = (
   //   itemId: string,
