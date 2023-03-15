@@ -1,8 +1,5 @@
 import {
-  AmountType,
-  CategoryType,
   InventoriesState,
-  InventoryState,
   ItemState,
   ItemsState,
 } from 'store/inventories/state';
@@ -42,11 +39,9 @@ export const inventoryItemAdd = (
     inventoryId: string;
     productId: string;
     name: string;
-    amountType: AmountType;
-    category: CategoryType;
   }>,
 ) => {
-  const { inventoryId, productId, name, amountType, category } = action.payload;
+  const { inventoryId, productId, name } = action.payload;
 
   let id = `${uuid.v4()}`;
   let newItem: ItemState = {
@@ -57,8 +52,6 @@ export const inventoryItemAdd = (
     name,
     amountOne: '0',
     amountTwo: '0',
-    amountType,
-    category,
   };
 
   let newItems: ItemsState = Object.assign(
