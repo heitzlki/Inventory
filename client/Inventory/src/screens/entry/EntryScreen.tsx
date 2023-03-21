@@ -16,7 +16,7 @@ const EntryScreen = ({ navigation }: RootStackScreenProps<'Entry'>) => (
     <View style={{ alignItems: 'center' }}>
       <MyButton
         style={{ marginTop: 8, justifyContent: 'center' }}
-        onPressAction={() => navigation.navigate('SignIn')}>
+        onPress={() => navigation.navigate('SignIn')}>
         <MyText
           style={{
             fontWeight: '500',
@@ -27,7 +27,7 @@ const EntryScreen = ({ navigation }: RootStackScreenProps<'Entry'>) => (
       </MyButton>
       <MyButton
         style={{ justifyContent: 'center' }}
-        onPressAction={() => navigation.navigate('SignUp')}>
+        onPress={() => navigation.navigate('SignUp')}>
         <MyText
           style={{
             fontWeight: '500',

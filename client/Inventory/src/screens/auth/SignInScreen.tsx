@@ -51,7 +51,7 @@ const SignInScreen = ({
           />
         </View>
         <MyButton
-          onPressAction={() => {
+          onPress={() => {
             dispatch(signIn({ token: credentials }));
           }}
           style={{

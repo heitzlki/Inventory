@@ -92,7 +92,7 @@ const ReminderScreen = ({
       <MyTopBar backButton={true} title="Settings" />
       <View style={{ alignItems: 'center' }}>
         <MyButton
-          onPressAction={() => {
+          onPress={() => {
             if (!reminder.active) {
               activateNotification();
             } else {
@@ -113,7 +113,7 @@ const ReminderScreen = ({
         </MyButton>
 
         <MyButton
-          onPressAction={() => {
+          onPress={() => {
             setOpen(true);
           }}
           style={{ marginTop: 8 }}>

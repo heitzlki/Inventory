@@ -46,7 +46,7 @@ const SignUpScreen = ({
           />
         </View>
         <MyButton
-          onPressAction={() => {}}
+          onPress={() => {}}
           style={{
             justifyContent: 'center',
           }}>

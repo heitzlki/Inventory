@@ -1,18 +1,15 @@
-import { View, Text, Pressable } from 'react-native';
+import { View } from 'react-native';
 
 import type { RootStackScreenProps } from 'navigation/types';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from 'store/auth';
 
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { ThemeState } from 'store/theme/state';
 import { setTheme } from 'store/theme';
 import { RootState } from 'store/index';
-import MyBackground from 'components/custom/MyBackground';
-import MyTopBar from 'components/custom/MyTopBar';
-import MyButton from 'components/custom/MyButton';
-import MyText from 'components/custom/MyText';
+
+import { MyBackground, MyTopBar, MyButton, MyText } from 'components/custom';
+
 const SettingsScreen = ({
   route,
   navigation,
@@ -25,7 +22,7 @@ const SettingsScreen = ({
       <MyTopBar backButton={true} title="Settings" />
       <View style={{ alignItems: 'center' }}>
         <MyButton
-          onPressAction={() => {
+          onPress={() => {
             dispatch(signOut());
           }}
           style={{ marginTop: 8 }}>
@@ -39,7 +36,7 @@ const SettingsScreen = ({
           />
         </MyButton>
         <MyButton
-          onPressAction={() => {
+          onPress={() => {
             dispatch(setTheme({}));
           }}>
           <MyText
