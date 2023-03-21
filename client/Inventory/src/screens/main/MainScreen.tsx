@@ -8,27 +8,21 @@ import {
   BackHandler,
 } from 'react-native';
 
-import { useSelector, useDispatch, useStore } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import { RootState } from 'store/index';
 import { activate } from 'store/drawer';
 
-import {
-  inventoryAdd,
-  inventoryDelete,
-  inventoryEdit,
-} from 'store/inventories';
+import { inventoryAdd } from 'store/inventories';
 
 import type { RootStackScreenProps } from 'navigation/types';
 
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
+import { BottomSheetRefProps } from 'components/BottomSheet';
 
 import MyBackground from 'components/custom/MyBackground';
 import MyTopBar from 'components/custom/MyTopBar';
 import MyPressableIcon from 'components/custom/MyPressableIcon';
 import MyAddButton from 'components/custom/MyAddButton';
-import MyBottomSheet from 'components/custom/MyBottomSheet';
+import InventoryBottomSheet from 'components/inventory/InventoryBottomSheet';
 
 import InventoryList from 'components/inventory/InventoryList';
 
@@ -61,7 +55,7 @@ const MainScreen = ({ route, navigation }: RootStackScreenProps<'Main'>) => {
         setBottomSheetInventoryId={setBottomSheetInventoryId}
       />
 
-      <MyBottomSheet
+      <InventoryBottomSheet
         inventoryId={bottomSheetInventoryId}
         bottomSheetRef={bottomSheetRef}
         editNameRef={editNameRef}
