@@ -39,6 +39,7 @@ export const catalogSlice = createSlice({
       state: CatalogState,
       action: PayloadAction<{
         productId: string;
+        newProductId?: string;
         name?: string;
         defaultAmountOne?: string;
         defaultAmountTwo?: string;
@@ -49,6 +50,7 @@ export const catalogSlice = createSlice({
     ) => {
       const {
         productId,
+        newProductId,
         name,
         defaultAmountOne,
         defaultAmountTwo,
@@ -57,8 +59,11 @@ export const catalogSlice = createSlice({
         category,
       } = action.payload;
 
-      state[productId] = {
+      const { [productId]: _, ...rest } = state;
+
+      rest[newProductId || productId] = {
         ...state[productId],
+        id: newProductId || productId,
         updatedAt: moment().unix().toString(),
         name: name || state[productId].name,
         defaultAmountOne: defaultAmountOne || state[productId].defaultAmountOne,
@@ -67,6 +72,8 @@ export const catalogSlice = createSlice({
         unit: unit || state[productId].unit,
         category: category || state[productId].category,
       };
+
+      return rest;
     },
 
     catalogProductDelete: (
