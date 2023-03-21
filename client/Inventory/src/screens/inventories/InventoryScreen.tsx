@@ -146,9 +146,15 @@ const InventoryScreen = ({
                       style={{
                         marginLeft: 4,
                         marginVertical: 2,
-                        backgroundColor: '#02ab8ad6',
+                        backgroundColor:
+                          theme.style.categoryColors[
+                            products[item.productId].category
+                          ].colorOne,
                         borderRadius: 4,
-                        borderColor: '#27fdd4ff',
+                        borderColor:
+                          theme.style.categoryColors[
+                            products[item.productId].category
+                          ].colorTwo,
                         borderWidth: 2,
                         paddingHorizontal: 4,
                       }}>
@@ -157,7 +163,7 @@ const InventoryScreen = ({
                           fontWeight: '500',
                           fontSize: 13.5,
                         }}
-                        text={'Frisch- und TK-Ware (2)'}
+                        text={products[item.productId].category}
                       />
                     </View>
                   </View>
