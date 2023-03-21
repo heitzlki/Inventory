@@ -12,28 +12,29 @@ import {
 
 import useSearch from 'hooks/useSearch';
 
-import MyBackground from 'components/custom/MyBackground';
-
 import { useFocusEffect } from '@react-navigation/native';
+
+import useSortedCategories from 'hooks/useSortedCategories';
 
 import inventories, {
   inventoryItemAdd,
   inventoryItemDelete,
 } from 'store/inventories';
-import type { ProductState } from 'store/catalog/state';
+import { ProductState, validCategories } from 'store/catalog/state';
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { RootState } from 'store/index';
 
 import type { RootStackScreenProps } from 'navigation/types';
 
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-
-import MyTopBar from 'components/custom/MyTopBar';
-import MyAddButton from 'components/custom/MyAddButton';
-import MyPressableIcon from 'components/custom/MyPressableIcon';
-import MyIcon from 'components/custom/MyIcon';
-import MyText from 'components/custom/MyText';
+import {
+  MyBackground,
+  MyTopBar,
+  MyPressableIcon,
+  MyButton,
+  MyText,
+  MyIcon,
+  MyCategoryLabel,
+} from 'components/custom';
 
 const SearchItemScreen = ({
   route,
@@ -46,10 +47,18 @@ const SearchItemScreen = ({
 
   const dispatch = useDispatch();
 
-  const [searchResults, handleSearchChange, searchQuery, setSearchQuery] =
-    useSearch();
+  const [
+    searchResults,
+    handleSearchChange,
+    searchQuery,
+    setSearchQuery,
+    searchCategories,
+    setSearchCategories,
+  ] = useSearch();
 
   const inputRef = useRef<TextInput>(null);
+
+  const sortedCategories = useSortedCategories(searchCategories);
 
   // focus input on
   useFocusEffect(
@@ -64,7 +73,10 @@ const SearchItemScreen = ({
 
   return (
     <MyBackground>
-      <MyTopBar backButton={true} title="" style={{ height: topBarHeight }}>
+      <MyTopBar
+        backButton={true}
+        title=""
+        style={{ height: topBarHeight, borderBottomRightRadius: 0 }}>
         <View
           onLayout={event => {
             const { height } = event.nativeEvent.layout;
@@ -115,33 +127,44 @@ const SearchItemScreen = ({
           </View>
           <View
             style={{
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              marginRight: 20,
-              marginVertical: 4,
+              height: 54,
             }}>
-            {[
-              'Aktionsprodukte',
-              'Frisch- und TK-Ware (1)',
-              'Frisch- und TK-Ware (2)',
-              'Getränke',
-              'Soßen, Dips und Dressings',
-              'Desserts (TK)',
-              'Dosen- und Trockenware',
-              'Verpackungen',
-            ].map((item, index) => (
-              <View
-                key={index}
-                style={{
-                  paddingHorizontal: 8,
-                  margin: 2,
-                  borderRadius: 5,
-                  backgroundColor: '#00ffcca7',
-                }}>
-                <MyText text={item} />
-              </View>
-            ))}
+            <FlatList
+              horizontal
+              contentContainerStyle={{
+                alignItems: 'center',
+                marginVertical: 8,
+                paddingRight: 20,
+              }}
+              data={sortedCategories}
+              renderItem={({ item }) => (
+                <Pressable
+                  key={item}
+                  style={{
+                    marginHorizontal: 2,
+                    marginVertical: 4,
+                  }}
+                  onPress={() => {
+                    if (searchCategories.includes(item)) {
+                      setSearchCategories(
+                        searchCategories.filter(category => category != item),
+                      );
+                    } else {
+                      setSearchCategories([...searchCategories, item]);
+                    }
+                  }}>
+                  <MyCategoryLabel
+                    category={item}
+                    style={{
+                      borderWidth: searchCategories.includes(item) ? 3 : 2,
+                      borderColor: searchCategories.includes(item)
+                        ? theme.style.text
+                        : theme.style.categoryColors[item].colorTwo,
+                    }}
+                  />
+                </Pressable>
+              )}
+            />
           </View>
         </View>
       </MyTopBar>
@@ -170,8 +193,6 @@ const SearchItemScreen = ({
                   inventoryId,
                   productId: item.id,
                   name: item.name,
-                  amountType: item.amountType,
-                  category: item.category,
                 }),
               );
               const newItemId = Object.keys(
@@ -192,7 +213,12 @@ const SearchItemScreen = ({
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
-              <MaterialCommunityIcon name="leaf" size={24} color="#98f5e1" />
+              <MyIcon
+                set="MaterialCommunityIcons"
+                name="leaf"
+                size={24}
+                color={theme.style.colorGreen}
+              />
               <Text
                 style={{
                   color: '#DCDDDE',
