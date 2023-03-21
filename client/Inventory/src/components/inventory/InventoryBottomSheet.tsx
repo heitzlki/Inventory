@@ -19,7 +19,7 @@ interface Props extends ViewProps {
   editNameRef: React.RefObject<TextInput>;
 }
 
-const MyBottomSheet = ({
+const InventoryBottomSheet = ({
   children,
   inventoryId,
   bottomSheetRef,
@@ -132,4 +132,4 @@ const MyBottomSheet = ({
     </BottomSheet>
   );
 };
-export default MyBottomSheet;
+export default InventoryBottomSheet;
