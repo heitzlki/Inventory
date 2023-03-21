@@ -5,10 +5,10 @@ import { RootState } from 'store/index';
 
 interface Props extends PressableProps {
   children?: React.ReactNode;
-  onPressAction: () => void;
+  onPress: () => void;
 }
 
-const MyButton = ({ children, onPressAction, style, ...props }: Props) => {
+const MyButton = ({ children, onPress, style, ...props }: Props) => {
   const theme = useSelector((state: RootState) => state.themeReducer);
   const combinedStyles = StyleSheet.flatten([
     {
@@ -28,7 +28,7 @@ const MyButton = ({ children, onPressAction, style, ...props }: Props) => {
   };
 
   return (
-    <Pressable style={mergedStyles} onPress={onPressAction} {...props}>
+    <Pressable style={mergedStyles} onPress={onPress} {...props}>
       {children}
     </Pressable>
   );
