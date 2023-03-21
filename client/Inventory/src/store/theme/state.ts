@@ -2,24 +2,20 @@ import { CategoryType } from 'store/catalog/state';
 
 export type Theme = 'light' | 'dark';
 
-// #ff2a2aff
-// #ff2e64ff
-// #ff6600ff
-// #d1f004ff
-// #00ff66ff
-// #00ffbbff
-// #00ccffff
-// #9b00f0ff
+type CategoryColorType = Record<
+  CategoryType,
+  { colorOne: string; colorTwo: string }
+>;
 
-export const categoryColors = {
-  Aktionsprodukte: { colorOne: '#ff2a2aff', colorTwo: '#ff2a2ad6' },
-  '(1) Frisch- & TK-Ware': { colorOne: '#ff2e64ff', colorTwo: '#ff2e64d6' },
-  '(2) Frisch- & TK-Ware': { colorOne: '#ff6600ff', colorTwo: '#ff6600d6' },
-  'Soßen, Dips & Dressings': { colorOne: '#d1f004ff', colorTwo: '#d1f004d6' },
-  'Dosen- & Trockenware': { colorOne: '#00ff66ff', colorTwo: '#00ff66d6' },
-  Getränke: { colorOne: '#00ffbbff', colorTwo: '#00ffbbd6' },
-  Verpackungen: { colorOne: '#00ccffff', colorTwo: '#00ccffd6' },
-  'Desserts (TK)': { colorOne: '#9b00f0ff', colorTwo: '#9b00f0d6' },
+export const categoryColors: CategoryColorType = {
+  Aktionsprodukte: { colorOne: '#02ab8ad6', colorTwo: '#27fdd4ff' },
+  '(1) Frisch- & TK-Ware': { colorOne: '#ab0241d6', colorTwo: '#ff0061ff' },
+  '(2) Frisch- & TK-Ware': { colorOne: '#93ab02d6', colorTwo: '#d1f004ff' },
+  'Soßen, Dips & Dressings': { colorOne: '#02ab46d6', colorTwo: '#00ff66ff' },
+  'Dosen- & Trockenware': { colorOne: '#028bacd6', colorTwo: '#55ddffff' },
+  Getränke: { colorOne: '#7002abd6', colorTwo: '#9c00f0ff' },
+  Verpackungen: { colorOne: '#4602acd6', colorTwo: '#6600ffff' },
+  'Desserts (TK)': { colorOne: '#575757d6', colorTwo: '#808080ff' },
 };
 
 export const darkTheme: Style = {
@@ -32,6 +28,8 @@ export const darkTheme: Style = {
   colorFive: '#292B2F',
   colorSix: '#202225',
   colorBlue: '#c1d3fe',
+  colorGreen: '#98f5e1',
+  colorRed: '#ff4d6d',
   categoryColors,
 };
 
@@ -45,6 +43,8 @@ export const lightTheme: Style = {
   colorFive: '#d6d4d0',
   colorSix: '#dfddda',
   colorBlue: '#4848ff',
+  colorGreen: '#00e9a8ff',
+  colorRed: '#ff274eff',
   categoryColors,
 };
 
@@ -58,6 +58,8 @@ export interface Style {
   colorFive: string;
   colorSix: string;
   colorBlue: string;
+  colorGreen: string;
+  colorRed: string;
   categoryColors: {
     [key in CategoryType]: { colorOne: string; colorTwo: string };
   };
