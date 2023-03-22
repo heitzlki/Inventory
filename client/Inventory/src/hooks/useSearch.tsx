@@ -25,7 +25,7 @@ export const useSearch = (): [
 
   const memoizedSearchResults = useMemo(() => {
     return search(debouncedSearchQuery, searchCategories);
-  }, [debouncedSearchQuery, searchCategories]);
+  }, [debouncedSearchQuery, searchCategories, catalog]);
 
   function search(
     query: string,
