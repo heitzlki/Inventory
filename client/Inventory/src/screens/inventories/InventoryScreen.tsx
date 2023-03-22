@@ -13,6 +13,7 @@ import {
   MyPressableIcon,
   MyText,
   MyIcon,
+  MyCategoryLabel,
 } from 'components/custom';
 
 import { useFormatCreateAndShareXlsx } from 'hooks/useFormatCreateShareXlsx';
@@ -142,30 +143,10 @@ const InventoryScreen = ({
                         text={item.name}
                       />
                     </View>
-                    <View
-                      style={{
-                        marginLeft: 4,
-                        marginVertical: 2,
-                        backgroundColor:
-                          theme.style.categoryColors[
-                            products[item.productId].category
-                          ].colorOne,
-                        borderRadius: 4,
-                        borderColor:
-                          theme.style.categoryColors[
-                            products[item.productId].category
-                          ].colorTwo,
-                        borderWidth: 2,
-                        paddingHorizontal: 4,
-                      }}>
-                      <MyText
-                        style={{
-                          fontWeight: '500',
-                          fontSize: 13.5,
-                        }}
-                        text={products[item.productId].category}
-                      />
-                    </View>
+                    <MyCategoryLabel
+                      category={products[item.productId].category}
+                      style={{ alignSelf: 'flex-start' }}
+                    />
                   </View>
                 </View>
                 <View
@@ -337,7 +318,7 @@ const InventoryScreen = ({
               <Pressable
                 key={itemId}
                 style={{
-                  height: 50,
+                  height: 60,
                   minWidth: '95%',
                   backgroundColor: '#2f3136',
                   marginVertical: 4,
@@ -361,18 +342,23 @@ const InventoryScreen = ({
                       set="MaterialCommunityIcons"
                       name="trash-can-outline"
                       size={24}
-                      color="#DCDDDE"
                     />
                   </Pressable>
-                  <Text
-                    style={{
-                      color: '#DCDDDE',
-                      fontWeight: '500',
-                      fontSize: 16,
-                      marginLeft: 4,
-                    }}>
-                    {item.name}
-                  </Text>
+                  <View>
+                    <MyText
+                      style={{
+                        fontWeight: '500',
+                        fontSize: 16,
+                        marginLeft: 6,
+                        marginBottom: 2,
+                      }}
+                      text={item.name}
+                    />
+                    <MyCategoryLabel
+                      category={products[item.productId].category}
+                      style={{ alignSelf: 'flex-start' }}
+                    />
+                  </View>
                 </View>
                 <View
                   style={{
@@ -398,7 +384,6 @@ const InventoryScreen = ({
                       set="MaterialCommunityIcons"
                       name="plus"
                       size={21}
-                      color="#DCDDDE"
                     />
                   </Pressable>
                   <Pressable
