@@ -18,7 +18,12 @@ import { RootState } from 'store/index';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
-import { ProductState } from 'store/catalog/state';
+import {
+  AmountType,
+  CategoryType,
+  ProductState,
+  UnitType,
+} from 'store/catalog/state';
 
 import {
   MyBackground,
@@ -29,9 +34,20 @@ import {
 } from 'components/custom';
 import { validUnits, validAmounts, validCategories } from 'store/catalog/state';
 import { useGoBack } from 'hooks/useGoBack';
+import ProductCategoryBottomSheet from 'components/catalog/ProductCategoryBottomSheet';
 
 interface CatalogEditProductTextInputProps extends TextInputProps {
   name?: string;
+}
+
+export interface EditProductState {
+  newProductId: string;
+  name: string;
+  unit: UnitType;
+  amountType: AmountType;
+  defaultAmountOne: string;
+  defaultAmountTwo: string;
+  category: CategoryType;
 }
 
 const CatalogEditProductTextInput = ({
@@ -96,7 +112,7 @@ const CatalogEditProductScreen = ({
 
   const product: ProductState = catalog[productId];
 
-  const [editProduct, setEditProduct] = useState({
+  const [editProduct, setEditProduct] = useState<EditProductState>({
     newProductId: product.id,
     name: product.name,
     unit: product.unit,
@@ -147,6 +163,8 @@ const CatalogEditProductScreen = ({
       setValid(false);
     }
   }, [editProduct]);
+
+  const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
   return (
     <MyBackground>
@@ -319,7 +337,9 @@ const CatalogEditProductScreen = ({
         </View>
 
         <MyButton
-          onPress={() => {}}
+          onPress={() => {
+            bottomSheetRef.current?.activate();
+          }}
           style={{
             marginVertical: 4,
             backgroundColor: theme.style.colorFour,
@@ -380,13 +400,11 @@ const CatalogEditProductScreen = ({
         </MyButton>
       </View>
 
-      {/* 
-      // TODO
-      <InventoryBottomSheet
-        inventoryId={bottomSheetInventoryId}
+      <ProductCategoryBottomSheet
         bottomSheetRef={bottomSheetRef}
-        editNameRef={editNameRef}
-      /> */}
+        editProduct={editProduct}
+        setEditProduct={setEditProduct}
+      />
     </MyBackground>
   );
 };
