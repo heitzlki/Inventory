@@ -178,9 +178,9 @@ const SearchItemScreen = ({
           <Pressable
             key={item.id}
             style={{
-              height: 50,
+              height: 60,
               minWidth: '95%',
-              backgroundColor: '#2f3136',
+              backgroundColor: theme.style.colorFour,
               marginVertical: 4,
               borderRadius: 8,
 
@@ -209,25 +209,26 @@ const SearchItemScreen = ({
             }}>
             <View
               style={{
-                left: 10,
                 flexDirection: 'row',
                 alignItems: 'center',
+                left: 0,
+                marginLeft: 6,
               }}>
-              <MyIcon
-                set="MaterialCommunityIcons"
-                name="leaf"
-                size={24}
-                color={theme.style.colorGreen}
-              />
-              <Text
-                style={{
-                  color: '#DCDDDE',
-                  fontWeight: '500',
-                  fontSize: 16,
-                  left: 4,
-                }}>
-                {item.name}
-              </Text>
+              <View>
+                <MyText
+                  style={{
+                    fontWeight: '500',
+                    fontSize: 16,
+                    marginLeft: 6,
+                    marginBottom: 2,
+                  }}
+                  text={item.name}
+                />
+                <MyCategoryLabel
+                  category={item.category}
+                  style={{ alignSelf: 'flex-start' }}
+                />
+              </View>
             </View>
             <View
               style={{
@@ -237,23 +238,69 @@ const SearchItemScreen = ({
                 alignItems: 'center',
                 marginHorizontal: 10,
               }}>
-              <Text
+              <View
                 style={{
-                  color: '#ABB0B6',
-                  fontWeight: '500',
-                  fontSize: 16,
-                  marginHorizontal: 10,
+                  flex: 1,
+                  paddingVertical: 5,
+                  paddingHorizontal: 10,
+                  backgroundColor: theme.style.colorSix,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 8,
+                  marginHorizontal: 4,
+                  borderColor: '#ffd42ad6',
+                  borderWidth: 2,
                 }}>
-                {item.defaultAmountOne}
-              </Text>
-              <Text
+                <MyText
+                  style={{
+                    fontWeight: '500',
+                    fontSize: 16,
+                  }}
+                  text={item.defaultAmountOne}
+                />
+              </View>
+              {item.amountType === 'double' ? (
+                <View
+                  style={{
+                    flex: 1,
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    backgroundColor: theme.style.colorSix,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 8,
+                    marginHorizontal: 4,
+                    borderColor: '#2ad6ffd6',
+                    borderWidth: 2,
+                  }}>
+                  <MyText
+                    style={{
+                      fontWeight: '500',
+                      fontSize: 16,
+                    }}
+                    text={item.defaultAmountTwo}
+                  />
+                </View>
+              ) : null}
+              <View
                 style={{
-                  color: '#ABB0B6',
-                  fontWeight: '500',
-                  fontSize: 16,
+                  flex: 1,
+                  paddingVertical: 5,
+                  paddingHorizontal: 10,
+                  backgroundColor: theme.style.colorSix,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 8,
+                  marginHorizontal: 4,
                 }}>
-                {item.unit}
-              </Text>
+                <MyText
+                  style={{
+                    fontWeight: '500',
+                    fontSize: 16,
+                  }}
+                  text={item.unit}
+                />
+              </View>
             </View>
           </Pressable>
         )}
