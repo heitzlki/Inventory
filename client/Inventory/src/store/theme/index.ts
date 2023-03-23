@@ -1,11 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { lightTheme, darkTheme, Theme } from 'store/theme/state';
+import { Theme } from 'store/theme/state';
 import { ThemeState } from 'store/theme/state';
 
 const initialState: ThemeState = {
   theme: 'dark',
-  style: darkTheme,
 };
 
 const themeSlice = createSlice({
@@ -18,7 +17,6 @@ const themeSlice = createSlice({
       } else {
         state.theme = state.theme === 'dark' ? 'light' : 'dark';
       }
-      state.style = state.theme === 'dark' ? darkTheme : lightTheme;
     },
   },
 });
