@@ -24,7 +24,6 @@ import { EditProductState } from 'screens/catalog/CatalogEditProduct';
 
 interface Props extends ViewProps {
   children?: React.ReactNode;
-  productId: string;
   bottomSheetRef: React.RefObject<BottomSheetRefProps>;
   editProduct: EditProductState;
   setEditProduct: React.Dispatch<React.SetStateAction<EditProductState>>;
@@ -32,7 +31,6 @@ interface Props extends ViewProps {
 
 const ProductCategoryBottomSheet = ({
   children,
-  productId,
   bottomSheetRef,
   editProduct,
   setEditProduct,
