@@ -2,11 +2,18 @@ import { CatalogState, ProductState } from 'store/catalog/state';
 import { useApi } from 'hooks/useApi';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
+
 import { catalogUpdate } from 'store/catalog';
-import { validUnits, validAmounts, validCategories, UnitType, AmountType, CategoryType  } from 'store/catalog/state';
+import {
+  validUnits,
+  validAmounts,
+  validCategories,
+  UnitType,
+  AmountType,
+  CategoryType,
+} from 'store/catalog/state';
 
 type APIResponse = Array<Array<string | number>>;
-
 
 function convertToCatalogState(apiResponse: APIResponse): CatalogState {
   const [header, ...rows] = apiResponse;
@@ -41,17 +48,16 @@ function convertToCatalogState(apiResponse: APIResponse): CatalogState {
       updatedAt,
     ] = row;
 
-    if(
+    if (
       typeof id !== 'string' ||
       typeof name !== 'string' ||
       !validCategories.includes(category as CategoryType) ||
       !validUnits.includes(unit as UnitType) ||
-      !validAmounts.includes(amountType as AmountType)||
+      !validAmounts.includes(amountType as AmountType) ||
       typeof defaultAmountOne !== 'string' ||
       typeof defaultAmountTwo !== 'string' ||
       typeof createdAt !== 'string' ||
-      typeof updatedAt !== 'string' 
-      
+      typeof updatedAt !== 'string'
     ) {
       continue;
     }
@@ -67,7 +73,6 @@ function convertToCatalogState(apiResponse: APIResponse): CatalogState {
       createdAt,
       updatedAt,
     };
-
   }
 
   return catalogState;
