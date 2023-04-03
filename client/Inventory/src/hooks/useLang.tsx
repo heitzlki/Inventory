@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { LangState, Lang } from 'store/lang/state';
 import { setLang } from 'store/lang';
+import { useMemo } from 'react';
 
 export const langEn: Translation = {
   Hello: 'Hello',
@@ -25,8 +26,15 @@ export const useLang = (): UseLang => {
     (state: { langReducer: LangState }) => state.langReducer.lang,
   );
   const dispatch = useDispatch();
-
-  const translations = storeLang === 'de_DE' ? langDe : langEn;
+  const translations = useMemo(() => {
+    switch (storeLang) {
+      case 'de_DE':
+        return langDe;
+      case 'en_EN':
+      default:
+        return langEn;
+    }
+  }, [storeLang]);
 
   const setLangWrapper = (lang: Lang) => {
     dispatch(setLang({ lang }));
