@@ -1,11 +1,10 @@
-import { useState } from 'react';
-
+import { useMemo } from 'react';
 import { CategoryType } from 'store/catalog/state';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setTheme } from 'store/theme';
 import { RootState } from 'store/index';
-import { ThemeState } from 'store/theme/state';
+import { setTheme } from 'store/theme';
+import { Theme } from 'store/theme/state';
 
 type CategoryColorType = Record<
   CategoryType,
@@ -77,23 +76,19 @@ export interface Style {
 }
 
 export const useStyles = () => {
-  const storeTheme = useSelector((state: RootState) => state.themeReducer);
+  const storeTheme = useSelector(
+    (state: RootState) => state.themeReducer.theme,
+  );
+
+  const styles = useMemo(() => {
+    return storeTheme === 'light' ? lightTheme : darkTheme;
+  }, [storeTheme]);
 
   const dispatch = useDispatch();
 
-  const [styles, setStyles] = useState<Style>(
-    storeTheme.theme === 'light' ? lightTheme : darkTheme,
-  );
-
-  const changeStyle = ({ theme }: ThemeState) => {
-    if (theme === 'light') {
-      dispatch(setTheme({ theme }));
-      setStyles(lightTheme);
-    } else {
-      dispatch(setTheme({ theme }));
-      setStyles(darkTheme);
-    }
+  const setThemeWrapper = (theme: Theme) => {
+    dispatch(setTheme({ theme }));
   };
 
-  return { styles, changeStyle };
+  return { theme: storeTheme, styles, setTheme: setThemeWrapper };
 };
