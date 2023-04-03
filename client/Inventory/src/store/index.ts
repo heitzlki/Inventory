@@ -17,6 +17,7 @@ import drawerReducer from 'store/drawer';
 import catalogReducer from 'store/catalog';
 import reminderReducer from 'store/reminder';
 import themeReducer from 'store/theme';
+import langReducer from 'store/lang';
 import { listenerMiddleware } from 'store/middelware';
 
 const reducers = combineReducers({
@@ -26,6 +27,7 @@ const reducers = combineReducers({
   catalogReducer,
   reminderReducer,
   themeReducer,
+  langReducer,
 });
 
 const persistConfig = {

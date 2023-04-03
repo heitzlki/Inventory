@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { useSelector, useStore } from 'react-redux';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import { RootState } from 'store/index';
-import { CategoryType, ProductState } from 'store/catalog/state';
 import { useDebounce } from 'hooks/useDebounce';
+import { CategoryType, ProductState } from 'store/catalog/state';
+import { RootState } from 'store/index';
 
 export const useSearch = (): [
   ProductState[],
