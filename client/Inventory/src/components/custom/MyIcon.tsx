@@ -2,6 +2,7 @@ import { View, ViewProps, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/index';
 
+import { useStyles } from 'hooks/useStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -41,10 +42,10 @@ interface Props {
 }
 
 const MyIcon = ({ set, name, size, color }: Props) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { styles } = useStyles();
   let icon;
   size = size ?? 26;
-  color = color ?? theme.style.text;
+  color = color ?? styles.colors.paletteTextMain;
 
   switch (set) {
     case 'AntDesign':

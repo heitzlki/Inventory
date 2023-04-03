@@ -6,6 +6,7 @@ import { useSelector, useDispatch, useStore } from 'react-redux';
 import { inventoryItemSetAmount, inventoryItemDelete } from 'store/inventories';
 import { RootState } from 'store/index';
 
+import { useStyles } from 'hooks/useStyles';
 import {
   MyBackground,
   MyTopBar,
@@ -23,7 +24,7 @@ const InventoryScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'Inventory'>) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { styles } = useStyles();
   const inventoryId = route.params.inventoryId;
 
   const inventories = useSelector(
@@ -105,7 +106,7 @@ const InventoryScreen = ({
                 style={{
                   height: 84,
                   minWidth: '95%',
-                  backgroundColor: theme.style.colorFour,
+                  backgroundColor: styles.colors.paletteFour,
                   marginVertical: 4,
                   borderRadius: 8,
 
@@ -174,7 +175,7 @@ const InventoryScreen = ({
                           flex: 1,
                           padding: 5,
                           margin: 5,
-                          backgroundColor: theme.style.colorFive,
+                          backgroundColor: styles.colors.paletteFive,
                           alignItems: 'center',
                           justifyContent: 'center',
                           borderRadius: 8,
@@ -189,7 +190,7 @@ const InventoryScreen = ({
                           paddingHorizontal: 5,
                           borderColor: '#2ad6ffd6',
                           borderWidth: 2,
-                          backgroundColor: theme.style.colorSix,
+                          backgroundColor: styles.colors.paletteSix,
                           alignItems: 'center',
                           justifyContent: 'center',
                           borderRadius: 8,
@@ -216,7 +217,7 @@ const InventoryScreen = ({
                           flex: 1,
                           padding: 5,
                           margin: 5,
-                          backgroundColor: theme.style.colorFive,
+                          backgroundColor: styles.colors.paletteFive,
                           alignItems: 'center',
                           justifyContent: 'center',
                           borderRadius: 8,
@@ -238,7 +239,7 @@ const InventoryScreen = ({
                           flex: 1,
                           padding: 5,
                           margin: 5,
-                          backgroundColor: theme.style.colorFive,
+                          backgroundColor: styles.colors.paletteFive,
                           alignItems: 'center',
                           justifyContent: 'center',
                           borderRadius: 8,
@@ -253,7 +254,7 @@ const InventoryScreen = ({
                           paddingHorizontal: 5,
                           borderColor: '#ffd42ad6',
                           borderWidth: 2,
-                          backgroundColor: theme.style.colorSix,
+                          backgroundColor: styles.colors.paletteSix,
                           alignItems: 'center',
                           justifyContent: 'center',
                           borderRadius: 8,
@@ -280,7 +281,7 @@ const InventoryScreen = ({
                           flex: 1,
                           padding: 5,
                           margin: 5,
-                          backgroundColor: theme.style.colorFive,
+                          backgroundColor: styles.colors.paletteFive,
                           alignItems: 'center',
                           justifyContent: 'center',
                           borderRadius: 8,
@@ -295,7 +296,7 @@ const InventoryScreen = ({
                     style={{
                       paddingVertical: 5,
                       paddingHorizontal: 5,
-                      backgroundColor: theme.style.colorSix,
+                      backgroundColor: styles.colors.paletteSix,
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderRadius: 8,

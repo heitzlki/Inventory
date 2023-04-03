@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { signIn } from 'store/auth';
 import { RootState } from 'store/index';
 
+import { useStyles } from 'hooks/useStyles';
 import MyBackground from 'components/custom/MyBackground';
 import MyTopBar from 'components/custom/MyTopBar';
 import MyButton from 'components/custom/MyButton';
@@ -16,7 +17,7 @@ const SignInScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'SignIn'>) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { styles } = useStyles();
   const dispatch = useDispatch();
 
   const [credentials, setCredentials] = useState('');
@@ -29,7 +30,7 @@ const SignInScreen = ({
           style={{
             height: 42,
             width: '95%',
-            backgroundColor: theme.style.colorSix,
+            backgroundColor: styles.colors.paletteSix,
             marginVertical: 4,
             borderRadius: 8,
 
@@ -40,12 +41,12 @@ const SignInScreen = ({
           <TextInput
             style={{
               marginLeft: 4,
-              color: theme.style.text,
+              color: styles.colors.paletteTextMain,
               fontWeight: '500',
               fontSize: 16,
               flex: 1,
             }}
-            placeholderTextColor={theme.style.textDim}
+            placeholderTextColor={styles.colors.paletteTextLight}
             onChangeText={text => setCredentials(text)}
             placeholder="Name"
           />
@@ -70,14 +71,14 @@ const SignInScreen = ({
           style={{
             height: 2,
             width: '95%',
-            backgroundColor: theme.style.textDim,
+            backgroundColor: styles.colors.paletteTextLight,
             marginVertical: 10,
             borderRadius: 8,
           }}
         />
         <Text
           style={{
-            color: theme.style.textDim,
+            color: styles.colors.paletteTextLight,
             fontWeight: '500',
             fontSize: 16,
             marginVertical: 10,

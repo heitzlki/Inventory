@@ -10,6 +10,8 @@ import {
 
 import { useDispatch, useStore } from 'react-redux';
 import { RootState } from 'store/index';
+
+import { useStyles } from 'hooks/useStyles';
 import { activate } from 'store/drawer';
 
 import { inventoryAdd } from 'store/inventories';

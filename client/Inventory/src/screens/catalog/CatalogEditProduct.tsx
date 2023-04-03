@@ -1,23 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
+  FlatList,
   Pressable,
   TextInput,
   TextInputProps,
-  FlatList,
+  View,
 } from 'react-native';
 
 import type { RootStackScreenProps } from 'navigation/types';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { catalogProductDelete, catalogProductEdit } from 'store/catalog';
 import { RootState } from 'store/index';
 
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useStyles } from 'hooks/useStyles';
 
-import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
+import { BottomSheetRefProps } from 'components/BottomSheet';
 import {
   AmountType,
   CategoryType,
@@ -25,16 +23,15 @@ import {
   UnitType,
 } from 'store/catalog/state';
 
+import ProductCategoryBottomSheet from 'components/catalog/ProductCategoryBottomSheet';
 import {
   MyBackground,
-  MyTopBar,
   MyButton,
-  MyText,
   MyCategoryLabel,
+  MyText,
+  MyTopBar,
 } from 'components/custom';
-import { validUnits, validAmounts, validCategories } from 'store/catalog/state';
-import { useGoBack } from 'hooks/useGoBack';
-import ProductCategoryBottomSheet from 'components/catalog/ProductCategoryBottomSheet';
+import { validAmounts, validCategories, validUnits } from 'store/catalog/state';
 
 interface CatalogEditProductTextInputProps extends TextInputProps {
   name?: string;
@@ -56,14 +53,13 @@ const CatalogEditProductTextInput = ({
   onChange,
   ...props
 }: CatalogEditProductTextInputProps) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
-
+  const { styles } = useStyles();
   return (
     <View
       style={{
         height: 42,
         width: '95%',
-        backgroundColor: theme.style.colorFour,
+        backgroundColor: styles.colors.paletteFour,
         marginVertical: 4,
         borderRadius: 8,
 
@@ -75,7 +71,7 @@ const CatalogEditProductTextInput = ({
         <MyText
           style={{
             marginLeft: 8,
-            color: theme.style.text,
+            color: styles.colors.paletteTextMain,
             fontWeight: '500',
             fontSize: 16,
           }}
@@ -85,7 +81,7 @@ const CatalogEditProductTextInput = ({
       <TextInput
         style={{
           marginLeft: 4,
-          color: theme.style.text,
+          color: styles.colors.paletteTextMain,
           fontWeight: '500',
           fontSize: 16,
           flex: 1,
@@ -108,8 +104,7 @@ const CatalogEditProductScreen = ({
 
   const catalog = useSelector((state: RootState) => state.catalogReducer);
 
-  const theme = useSelector((state: RootState) => state.themeReducer);
-
+  const { styles } = useStyles();
   const product: ProductState = catalog[productId];
 
   const [editProduct, setEditProduct] = useState<EditProductState>({
@@ -204,7 +199,7 @@ const CatalogEditProductScreen = ({
           style={{
             height: 42,
             width: '95%',
-            backgroundColor: theme.style.colorFour,
+            backgroundColor: styles.colors.paletteFour,
             marginVertical: 4,
             borderRadius: 8,
 
@@ -235,12 +230,12 @@ const CatalogEditProductScreen = ({
                   style={{
                     flex: 1,
                     margin: 5,
-                    backgroundColor: theme.style.colorSix,
+                    backgroundColor: styles.colors.paletteSix,
 
                     paddingHorizontal: 10,
 
                     borderRadius: 8,
-                    borderColor: theme.style.text,
+                    borderColor: styles.colors.paletteTextMain,
                     borderWidth: editProduct.unit == item ? 2 : 0,
 
                     alignItems: 'center',
@@ -257,8 +252,8 @@ const CatalogEditProductScreen = ({
                       textAlign: 'center',
                       color:
                         editProduct.unit == item
-                          ? theme.style.text
-                          : theme.style.textDim,
+                          ? styles.colors.paletteTextMain
+                          : styles.colors.paletteTextLight,
                     }}
                   />
                 </Pressable>
@@ -270,7 +265,7 @@ const CatalogEditProductScreen = ({
           style={{
             height: 42,
             width: '95%',
-            backgroundColor: theme.style.colorFour,
+            backgroundColor: styles.colors.paletteFour,
             marginVertical: 4,
             borderRadius: 8,
 
@@ -300,12 +295,12 @@ const CatalogEditProductScreen = ({
                   style={{
                     flex: 1,
                     margin: 5,
-                    backgroundColor: theme.style.colorSix,
+                    backgroundColor: styles.colors.paletteSix,
 
                     paddingHorizontal: 10,
 
                     borderRadius: 8,
-                    borderColor: theme.style.text,
+                    borderColor: styles.colors.paletteTextMain,
                     borderWidth: editProduct.amountType == item ? 2 : 0,
 
                     alignItems: 'center',
@@ -326,8 +321,8 @@ const CatalogEditProductScreen = ({
                       textAlign: 'center',
                       color:
                         editProduct.amountType == item
-                          ? theme.style.text
-                          : theme.style.textDim,
+                          ? styles.colors.paletteTextMain
+                          : styles.colors.paletteTextLight,
                     }}
                   />
                 </Pressable>
@@ -342,7 +337,7 @@ const CatalogEditProductScreen = ({
           }}
           style={{
             marginVertical: 4,
-            backgroundColor: theme.style.colorFour,
+            backgroundColor: styles.colors.paletteFour,
           }}>
           <MyText
             style={{
@@ -368,11 +363,13 @@ const CatalogEditProductScreen = ({
           style={{
             marginVertical: 4,
             justifyContent: 'center',
-            backgroundColor: theme.style.colorSix,
+            backgroundColor: styles.colors.paletteSix,
           }}>
           <MyText
             style={{
-              color: valid ? theme.style.colorGreen : theme.style.textDim,
+              color: valid
+                ? styles.colors.palettePrimaryGreen
+                : styles.colors.paletteTextLight,
               fontWeight: '500',
               fontSize: 18,
             }}
@@ -387,11 +384,11 @@ const CatalogEditProductScreen = ({
           style={{
             marginVertical: 4,
             justifyContent: 'center',
-            backgroundColor: theme.style.colorSix,
+            backgroundColor: styles.colors.paletteSix,
           }}>
           <MyText
             style={{
-              color: theme.style.colorRed,
+              color: styles.colors.palettePrimaryRed,
               fontWeight: '500',
               fontSize: 18,
             }}

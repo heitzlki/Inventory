@@ -5,6 +5,8 @@ import type { RootStackScreenProps } from 'navigation/types';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
+
+import { useStyles } from 'hooks/useStyles';
 import { reminderActivate, reminderSetTime } from 'store/reminder';
 
 import MyBackground from 'components/custom/MyBackground';
@@ -38,8 +40,7 @@ const ReminderScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'Reminder'>) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
-
+  const { styles } = useStyles();
   const dispatch = useDispatch();
   const reminder = useSelector((state: RootState) => state.reminderReducer);
 
@@ -106,7 +107,9 @@ const ReminderScreen = ({
               marginLeft: 10,
               fontWeight: '500',
               fontSize: 16,
-              color: reminder.active ? theme.style.text : theme.style.textDim,
+              color: reminder.active
+                ? styles.colors.paletteTextMain
+                : styles.colors.paletteTextLight,
             }}
             text={`Active: ${reminder.active ? 'yes' : 'no'}`}
           />
@@ -122,7 +125,9 @@ const ReminderScreen = ({
               marginLeft: 10,
               fontWeight: '500',
               fontSize: 16,
-              color: reminder.active ? theme.style.text : theme.style.textDim,
+              color: reminder.active
+                ? styles.colors.paletteTextMain
+                : styles.colors.paletteTextLight,
             }}
             text={new Date(Date.parse(reminder.date)).toLocaleTimeString([], {
               hour: '2-digit',

@@ -18,6 +18,7 @@ import Animated, {
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
 
+import { useStyles } from 'hooks/useStyles';
 import MyText from 'components/custom/MyText';
 import type { SharedValue } from 'react-native-reanimated';
 
@@ -62,14 +63,14 @@ const DrawerRoute = ({
   action?: () => void;
   title: string;
 }) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { styles } = useStyles();
 
   return (
     <Pressable
       style={{
         height: 34,
         width: '95%',
-        backgroundColor: theme.style.colorFour,
+        backgroundColor: styles.colors.paletteFour,
         borderTopRightRadius: 8,
         borderBottomRightRadius: 8,
         flexDirection: 'row',
@@ -86,7 +87,7 @@ const DrawerRoute = ({
 };
 
 const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { styles } = useStyles();
   const drawer = useSelector((state: RootState) => state.drawerReducer);
   const dispatch = useDispatch();
 
@@ -197,8 +198,8 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
     activateAnimation();
   }, [drawer.active]);
 
-  const styles = StyleSheet.create({
-    drawerSheetBackGround: {
+  const drawerSheetStyles = StyleSheet.create({
+    background: {
       flex: 1,
       position: 'absolute',
       top: 0,
@@ -207,12 +208,12 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
       height: '100%',
       zIndex: 3,
     },
-    drawerSheetContainer: {
+    container: {
       position: 'absolute',
       top: 0,
       width: MAX_TRANSLATE_X,
       height: '100%',
-      backgroundColor: theme.style.colorThree,
+      backgroundColor: styles.colors.paletteThree,
       right: SCREEN_WIDTH,
       borderTopRightRadius: 25,
       borderBottomRightRadius: 25,
@@ -226,11 +227,11 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
     <>
       <TapGestureHandler onGestureEvent={tapGestureEvent}>
         <Animated.View
-          style={[styles.drawerSheetBackGround, rDrawerSheetBackGroundStyle]}
+          style={[drawerSheetStyles.background, rDrawerSheetBackGroundStyle]}
         />
       </TapGestureHandler>
       <PanGestureHandler onGestureEvent={panGestureEvent}>
-        <Animated.View style={[styles.drawerSheetContainer, rDrawerSheetStyle]}>
+        <Animated.View style={[drawerSheetStyles.container, rDrawerSheetStyle]}>
           <DrawerRoute
             action={() => {
               handleNav(() => {});

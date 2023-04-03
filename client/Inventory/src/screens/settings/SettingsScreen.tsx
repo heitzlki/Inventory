@@ -2,19 +2,17 @@ import { View } from 'react-native';
 
 import type { RootStackScreenProps } from 'navigation/types';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { signOut } from 'store/auth';
 
-import { setTheme } from 'store/theme';
-import { RootState } from 'store/index';
-
-import { MyBackground, MyTopBar, MyButton, MyText } from 'components/custom';
+import { MyBackground, MyButton, MyText, MyTopBar } from 'components/custom';
+import { useStyles } from 'hooks/useStyles';
 
 const SettingsScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'Settings'>) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { theme, setTheme } = useStyles();
   const dispatch = useDispatch();
 
   return (
@@ -37,7 +35,7 @@ const SettingsScreen = ({
         </MyButton>
         <MyButton
           onPress={() => {
-            dispatch(setTheme({}));
+            setTheme(theme === 'light' ? 'dark' : 'light');
           }}>
           <MyText
             style={{
@@ -45,7 +43,7 @@ const SettingsScreen = ({
               fontWeight: '500',
               fontSize: 16,
             }}
-            text={`Theme: ${theme.theme}`}
+            text={`Theme: ${theme}`}
           />
         </MyButton>
       </View>

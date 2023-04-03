@@ -1,12 +1,11 @@
-import { Pressable, PressableProps, StyleSheet, ViewStyle } from 'react-native';
+import { PressableProps, StyleSheet, ViewStyle } from 'react-native';
 
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/index';
-import MyIcon from './MyIcon';
 import MyPressableIcon from './MyPressableIcon';
 
+import { useStyles } from 'hooks/useStyles';
+
 const MyAddButton = ({ onPress, style }: PressableProps) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { styles } = useStyles();
   const combinedStyles = StyleSheet.flatten<ViewStyle>([
     {
       position: 'absolute',
@@ -18,7 +17,7 @@ const MyAddButton = ({ onPress, style }: PressableProps) => {
       width: 60,
       height: 60,
       borderRadius: 15,
-      backgroundColor: theme.style.colorSix,
+      backgroundColor: styles.colors.paletteSix,
     },
     style as ViewStyle,
   ]);

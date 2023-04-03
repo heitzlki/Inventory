@@ -6,6 +6,7 @@ import { TextInput, BackHandler } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
 
+import { useStyles } from 'hooks/useStyles';
 import { inventoryDelete, inventoryEdit } from 'store/inventories';
 
 import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
@@ -25,8 +26,7 @@ const InventoryBottomSheet = ({
   bottomSheetRef,
   editNameRef,
 }: Props) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
-
+  const { styles } = useStyles();
   const inventories = useSelector(
     (state: RootState) => state.invetoriesReducer,
   );
@@ -62,7 +62,7 @@ const InventoryBottomSheet = ({
         style={{
           width: 75,
           height: 4,
-          backgroundColor: theme.style.text,
+          backgroundColor: styles.colors.paletteTextMain,
           alignSelf: 'center',
           marginVertical: 15,
           borderRadius: 2,
@@ -72,7 +72,7 @@ const InventoryBottomSheet = ({
         style={{
           height: 42,
           width: '95%',
-          backgroundColor: theme.style.colorFour,
+          backgroundColor: styles.colors.paletteFour,
           marginVertical: 4,
           borderRadius: 8,
 
@@ -86,7 +86,7 @@ const InventoryBottomSheet = ({
           ref={editNameRef}
           style={{
             marginLeft: 4,
-            color: theme.style.text,
+            color: styles.colors.paletteTextMain,
             fontWeight: '500',
             fontSize: 16,
             flex: 1,
@@ -116,7 +116,7 @@ const InventoryBottomSheet = ({
 
           height: 42,
           width: '95%',
-          backgroundColor: theme.style.colorFour,
+          backgroundColor: styles.colors.paletteFour,
         }}
         onPress={() => {
           dispatch(inventoryDelete({ inventoryId }));

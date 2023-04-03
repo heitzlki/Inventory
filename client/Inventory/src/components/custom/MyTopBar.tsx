@@ -1,6 +1,8 @@
 import { View, ViewProps, StyleSheet, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/index';
+
+import { useStyles } from 'hooks/useStyles';
 import { useGoBack } from 'hooks/useGoBack';
 
 import MyPressableIcon from './MyPressableIcon';
@@ -13,7 +15,7 @@ interface Props extends ViewProps {
 }
 
 const MyTopBar = ({ children, backButton, title, style, ...props }: Props) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { styles } = useStyles();
   const goBack = useGoBack();
   const combinedStyles: ViewStyle = StyleSheet.flatten([
     {
@@ -22,7 +24,7 @@ const MyTopBar = ({ children, backButton, title, style, ...props }: Props) => {
       top: 0,
       width: '100%',
       height: 58,
-      backgroundColor: theme.style.colorFive,
+      backgroundColor: styles.colors.paletteFive,
       borderBottomLeftRadius: 15,
       borderBottomRightRadius: 15,
       flexDirection: 'row',

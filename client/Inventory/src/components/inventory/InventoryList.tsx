@@ -1,38 +1,16 @@
 import React from 'react';
-import { useRef, useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  Pressable,
-  FlatList,
-  TextInput,
-  BackHandler,
-} from 'react-native';
+import { FlatList, Pressable, View } from 'react-native';
 
-import { useSelector, useDispatch, useStore } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'store/index';
-import { activate } from 'store/drawer';
+import { useStyles } from 'hooks/useStyles';
 
-import {
-  inventoryAdd,
-  inventoryDelete,
-  inventoryEdit,
-} from 'store/inventories';
+import { BottomSheetRefProps } from 'components/BottomSheet';
 
-import type { RootStackScreenProps } from 'navigation/types';
-
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
-
-import MyBackground from 'components/custom/MyBackground';
-import MyTopBar from 'components/custom/MyTopBar';
-import MyPressableIcon from 'components/custom/MyPressableIcon';
-import MyAddButton from 'components/custom/MyAddButton';
-import MyBottomSheet from 'components/custom/MyBottomSheet';
-import MyIcon from 'components/custom/MyIcon';
-import MyText from 'components/custom/MyText';
 import { useNavigation } from '@react-navigation/native';
+import MyIcon from 'components/custom/MyIcon';
+import MyPressableIcon from 'components/custom/MyPressableIcon';
+import MyText from 'components/custom/MyText';
 
 const InventoryList = ({
   bottomSheetRef,
@@ -41,8 +19,7 @@ const InventoryList = ({
   bottomSheetRef: React.RefObject<BottomSheetRefProps>;
   setBottomSheetInventoryId: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
-
+  const { styles } = useStyles();
   const inventories = useSelector(
     (state: RootState) => state.invetoriesReducer,
   );
@@ -63,7 +40,7 @@ const InventoryList = ({
             height: 50,
             maxWidth: '95%',
             minWidth: '95%',
-            backgroundColor: theme.style.colorFour,
+            backgroundColor: styles.colors.paletteFour,
             marginVertical: 4,
             borderRadius: 8,
             flexDirection: 'row',
@@ -84,7 +61,7 @@ const InventoryList = ({
               set="MaterialCommunityIcons"
               name="archive"
               size={24}
-              color={theme.style.colorBlue}
+              color={styles.colors.palettePrimaryBlue}
             />
 
             <MyText

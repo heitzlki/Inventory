@@ -2,6 +2,8 @@ import { Dimensions, StyleSheet, View, ViewStyle } from 'react-native';
 import React, { useCallback, useImperativeHandle } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/index';
+
+import { useStyles } from 'hooks/useStyles';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
@@ -55,8 +57,7 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
     const SNAP_MIN_TRANSLATE_Y = -SCREEN_HEIGHT * snapMinTranslateY;
     const ACTIVATE_TRANSLATE_Y = -SCREEN_HEIGHT * activateTranslateY;
 
-    const theme = useSelector((state: RootState) => state.themeReducer);
-
+    const { styles } = useStyles();
     const bottomSheetBackgroundCombinedStyle = StyleSheet.flatten<
       AnimateStyle<ViewStyle>
     >([
@@ -78,7 +79,7 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
       {
         height: SCREEN_HEIGHT,
         width: '100%',
-        backgroundColor: theme.style.colorThree,
+        backgroundColor: styles.colors.paletteThree,
         position: 'absolute',
         top: SCREEN_HEIGHT,
         borderRadius: 25,

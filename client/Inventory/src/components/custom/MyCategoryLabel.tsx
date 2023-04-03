@@ -3,6 +3,7 @@ import { Text, ViewProps, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/index';
 
+import { useStyles } from 'hooks/useStyles';
 import MyText from 'components/custom/MyText';
 import { CategoryType } from 'store/catalog/state';
 
@@ -11,14 +12,14 @@ interface Props extends ViewProps {
 }
 
 const MyCategoryLabel = ({ category, style, ...props }: Props) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { styles } = useStyles();
   const combinedStyles = StyleSheet.flatten([
     {
       marginLeft: 4,
       marginVertical: 2,
-      backgroundColor: theme.style.categoryColors[category].colorOne,
+      backgroundColor: styles.colors.paletteCategory[category].primary,
       borderRadius: 4,
-      borderColor: theme.style.categoryColors[category].colorTwo,
+      borderColor: styles.colors.paletteCategory[category].secondary,
       borderWidth: 2,
       paddingHorizontal: 4,
     },

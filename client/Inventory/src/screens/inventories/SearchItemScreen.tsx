@@ -24,6 +24,7 @@ import { ProductState, validCategories } from 'store/catalog/state';
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { RootState } from 'store/index';
 
+import { useStyles } from 'hooks/useStyles';
 import type { RootStackScreenProps } from 'navigation/types';
 
 import {
@@ -40,7 +41,7 @@ const SearchItemScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'SearchItem'>) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { styles } = useStyles();
   const { inventoryId } = route.params;
 
   const store = useStore<RootState>();
@@ -92,7 +93,7 @@ const SearchItemScreen = ({
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              backgroundColor: theme.style.colorSix,
+              backgroundColor: styles.colors.paletteSix,
               paddingHorizontal: 8,
               marginRight: 20,
               flex: 1,
@@ -103,13 +104,13 @@ const SearchItemScreen = ({
             <MyIcon set="MaterialIcons" name="search" size={26} />
             <TextInput
               style={{
-                color: theme.style.text,
+                color: styles.colors.paletteTextMain,
                 fontWeight: '500',
                 fontSize: 16,
                 flex: 1,
               }}
               ref={inputRef}
-              placeholderTextColor={theme.style.textDim}
+              placeholderTextColor={styles.colors.paletteTextLight}
               value={searchQuery}
               onChangeText={handleSearchChange}
               placeholder="Search"
@@ -158,8 +159,8 @@ const SearchItemScreen = ({
                     style={{
                       borderWidth: searchCategories.includes(item) ? 3 : 2,
                       borderColor: searchCategories.includes(item)
-                        ? theme.style.text
-                        : theme.style.categoryColors[item].colorTwo,
+                        ? styles.colors.paletteTextMain
+                        : styles.colors.paletteCategory[item].secondary,
                     }}
                   />
                 </Pressable>
@@ -180,7 +181,7 @@ const SearchItemScreen = ({
             style={{
               height: 60,
               minWidth: '95%',
-              backgroundColor: theme.style.colorFour,
+              backgroundColor: styles.colors.paletteFour,
               marginVertical: 4,
               borderRadius: 8,
 
@@ -243,7 +244,7 @@ const SearchItemScreen = ({
                   flex: 1,
                   paddingVertical: 5,
                   paddingHorizontal: 10,
-                  backgroundColor: theme.style.colorSix,
+                  backgroundColor: styles.colors.paletteSix,
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 8,
@@ -265,7 +266,7 @@ const SearchItemScreen = ({
                     flex: 1,
                     paddingVertical: 5,
                     paddingHorizontal: 10,
-                    backgroundColor: theme.style.colorSix,
+                    backgroundColor: styles.colors.paletteSix,
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 8,
@@ -287,7 +288,7 @@ const SearchItemScreen = ({
                   flex: 1,
                   paddingVertical: 5,
                   paddingHorizontal: 10,
-                  backgroundColor: theme.style.colorSix,
+                  backgroundColor: styles.colors.paletteSix,
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 8,

@@ -3,18 +3,19 @@ import { Pressable, PressableProps, StyleSheet, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/index';
 
+import { useStyles } from 'hooks/useStyles';
 interface Props extends PressableProps {
   children?: React.ReactNode;
   onPress: () => void;
 }
 
 const MyButton = ({ children, onPress, style, ...props }: Props) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { styles } = useStyles();
   const combinedStyles = StyleSheet.flatten([
     {
       height: 42,
       width: '95%',
-      backgroundColor: theme.style.colorFour,
+      backgroundColor: styles.colors.paletteFour,
       marginVertical: 4,
       borderRadius: 8,
     },

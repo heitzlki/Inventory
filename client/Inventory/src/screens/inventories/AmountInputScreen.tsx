@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { inventoryItemSetAmount } from 'store/inventories';
 import { RootState } from 'store/index';
 
+import { useStyles } from 'hooks/useStyles';
 import { MyBackground } from 'components/custom';
 
 interface ButtonProps {

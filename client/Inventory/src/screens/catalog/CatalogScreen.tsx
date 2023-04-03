@@ -1,24 +1,24 @@
-import { useEffect, useState, useRef } from 'react';
-import { View, Text, Pressable, FlatList, TextInput } from 'react-native';
+import { useState } from 'react';
+import { FlatList, Pressable, TextInput, View } from 'react-native';
 
-import { useSelector, useDispatch, useStore } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import { RootState } from 'store/index';
 
-import { catalogProductAdd } from 'store/catalog';
-import type { ProductState } from 'store/catalog/state';
+import { useStyles } from 'hooks/useStyles';
 import { useSync } from 'hooks/useSync';
+import { catalogProductAdd } from 'store/catalog';
 
 import type { RootStackScreenProps } from 'navigation/types';
 
 import {
-  MyBackground,
-  MyTopBar,
   MyAddButton,
-  MyPressableIcon,
+  MyBackground,
   MyIcon,
+  MyPressableIcon,
+  MyTopBar,
 } from 'components/custom';
 
-import { MyText, MyCategoryLabel } from 'components/custom';
+import { MyCategoryLabel, MyText } from 'components/custom';
 
 import useSearch from 'hooks/useSearch';
 import useSortedCategories from 'hooks/useSortedCategories';
@@ -27,42 +27,11 @@ const CatalogScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'Catalog'>) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
-
-  const catalog = useSelector((state: RootState) => state.catalogReducer);
-
-  // const [searchQuery, setSearchQuery] = useState('');
-  // const [searchResults, setSearchResults] = useState<ProductState[]>([]);
-
-  // useEffect(() => {
-  //   setSearchResults(Object.values(catalog));
-  // }, [catalog]);
+  const { styles } = useStyles();
 
   const store = useStore<RootState>();
 
   const dispatch = useDispatch();
-
-  // function search(query: string): ProductState[] {
-  //   if (query == '') {
-  //     return Object.values(catalog);
-  //   }
-
-  //   // Convert the search query to lowercase to make the search case-insensitive
-  //   query = query.toLowerCase();
-
-  //   // Filter the catalog by products whose names contain the search query
-  //   const results: ProductState[] = Object.values(catalog).filter(
-  //     product => product.name.toLowerCase().indexOf(query) !== -1,
-  //   );
-
-  //   // Sort the results by the product name
-  //   return results.sort((a, b) => a.name.localeCompare(b.name));
-  // }
-
-  // function handleSearchChange(query: string) {
-  //   setSearchQuery(query);
-  //   setSearchResults(search(query));
-  // }
 
   const [
     searchResults,
@@ -111,7 +80,7 @@ const CatalogScreen = ({
               right: 0,
               flexDirection: 'row',
               alignItems: 'center',
-              backgroundColor: theme.style.colorSix,
+              backgroundColor: styles.colors.paletteSix,
               paddingHorizontal: 8,
               flex: 1,
               borderRadius: 15,
@@ -122,12 +91,12 @@ const CatalogScreen = ({
             <MyIcon set="MaterialIcons" name="search" size={26} />
             <TextInput
               style={{
-                color: theme.style.text,
+                color: styles.colors.paletteTextMain,
                 fontWeight: '500',
                 fontSize: 16,
                 flex: 1,
               }}
-              placeholderTextColor={theme.style.textDim}
+              placeholderTextColor={styles.colors.paletteTextLight}
               value={searchQuery}
               onChangeText={handleSearchChange}
               placeholder="Search"
@@ -175,8 +144,8 @@ const CatalogScreen = ({
                     style={{
                       borderWidth: searchCategories.includes(item) ? 3 : 2,
                       borderColor: searchCategories.includes(item)
-                        ? theme.style.text
-                        : theme.style.categoryColors[item].colorTwo,
+                        ? styles.colors.paletteTextMain
+                        : styles.colors.paletteCategory[item].secondary,
                     }}
                   />
                 </Pressable>
@@ -197,7 +166,7 @@ const CatalogScreen = ({
             style={{
               height: 60,
               minWidth: '95%',
-              backgroundColor: theme.style.colorFour,
+              backgroundColor: styles.colors.paletteFour,
               marginVertical: 4,
               borderRadius: 8,
 
@@ -245,7 +214,7 @@ const CatalogScreen = ({
                   flex: 1,
                   paddingVertical: 5,
                   paddingHorizontal: 10,
-                  backgroundColor: theme.style.colorSix,
+                  backgroundColor: styles.colors.paletteSix,
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 8,
@@ -267,7 +236,7 @@ const CatalogScreen = ({
                     flex: 1,
                     paddingVertical: 5,
                     paddingHorizontal: 10,
-                    backgroundColor: theme.style.colorSix,
+                    backgroundColor: styles.colors.paletteSix,
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 8,
@@ -289,7 +258,7 @@ const CatalogScreen = ({
                   flex: 1,
                   paddingVertical: 5,
                   paddingHorizontal: 10,
-                  backgroundColor: theme.style.colorSix,
+                  backgroundColor: styles.colors.paletteSix,
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 8,

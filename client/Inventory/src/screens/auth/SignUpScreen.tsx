@@ -1,22 +1,19 @@
 import type { RootStackScreenProps } from 'navigation/types';
-import { useState } from 'react';
-import { View, Pressable, Button, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { signIn } from 'store/auth';
-import { RootState } from 'store/index';
-
 import MyBackground from 'components/custom/MyBackground';
-import MyTopBar from 'components/custom/MyTopBar';
 import MyButton from 'components/custom/MyButton';
 import MyText from 'components/custom/MyText';
+import MyTopBar from 'components/custom/MyTopBar';
+import { useStyles } from 'hooks/useStyles';
 
 const SignUpScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'SignUp'>) => {
-  const theme = useSelector((state: RootState) => state.themeReducer);
+  const { styles } = useStyles();
+
   return (
     <MyBackground>
       <MyTopBar backButton={true} title="Sign Up" />
@@ -25,7 +22,7 @@ const SignUpScreen = ({
           style={{
             height: 42,
             width: '95%',
-            backgroundColor: theme.style.colorSix,
+            backgroundColor: styles.colors.paletteSix,
             marginVertical: 4,
             borderRadius: 8,
 
@@ -36,12 +33,12 @@ const SignUpScreen = ({
           <TextInput
             style={{
               marginLeft: 4,
-              color: theme.style.text,
+              color: styles.colors.paletteTextMain,
               fontWeight: '500',
               fontSize: 16,
               flex: 1,
             }}
-            placeholderTextColor={theme.style.textDim}
+            placeholderTextColor={styles.colors.paletteTextLight}
             placeholder="Not aviailable"
           />
         </View>
@@ -62,14 +59,14 @@ const SignUpScreen = ({
           style={{
             height: 2,
             width: '95%',
-            backgroundColor: theme.style.textDim,
+            backgroundColor: styles.colors.paletteTextLight,
             marginVertical: 10,
             borderRadius: 8,
           }}
         />
         <Text
           style={{
-            color: theme.style.textDim,
+            color: styles.colors.paletteTextLight,
             fontWeight: '500',
             fontSize: 16,
             marginVertical: 10,
