@@ -241,7 +241,7 @@ const CatalogScreen = ({
                     justifyContent: 'center',
                     borderRadius: 8,
                     marginHorizontal: 4,
-                    borderColor: '#2ad6ffd6',
+                    borderColor: styles.colors.palettePrimarColdStorage,
                     borderWidth: 2,
                   }}>
                   <MyText

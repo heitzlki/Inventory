@@ -11,6 +11,8 @@ type CategoryColorType = Record<
   { primary: string; secondary: string }
 >;
 
+// type ColorType =
+
 export const paletteCategory: CategoryColorType = {
   Aktionsprodukte: { primary: '#02ab8ad6', secondary: '#27fdd4ff' },
   '(1) Frisch- & TK-Ware': { primary: '#ab0241d6', secondary: '#ff0061ff' },
@@ -35,6 +37,8 @@ export const darkTheme: Style = {
     palettePrimaryBlue: '#c1d3fe',
     palettePrimaryGreen: '#98f5e1',
     palettePrimaryRed: '#ff4d6d',
+    palettePrimarDryStorage: '#ffd42ad6',
+    palettePrimarColdStorage: '#2ad6ffd6',
     paletteCategory,
   },
 };
@@ -52,6 +56,8 @@ export const lightTheme: Style = {
     palettePrimaryBlue: '#4848ff',
     palettePrimaryGreen: '#00e9a8ff',
     palettePrimaryRed: '#ff274eff',
+    palettePrimarDryStorage: '#ffd42ad6',
+    palettePrimarColdStorage: '#2ad6ffd6',
     paletteCategory,
   },
 };
@@ -69,6 +75,8 @@ export interface Style {
     palettePrimaryBlue: string;
     palettePrimaryGreen: string;
     palettePrimaryRed: string;
+    palettePrimarDryStorage: string;
+    palettePrimarColdStorage: string;
     paletteCategory: {
       [key in CategoryType]: { primary: string; secondary: string };
     };
