@@ -18,18 +18,14 @@ const MyButton = ({ children, onPress, style, ...props }: Props) => {
       backgroundColor: styles.colors.paletteFour,
       marginVertical: 4,
       borderRadius: 8,
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     style,
-  ]);
-
-  const mergedStyles: ViewStyle = {
-    ...combinedStyles,
-    flexDirection: (style as ViewStyle)?.flexDirection || 'row',
-    alignItems: (style as ViewStyle)?.alignItems || 'center',
-  };
+  ]) as ViewStyle;
 
   return (
-    <Pressable style={mergedStyles} onPress={onPress} {...props}>
+    <Pressable style={combinedStyles} onPress={onPress} {...props}>
       {children}
     </Pressable>
   );
