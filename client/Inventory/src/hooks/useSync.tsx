@@ -19,63 +19,64 @@ function convertToCatalogState(apiResponse: APIResponse): CatalogState {
   const [header, ...rows] = apiResponse;
 
   if (
-    header.length !== 9 ||
-    header[0] !== 'id' ||
-    header[1] !== 'name' ||
-    header[2] !== 'category' ||
-    header[3] !== 'unit' ||
-    header[4] !== 'amountType' ||
-    header[5] !== 'defaultAmountOne' ||
-    header[6] !== 'defaultAmountTwo' ||
-    header[7] !== 'createdAt' ||
-    header[8] !== 'updatedAt'
+    header.length == 9 ||
+    header[0] == 'id' ||
+    header[1] == 'name' ||
+    header[2] == 'category' ||
+    header[3] == 'unit' ||
+    header[4] == 'amountType' ||
+    header[5] == 'defaultAmountOne' ||
+    header[6] == 'defaultAmountTwo' ||
+    header[7] == 'createdAt' ||
+    header[8] == 'updatedAt'
   ) {
-    throw new Error('Invalid API response format');
-  }
+    // throw new Error('Invalid API response format');
 
-  const catalogState: CatalogState = {};
+    const catalogState: CatalogState = {};
 
-  for (const row of rows) {
-    const [
-      id,
-      name,
-      category,
-      unit,
-      amountType,
-      defaultAmountOne,
-      defaultAmountTwo,
-      createdAt,
-      updatedAt,
-    ] = row;
+    for (const row of rows) {
+      const [
+        id,
+        name,
+        category,
+        unit,
+        amountType,
+        defaultAmountOne,
+        defaultAmountTwo,
+        createdAt,
+        updatedAt,
+      ] = row;
 
-    if (
-      typeof id !== 'string' ||
-      typeof name !== 'string' ||
-      !validCategories.includes(category as CategoryType) ||
-      !validUnits.includes(unit as UnitType) ||
-      !validAmounts.includes(amountType as AmountType) ||
-      typeof defaultAmountOne !== 'string' ||
-      typeof defaultAmountTwo !== 'string' ||
-      typeof createdAt !== 'string' ||
-      typeof updatedAt !== 'string'
-    ) {
-      continue;
+      if (
+        typeof id !== 'string' ||
+        typeof name !== 'string' ||
+        !validCategories.includes(category as CategoryType) ||
+        !validUnits.includes(unit as UnitType) ||
+        !validAmounts.includes(amountType as AmountType) ||
+        typeof defaultAmountOne !== 'string' ||
+        typeof defaultAmountTwo !== 'string' ||
+        typeof createdAt !== 'string' ||
+        typeof updatedAt !== 'string'
+      ) {
+        continue;
+      }
+
+      catalogState[id] = {
+        id,
+        name,
+        category: category as CategoryType,
+        unit: unit as UnitType,
+        amountType: amountType as AmountType,
+        defaultAmountOne,
+        defaultAmountTwo,
+        createdAt,
+        updatedAt,
+      };
     }
 
-    catalogState[id] = {
-      id,
-      name,
-      category: category as CategoryType,
-      unit: unit as UnitType,
-      amountType: amountType as AmountType,
-      defaultAmountOne,
-      defaultAmountTwo,
-      createdAt,
-      updatedAt,
-    };
+    return catalogState;
   }
-
-  return catalogState;
+  return {};
 }
 
 function updateCatalog(data: CatalogState, products: CatalogState) {
@@ -110,7 +111,7 @@ export const useSync = () => {
         const catalogData = convertToCatalogState(response);
         dispatch(catalogUpdate(updateCatalog(catalogData, products)));
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     };
     fetchData();
