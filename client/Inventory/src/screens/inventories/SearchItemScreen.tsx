@@ -1,14 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import {
-  Button,
-  View,
-  Text,
-  TouchableOpacity,
-  Pressable,
-  FlatList,
-  Modal,
-  TextInput,
-} from 'react-native';
+import { useCallback, useRef } from 'react';
+import { FlatList, Pressable, TextInput, View } from 'react-native';
 
 import useSearch from 'hooks/useSearch';
 
@@ -16,25 +7,20 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import useSortedCategories from 'hooks/useSortedCategories';
 
-import inventories, {
-  inventoryItemAdd,
-  inventoryItemDelete,
-} from 'store/inventories';
-import { ProductState, validCategories } from 'store/catalog/state';
-import { useSelector, useDispatch, useStore } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import { RootState } from 'store/index';
+import { inventoryItemAdd } from 'store/inventories';
 
 import { useStyles } from 'hooks/useStyles';
 import type { RootStackScreenProps } from 'navigation/types';
 
 import {
   MyBackground,
-  MyTopBar,
-  MyPressableIcon,
-  MyButton,
-  MyText,
-  MyIcon,
   MyCategoryLabel,
+  MyIcon,
+  MyPressableIcon,
+  MyText,
+  MyTopBar,
 } from 'components/custom';
 
 const SearchItemScreen = ({
@@ -70,19 +56,13 @@ const SearchItemScreen = ({
     }, [inputRef]),
   );
 
-  const [topBarHeight, setTopBarHeight] = useState<number>();
-
   return (
     <MyBackground>
       <MyTopBar
         backButton={true}
         title=""
-        style={{ height: topBarHeight, borderBottomRightRadius: 0 }}>
+        style={{ borderBottomRightRadius: 0, paddingVertical: 24 }}>
         <View
-          onLayout={event => {
-            const { height } = event.nativeEvent.layout;
-            setTopBarHeight(height);
-          }}
           style={{
             flexDirection: 'column',
             position: 'relative',
@@ -204,8 +184,9 @@ const SearchItemScreen = ({
               navigation.navigate('AmountInput', {
                 inventoryId,
                 itemId: newItemId,
-                prediction:
+                amountOnePrediction:
                   item.defaultAmountOne == '0' ? '' : item.defaultAmountOne,
+                amounTwoPrediction: item.defaultAmountTwo,
               });
             }}>
             <View
@@ -249,7 +230,7 @@ const SearchItemScreen = ({
                   justifyContent: 'center',
                   borderRadius: 8,
                   marginHorizontal: 4,
-                  borderColor: '#ffd42ad6',
+                  borderColor: styles.colors.palettePrimarDryStorage,
                   borderWidth: 2,
                 }}>
                 <MyText
