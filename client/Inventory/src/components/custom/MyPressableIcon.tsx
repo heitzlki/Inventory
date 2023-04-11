@@ -1,13 +1,8 @@
 import { Pressable, PressableProps } from 'react-native';
 
-import MyIcon, { IconSet } from 'components/custom/MyIcon';
+import MyIcon, { IconProps } from 'components/custom/MyIcon';
 
-interface Props extends PressableProps {
-  set: IconSet;
-  name: string;
-  size?: number;
-  color?: string;
-}
+interface PressableIconProps extends PressableProps, IconProps {}
 
 const MyPressableIcon = ({
   onPress,
@@ -17,7 +12,7 @@ const MyPressableIcon = ({
   color,
   style,
   ...props
-}: Props) => {
+}: PressableIconProps) => {
   return (
     <Pressable style={style} onPress={onPress} {...props}>
       <MyIcon set={set} name={name} color={color} size={size} />
