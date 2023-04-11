@@ -199,6 +199,7 @@ const InventoryScreen = ({
                           navigation.navigate('AmountInput', {
                             inventoryId,
                             itemId: itemId,
+                            selectedAmount: 'two',
                           });
                         }}>
                         <MyText
@@ -321,7 +322,7 @@ const InventoryScreen = ({
                 style={{
                   height: 60,
                   minWidth: '95%',
-                  backgroundColor: '#2f3136',
+                  backgroundColor: styles.colors.paletteFour,
                   marginVertical: 4,
                   borderRadius: 8,
 
@@ -373,7 +374,7 @@ const InventoryScreen = ({
                       flex: 1,
                       padding: 5,
                       margin: 5,
-                      backgroundColor: '#292B2F',
+                      backgroundColor: styles.colors.paletteFive,
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderRadius: 8,
@@ -392,32 +393,34 @@ const InventoryScreen = ({
                       flex: 1,
                       paddingVertical: 5,
                       paddingHorizontal: 10,
-                      backgroundColor: '#202225',
+                      backgroundColor: styles.colors.paletteSix,
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderRadius: 8,
+                      borderWidth: 2,
+                      borderColor: styles.colors.palettePrimarDryStorage,
                     }}
                     onPress={() => {
                       navigation.navigate('AmountInput', {
                         inventoryId,
                         itemId,
+                        selectedAmount: 'one',
                       });
                     }}>
-                    <Text
+                    <MyText
                       style={{
-                        color: '#DCDDDE',
                         fontWeight: '500',
                         fontSize: 16,
-                      }}>
-                      {item.amountOne}
-                    </Text>
+                      }}
+                      text={item.amountOne}
+                    />
                   </Pressable>
                   <Pressable
                     style={{
                       flex: 1,
                       padding: 5,
                       margin: 5,
-                      backgroundColor: '#292B2F',
+                      backgroundColor: styles.colors.paletteFive,
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderRadius: 8,
@@ -429,7 +432,6 @@ const InventoryScreen = ({
                       set="MaterialCommunityIcons"
                       name="minus"
                       size={21}
-                      color="#DCDDDE"
                     />
                   </Pressable>
                 </View>
