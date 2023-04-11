@@ -278,42 +278,6 @@ const AmountInputScreen = ({
               borderRadius: 8,
               marginHorizontal: 4,
               borderColor:
-                editingAmount === 'one'
-                  ? styles.colors.paletteTextMain
-                  : styles.colors.palettePrimarDryStorage,
-              borderWidth: editingAmount === 'one' ? 4 : 2,
-              marginVertical: 6,
-              width: '45%',
-            }}
-            onPress={() => {
-              if (confirmed) {
-                setEditingAmount('one');
-              }
-            }}>
-            <MyText
-              style={{
-                fontWeight: '500',
-                fontSize: 24,
-              }}
-              text={
-                editingAmount === 'one'
-                  ? confirmed
-                    ? amountOne
-                    : displaySecondNumber()
-                  : amountOne
-              }
-            />
-          </Pressable>
-          <Pressable
-            style={{
-              paddingVertical: 5,
-              paddingHorizontal: 30,
-              backgroundColor: styles.colors.paletteSix,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 8,
-              marginHorizontal: 4,
-              borderColor:
                 editingAmount === 'two'
                   ? styles.colors.paletteTextMain
                   : styles.colors.palettePrimarColdStorage,
@@ -337,6 +301,42 @@ const AmountInputScreen = ({
                     ? amountTwo
                     : displaySecondNumber()
                   : amountTwo
+              }
+            />
+          </Pressable>
+          <Pressable
+            style={{
+              paddingVertical: 5,
+              paddingHorizontal: 30,
+              backgroundColor: styles.colors.paletteSix,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 8,
+              marginHorizontal: 4,
+              borderColor:
+                editingAmount === 'one'
+                  ? styles.colors.paletteTextMain
+                  : styles.colors.palettePrimarDryStorage,
+              borderWidth: editingAmount === 'one' ? 4 : 2,
+              marginVertical: 6,
+              width: '45%',
+            }}
+            onPress={() => {
+              if (confirmed) {
+                setEditingAmount('one');
+              }
+            }}>
+            <MyText
+              style={{
+                fontWeight: '500',
+                fontSize: 24,
+              }}
+              text={
+                editingAmount === 'one'
+                  ? confirmed
+                    ? amountOne
+                    : displaySecondNumber()
+                  : amountOne
               }
             />
           </Pressable>
@@ -369,202 +369,207 @@ const AmountInputScreen = ({
           />
         </View>
       </View>
-
       <View
         style={{
-          alignItems: 'flex-end',
-          justifyContent: 'center',
-          marginTop: 2,
-          marginRight: 24,
+          position: 'absolute',
+          bottom: 24,
+          width: '100%',
         }}>
-        <MyText
-          style={{ fontWeight: '500', fontSize: 56 }}
-          text={displayFirstNumber()}
-        />
-        <MyText
-          style={{ fontWeight: '500', fontSize: 34 }}
-          text={displaySecondNumber()}
-        />
-      </View>
-
-      <View
-        style={{
-          maxWidth: '100%',
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <AmountBaseButton
-          titleOrIcon={'1'}
-          onPress={() => {
-            changeAmount(`${amount}1`);
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'2'}
-          onPress={() => {
-            changeAmount(`${amount}2`);
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'3'}
-          onPress={() => {
-            changeAmount(`${amount}3`);
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'÷'}
-          style={{ backgroundColor: styles.colors.paletteSix }}
-          onPress={() => {
-            changeAmount(`${amount}/`);
-          }}
-        />
-      </View>
-      <View
-        style={{
-          maxWidth: '100%',
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <AmountBaseButton
-          titleOrIcon={'4'}
-          onPress={() => {
-            changeAmount(`${amount}4`);
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'5'}
-          onPress={() => {
-            changeAmount(`${amount}5`);
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'6'}
-          onPress={() => {
-            changeAmount(`${amount}6`);
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'×'}
-          style={{ backgroundColor: styles.colors.paletteSix }}
-          onPress={() => {
-            changeAmount(`${amount}*`);
-          }}
-        />
-      </View>
-      <View
-        style={{
-          maxWidth: '100%',
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <AmountBaseButton
-          titleOrIcon={'7'}
-          onPress={() => {
-            changeAmount(`${amount}7`);
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'8'}
-          onPress={() => {
-            changeAmount(`${amount}8`);
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'9'}
-          onPress={() => {
-            changeAmount(`${amount}9`);
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'+'}
-          style={{ backgroundColor: styles.colors.paletteSix }}
-          onPress={() => {
-            changeAmount(`${amount}+`);
-          }}
-        />
-      </View>
-      <View
-        style={{
-          maxWidth: '100%',
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <AmountBaseButton
-          titleOrIcon={','}
-          onPress={() => {
-            changeAmount(`${amount}.`);
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'0'}
-          onPress={() => {
-            changeAmount(`${amount}0`);
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'⌫'}
-          onPress={() => {
-            changeAmount(amount.slice(0, -1));
-          }}
-        />
-        <AmountBaseButton
-          titleOrIcon={'-'}
-          style={{ backgroundColor: styles.colors.paletteSix }}
-          onPress={() => {
-            changeAmount(`${amount}-`);
-          }}
-        />
-      </View>
-
-      <View
-        style={{
-          maxWidth: '100%',
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <AmountBaseButton
-          titleOrIcon={
-            confirmed
-              ? {
-                  set: 'MaterialCommunityIcons',
-                  name: 'check-bold',
-                  size: 36,
-                  color: styles.colors.palettePrimaryGreen,
-                }
-              : '='
-          }
+        <View
           style={{
-            backgroundColor: styles.colors.paletteSix,
-            width: 313,
-            height: 72,
-            borderRadius: 24,
+            alignItems: 'flex-end',
             justifyContent: 'center',
-            alignItems: 'center',
-            margin: 5,
-          }}
-          onPress={() => {
-            try {
-              if (amountOne != '' && amountTwo != '') {
-                setAmountOne(evalAndFormat(amountOne));
-                setAmountTwo(evalAndFormat(amountTwo));
-                if (checkConfirmed()) {
-                  dispatch(
-                    inventoryItemSetAmount({
-                      inventoryId,
-                      itemId,
-                      newAmountOne: amountOne,
-                      newAmountTwo: amountTwo,
-                    }),
-                  );
-                  navigation.goBack();
-                } else {
-                  setConfirmed(true);
-                }
-              }
-            } catch {}
-          }}
-        />
+            marginTop: 2,
+            marginRight: 24,
+          }}>
+          <MyText
+            style={{ fontWeight: '500', fontSize: 56 }}
+            text={displayFirstNumber()}
+          />
+          <MyText
+            style={{ fontWeight: '500', fontSize: 34 }}
+            text={displaySecondNumber()}
+          />
+        </View>
 
+        <View
+          style={{
+            maxWidth: '100%',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <AmountBaseButton
+            titleOrIcon={'1'}
+            onPress={() => {
+              changeAmount(`${amount}1`);
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'2'}
+            onPress={() => {
+              changeAmount(`${amount}2`);
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'3'}
+            onPress={() => {
+              changeAmount(`${amount}3`);
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'÷'}
+            style={{ backgroundColor: styles.colors.paletteSix }}
+            onPress={() => {
+              changeAmount(`${amount}/`);
+            }}
+          />
+        </View>
+        <View
+          style={{
+            maxWidth: '100%',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <AmountBaseButton
+            titleOrIcon={'4'}
+            onPress={() => {
+              changeAmount(`${amount}4`);
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'5'}
+            onPress={() => {
+              changeAmount(`${amount}5`);
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'6'}
+            onPress={() => {
+              changeAmount(`${amount}6`);
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'×'}
+            style={{ backgroundColor: styles.colors.paletteSix }}
+            onPress={() => {
+              changeAmount(`${amount}*`);
+            }}
+          />
+        </View>
+        <View
+          style={{
+            maxWidth: '100%',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <AmountBaseButton
+            titleOrIcon={'7'}
+            onPress={() => {
+              changeAmount(`${amount}7`);
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'8'}
+            onPress={() => {
+              changeAmount(`${amount}8`);
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'9'}
+            onPress={() => {
+              changeAmount(`${amount}9`);
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'+'}
+            style={{ backgroundColor: styles.colors.paletteSix }}
+            onPress={() => {
+              changeAmount(`${amount}+`);
+            }}
+          />
+        </View>
+        <View
+          style={{
+            maxWidth: '100%',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <AmountBaseButton
+            titleOrIcon={','}
+            onPress={() => {
+              changeAmount(`${amount}.`);
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'0'}
+            onPress={() => {
+              changeAmount(`${amount}0`);
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'⌫'}
+            onPress={() => {
+              changeAmount(amount.slice(0, -1));
+            }}
+          />
+          <AmountBaseButton
+            titleOrIcon={'-'}
+            style={{ backgroundColor: styles.colors.paletteSix }}
+            onPress={() => {
+              changeAmount(`${amount}-`);
+            }}
+          />
+        </View>
+
+        <View
+          style={{
+            maxWidth: '100%',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <AmountBaseButton
+            titleOrIcon={
+              confirmed
+                ? {
+                    set: 'MaterialCommunityIcons',
+                    name: 'check-bold',
+                    size: 36,
+                    color: styles.colors.palettePrimaryGreen,
+                  }
+                : '='
+            }
+            style={{
+              backgroundColor: styles.colors.paletteSix,
+              width: 313,
+              height: 72,
+              borderRadius: 24,
+              justifyContent: 'center',
+              alignItems: 'center',
+              margin: 5,
+            }}
+            onPress={() => {
+              try {
+                if (amountOne != '' && amountTwo != '') {
+                  setAmountOne(evalAndFormat(amountOne));
+                  setAmountTwo(evalAndFormat(amountTwo));
+                  if (checkConfirmed()) {
+                    dispatch(
+                      inventoryItemSetAmount({
+                        inventoryId,
+                        itemId,
+                        newAmountOne: amountOne,
+                        newAmountTwo: amountTwo,
+                      }),
+                    );
+                    navigation.goBack();
+                  } else {
+                    setConfirmed(true);
+                  }
+                }
+              } catch {}
+            }}
+          />
+        </View>
         {/* <TouchableOpacity
           style={{
             width: 313,
