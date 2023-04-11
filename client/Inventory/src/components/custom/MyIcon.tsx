@@ -34,14 +34,14 @@ export type IconSet =
   | 'Zocial'
   | 'SimpleLineIcons';
 
-interface Props {
+export interface IconProps {
   set: IconSet;
   name: string;
   size?: number;
   color?: string;
 }
 
-const MyIcon = ({ set, name, size, color }: Props) => {
+const MyIcon = ({ set, name, size, color }: IconProps) => {
   const { styles } = useStyles();
   let icon;
   size = size ?? 26;
