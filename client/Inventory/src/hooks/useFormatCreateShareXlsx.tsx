@@ -59,7 +59,8 @@ export function useFormatCreateAndShareXlsx(inventoryId: string) {
     );
 
     if (!isPermitedExternalStorage) {
-      const granted = await PermissionsAndroid.request(
+      // const granted =
+      await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
           title: 'Storage permission needed',
@@ -70,9 +71,9 @@ export function useFormatCreateAndShareXlsx(inventoryId: string) {
         },
       );
 
-      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-        throw new Error('Permission not granted!');
-      }
+      // if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+      //   throw new Error('Permission not granted!');
+      // }
     }
   };
 
