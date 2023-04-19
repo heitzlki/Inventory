@@ -37,11 +37,6 @@ const ProductCategoryBottomSheet = ({
   setEditProduct,
 }: Props) => {
   const { styles } = useStyles();
-  const inventories = useSelector(
-    (state: RootState) => state.invetoriesReducer,
-  );
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
