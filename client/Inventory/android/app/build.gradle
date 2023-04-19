@@ -136,6 +136,12 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    // sourceSets {
+    //     main {
+    //         assets.srcDirs = ['assets']
+    //     }
+    // }
+
     defaultConfig {
         applicationId "com.inventory"
         minSdkVersion rootProject.ext.minSdkVersion
