@@ -1,7 +1,5 @@
-import { Dimensions, StyleSheet, View, ViewStyle } from 'react-native';
 import React, { useCallback, useImperativeHandle } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/index';
+import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 
 import { useStyles } from 'hooks/useStyles';
 import {
@@ -11,15 +9,15 @@ import {
   TapGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import Animated, {
+  AnimateStyle,
+  Extrapolate,
   interpolate,
+  runOnJS,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-  Extrapolate,
-  runOnJS,
 } from 'react-native-reanimated';
-import { AnimateStyle } from 'react-native-reanimated';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
