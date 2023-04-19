@@ -372,18 +372,18 @@ const AmountInputScreen = ({
       <View
         style={{
           position: 'absolute',
-          bottom: 24,
+          bottom: 18,
           width: '100%',
         }}>
         <View
           style={{
             alignItems: 'flex-end',
             justifyContent: 'center',
-            marginTop: 2,
+            marginTop: 0,
             marginRight: 24,
           }}>
           <MyText
-            style={{ fontWeight: '500', fontSize: 56 }}
+            style={{ fontWeight: '500', fontSize: 56, top: 6 }}
             text={displayFirstNumber()}
           />
           <MyText
