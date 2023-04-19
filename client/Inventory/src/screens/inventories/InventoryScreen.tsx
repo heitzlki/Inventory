@@ -17,6 +17,8 @@ import {
   MyCategoryLabel,
 } from 'components/custom';
 
+import Modal from 'components/Modal';
+
 import { useFormatCreateAndShareXlsx } from 'hooks/useFormatCreateShareXlsx';
 import { ItemState } from 'store/inventories/state';
 
@@ -81,16 +83,46 @@ const InventoryScreen = ({
   //   setIntervalId(0);
   // };
 
+  const [modalActive, setModalActive] = useState<boolean>(false);
+
   return (
     <MyBackground>
       <MyTopBar backButton={true} title={inventories[inventoryId].name}>
         <MyPressableIcon
           style={{ position: 'absolute', marginHorizontal: 20, right: 0 }}
-          onPress={() => formatCreateAndShare()}
+          onPress={() => {
+            // setModalActive(!modalActive);
+            console.log('Test');
+            formatCreateAndShare();
+          }} //formatCreateAndShare()}
           set="MaterialIcons"
           name="ios-share"
         />
       </MyTopBar>
+      <Modal
+        activate={modalActive}
+        onBackgroundTap={() => {
+          setModalActive(!modalActive);
+        }}
+        onReturn={() => {
+          setModalActive(!modalActive);
+        }}
+        modalContainerStyle={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        modalContainerWrapperStyle={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          // zIndex: 2,
+        }}>
+        <View
+          style={{
+            width: 100,
+            height: 100,
+          }}></View>
+      </Modal>
+
       <FlatList
         contentContainerStyle={{
           alignItems: 'center',
