@@ -8,12 +8,14 @@ import { useSignOut } from 'hooks/useSignOut';
 
 import { MyBackground, MyButton, MyText, MyTopBar } from 'components/custom';
 import { useStyles } from 'hooks/useStyles';
+import { useLang } from 'hooks/useLang';
 
 const SettingsScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'Settings'>) => {
   const { theme, setTheme } = useStyles();
+  const { translations, setLang } = useLang();
   // const dispatch = useDispatch();
 
   const { signOut } = useSignOut();
@@ -34,7 +36,7 @@ const SettingsScreen = ({
               fontWeight: '500',
               fontSize: 16,
             }}
-            text="Sign Out"
+            text={translations.signIn}
           />
         </MyButton>
         <MyButton
@@ -47,7 +49,7 @@ const SettingsScreen = ({
               fontWeight: '500',
               fontSize: 16,
             }}
-            text={`Theme: ${theme}`}
+            text={`${translations.theme}: ${theme}`}
           />
         </MyButton>
       </View>
