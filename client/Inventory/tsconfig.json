@@ -19,5 +19,6 @@
       "navigation/*": ["src/navigation/*"],
       "screens/*": ["src/screens/*"]
     }
-  }
+  },
+  "typeRoots": ["./src/types"]
 }
