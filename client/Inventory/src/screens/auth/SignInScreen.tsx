@@ -7,6 +7,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { signIn } from 'store/auth';
 import { RootState } from 'store/index';
 
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+
+const auth = getAuth();
+
+import { useSignIn } from 'hooks/useSignIn';
+
 import { useStyles } from 'hooks/useStyles';
 import MyBackground from 'components/custom/MyBackground';
 import MyTopBar from 'components/custom/MyTopBar';
@@ -20,7 +26,13 @@ const SignInScreen = ({
   const { styles } = useStyles();
   const dispatch = useDispatch();
 
-  const [credentials, setCredentials] = useState('');
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: '',
+    error: '',
+  });
+
+  const { signIn, error } = useSignIn();
 
   return (
     <MyBackground>
@@ -47,13 +59,43 @@ const SignInScreen = ({
               flex: 1,
             }}
             placeholderTextColor={styles.colors.paletteTextLight}
-            onChangeText={text => setCredentials(text)}
-            placeholder="Name"
+            onChangeText={text =>
+              setCredentials({ ...credentials, email: text })
+            }
+            placeholder="Email"
+          />
+        </View>
+        <View
+          style={{
+            height: 42,
+            width: '95%',
+            backgroundColor: styles.colors.paletteSix,
+            marginVertical: 4,
+            borderRadius: 8,
+
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <TextInput
+            style={{
+              marginLeft: 4,
+              color: styles.colors.paletteTextMain,
+              fontWeight: '500',
+              fontSize: 16,
+              flex: 1,
+            }}
+            placeholderTextColor={styles.colors.paletteTextLight}
+            secureTextEntry={true}
+            onChangeText={text =>
+              setCredentials({ ...credentials, password: text })
+            }
+            placeholder="Password"
           />
         </View>
         <MyButton
           onPress={() => {
-            dispatch(signIn({ token: credentials }));
+            signIn(credentials.email, credentials.password);
           }}
           style={{
             justifyContent: 'center',

@@ -3,7 +3,8 @@ import { View } from 'react-native';
 import type { RootStackScreenProps } from 'navigation/types';
 
 import { useDispatch } from 'react-redux';
-import { signOut } from 'store/auth';
+// import { signOut } from 'store/auth';
+import { useSignOut } from 'hooks/useSignOut';
 
 import { MyBackground, MyButton, MyText, MyTopBar } from 'components/custom';
 import { useStyles } from 'hooks/useStyles';
@@ -13,7 +14,9 @@ const SettingsScreen = ({
   navigation,
 }: RootStackScreenProps<'Settings'>) => {
   const { theme, setTheme } = useStyles();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+
+  const { signOut } = useSignOut();
 
   return (
     <MyBackground>
@@ -21,7 +24,8 @@ const SettingsScreen = ({
       <View style={{ alignItems: 'center' }}>
         <MyButton
           onPress={() => {
-            dispatch(signOut());
+            // dispatch(signOut());
+            signOut();
           }}
           style={{ marginTop: 8 }}>
           <MyText
