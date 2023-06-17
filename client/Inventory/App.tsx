@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import './src/config/firebase';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
