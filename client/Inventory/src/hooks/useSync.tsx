@@ -13,6 +13,8 @@ import {
   CategoryType,
 } from 'store/catalog/state';
 
+import { SYNC_URL } from '@env';
+
 type APIResponse = Array<Array<string | number>>;
 
 function convertToCatalogState(apiResponse: APIResponse): CatalogState {
@@ -105,9 +107,7 @@ export const useSync = () => {
   const sync = async () => {
     const fetchData = async () => {
       try {
-        const response: APIResponse = await api(
-          'https://script.google.com/macros/s/AKfycbzWzX44U8AGtGaUX9cqxj5bdEmnHDdyGWdZDdm1S5XHXvNo-wEwN-9R_-rRAAqE9GaD/exec',
-        );
+        const response: APIResponse = await api(SYNC_URL);
         const catalogData = convertToCatalogState(response);
         dispatch(catalogUpdate(updateCatalog(catalogData, products)));
       } catch (error) {
