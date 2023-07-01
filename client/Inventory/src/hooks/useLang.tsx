@@ -4,6 +4,8 @@ import { setLang } from 'store/lang';
 import { useMemo } from 'react';
 
 export const langEn: Translation = {
+  language: 'Language',
+  language_name: 'English',
   signIn: 'Sign In',
   signUp: 'Sign Up',
   signOut: 'Sign Out',
@@ -30,6 +32,8 @@ export const langEn: Translation = {
 };
 
 export const langDe: Translation = {
+  language: 'Sprache',
+  language_name: 'Deutsch',
   signIn: 'Anmelden',
   signUp: 'Konto Erstellen',
   signOut: 'Abmelden',
@@ -56,6 +60,8 @@ export const langDe: Translation = {
 };
 
 export interface Translation {
+  language: string;
+  language_name: string;
   signIn: string;
   signUp: string;
   signOut: string;
