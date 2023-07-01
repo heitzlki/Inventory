@@ -16,7 +16,6 @@ const SettingsScreen = ({
 }: RootStackScreenProps<'Settings'>) => {
   const { theme, setTheme } = useStyles();
   const { translations, setLang } = useLang();
-  // const dispatch = useDispatch();
 
   const { signOut } = useSignOut();
 
@@ -26,7 +25,6 @@ const SettingsScreen = ({
       <View style={{ alignItems: 'center' }}>
         <MyButton
           onPress={() => {
-            // dispatch(signOut());
             signOut();
           }}
           style={{ marginTop: 8 }}>
@@ -36,7 +34,7 @@ const SettingsScreen = ({
               fontWeight: '500',
               fontSize: 16,
             }}
-            text={translations.signIn}
+            text={translations.signOut}
           />
         </MyButton>
         <MyButton
@@ -52,7 +50,28 @@ const SettingsScreen = ({
             text={`${translations.theme}: ${theme}`}
           />
         </MyButton>
+        <MyButton
+          onPress={() => {
+            // setTheme(theme === 'light' ? 'dark' : 'light');
+            // setBottomSheetInventoryId(newInventoryId);
+            // bottomSheetRef.current?.activate();
+          }}>
+          <MyText
+            style={{
+              marginLeft: 10,
+              fontWeight: '500',
+              fontSize: 16,
+            }}
+            text={`${translations.language}: ${translations.language_name}`}
+          />
+        </MyButton>
       </View>
+      {/* 
+      <InventoryBottomSheet
+        inventoryId={bottomSheetInventoryId}
+        bottomSheetRef={bottomSheetRef}
+        editNameRef={editNameRef}
+      /> */}
     </MyBackground>
   );
 };
