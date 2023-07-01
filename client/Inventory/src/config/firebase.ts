@@ -11,8 +11,6 @@ import {
   MEASUREMENT_ID,
 } from '@env';
 
-console.log('API_KEY', API_KEY);
-
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
