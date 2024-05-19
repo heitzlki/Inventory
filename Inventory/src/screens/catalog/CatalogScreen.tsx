@@ -5,7 +5,6 @@ import { useDispatch, useStore } from 'react-redux';
 import { RootState } from 'store/index';
 
 import { useStyles } from 'hooks/useStyles';
-import { useSync } from 'hooks/useSync';
 import { catalogProductAdd } from 'store/catalog';
 
 import type { RootStackScreenProps } from 'navigation/types';
@@ -44,8 +43,6 @@ const CatalogScreen = ({
 
   const sortedCategories = useSortedCategories(searchCategories);
 
-  const { sync } = useSync();
-
   const [topBarHeight, setTopBarHeight] = useState<number>();
 
   return (
@@ -54,15 +51,6 @@ const CatalogScreen = ({
         backButton={true}
         title=""
         style={{ height: topBarHeight, borderBottomRightRadius: 0 }}>
-        <MyPressableIcon
-          style={{ marginLeft: 10 }}
-          onPress={() => {
-            sync();
-          }}
-          set="MaterialCommunityIcons"
-          name="sync"
-          size={24}
-        />
         <View
           onLayout={event => {
             const { height } = event.nativeEvent.layout;

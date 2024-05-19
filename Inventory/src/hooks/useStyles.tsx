@@ -11,8 +11,6 @@ type CategoryColorType = Record<
   { primary: string; secondary: string }
 >;
 
-// type ColorType =
-
 export const paletteCategory: CategoryColorType = {
   Aktionsprodukte: { primary: '#02ab8ad6', secondary: '#27fdd4ff' },
   '(1) Frisch- & TK-Ware': { primary: '#ab0241d6', secondary: '#ff0061ff' },

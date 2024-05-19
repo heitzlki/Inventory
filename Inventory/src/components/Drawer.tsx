@@ -1,5 +1,5 @@
 import React, { useCallback, createContext, useEffect } from 'react';
-import { Dimensions, Pressable, StyleSheet, Text } from 'react-native';
+import { Dimensions, Pressable, StyleSheet } from 'react-native';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
@@ -246,14 +246,7 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
             }}
             title={'Catalog'}
           />
-          <DrawerRoute
-            action={() => {
-              handleNav(() => {
-                navigation.navigate('Reminder');
-              });
-            }}
-            title={'Reminder'}
-          />
+
           <DrawerRoute
             action={() => {
               handleNav(() => {
