@@ -12,14 +12,15 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useStyles } from 'hooks/useStyles';
 
-import AuthStack from 'navigation/AuthStack';
+// import AuthStack from 'navigation/AuthStack';
 import AppStack from 'navigation/AppStack';
+// import App from 'App';
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigator = () => {
   // const auth = useSelector((state: RootState) => state.authReducer);
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   const { styles } = useStyles();
 
@@ -29,7 +30,8 @@ const Navigator = () => {
         backgroundColor={styles.colors.paletteFive}
         barStyle="dark-content"
       />
-      {user ? <AppStack /> : <AuthStack />}
+      {/* {user ? <AppStack /> : <AuthStack />} */}
+      <AppStack />
     </GestureHandlerRootView>
   );
 };

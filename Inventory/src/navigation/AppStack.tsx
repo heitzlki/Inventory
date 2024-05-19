@@ -24,7 +24,7 @@ const AppStack = () => (
       name="CatalogEditProduct"
       component={CatalogEditProductScreen}
     />
-    <Stack.Screen name="Reminder" component={ReminderScreen} />
+    {/* <Stack.Screen name="Reminder" component={ReminderScreen} /> */}
     <Stack.Screen
       name="Drawer"
       options={{ presentation: 'transparentModal' }}
