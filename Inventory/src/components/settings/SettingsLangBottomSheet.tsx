@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
 
 import { useStyles } from 'hooks/useStyles';
+import { useLang } from 'hooks/useLang';
 import { inventoryDelete, inventoryEdit } from 'store/inventories';
 
 import BottomSheet, { BottomSheetRefProps } from 'components/BottomSheet';
@@ -21,22 +22,23 @@ import {
   MyText,
   MyCategoryLabel,
 } from 'components/custom';
-import { EditLangState } from 'screens/settings/SettingsScreen';
+import { Lang, validLangs } from 'store/lang/state';
 
 interface Props extends ViewProps {
   children?: React.ReactNode;
   bottomSheetRef: React.RefObject<BottomSheetRefProps>;
-  editLang: EditProductState;
-  setEditLang: React.Dispatch<React.SetStateAction<EditProductState>>;
+  lang: Lang;
+  setLang: (lang: Lang) => void;
 }
 
 const SettingsLangBottomSheet = ({
   children,
   bottomSheetRef,
-  editProduct,
-  setEditProduct,
+  lang,
+  setLang,
 }: Props) => {
   const { styles } = useStyles();
+  const { translations } = useLang();
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -98,34 +100,45 @@ const SettingsLangBottomSheet = ({
               flex: 1,
               marginLeft: 8,
             }}
-            text="Categories:"
+            text={`${translations.language}`}
           />
 
           <View style={{}}>
             <FlatList
-              data={validCategories}
+              data={validLangs}
               renderItem={({ item }) => (
                 <Pressable
                   key={item}
                   style={{
-                    marginVertical: 3,
+                    flex: 1,
+                    margin: 5,
+                    backgroundColor: styles.colors.paletteSix,
+
+                    paddingHorizontal: 14,
+                    paddingVertical: 4,
+
+                    borderRadius: 8,
+                    borderColor: styles.colors.paletteTextMain,
+                    borderWidth: lang == item ? 2 : 0,
+
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                   onPress={() => {
-                    setEditProduct({
-                      ...editProduct,
-                      category: item,
-                    });
+                    setLang(item);
 
                     bottomSheetRef.current?.activate();
                   }}>
-                  <MyCategoryLabel
-                    category={item}
+                  <MyText
+                    text={`${translations.lang[item]}`}
                     style={{
-                      borderWidth: editProduct.category == item ? 4 : 2,
-                      borderColor:
-                        editProduct.category == item
+                      fontWeight: '500',
+                      fontSize: 16,
+                      textAlign: 'center',
+                      color:
+                        lang == item
                           ? styles.colors.paletteTextMain
-                          : styles.colors.paletteCategory[item].secondary,
+                          : styles.colors.paletteTextLight,
                     }}
                   />
                 </Pressable>
