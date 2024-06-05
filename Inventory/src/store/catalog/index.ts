@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { CatalogState, ProductState, UnitType } from 'store/catalog/state';
-import { AmountType, CategoryType } from 'store/catalog/state';
+import { CategoryType } from 'store/catalog/state';
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
@@ -26,10 +26,8 @@ export const catalogSlice = createSlice({
         createdAt: moment().unix().toString(),
         updatedAt: moment().unix().toString(),
         name: `Neues Produkt ${Object.keys(state).length + 1}`,
-        defaultAmountOne: '0',
-        defaultAmountTwo: '0',
+        defaultAmount: '0',
         unit: 'kg',
-        amountType: 'double',
         category: 'Aktionsprodukte',
       };
       return { [id]: newProduct, ...state };
@@ -41,10 +39,9 @@ export const catalogSlice = createSlice({
         productId: string;
         newProductId?: string;
         name?: string;
-        defaultAmountOne?: string;
+        defaultAmount?: string;
         defaultAmountTwo?: string;
         unit?: UnitType;
-        amountType?: AmountType;
         category?: CategoryType;
       }>,
     ) => {
@@ -52,10 +49,10 @@ export const catalogSlice = createSlice({
         productId,
         newProductId,
         name,
-        defaultAmountOne,
-        defaultAmountTwo,
+        defaultAmount,
+
         unit,
-        amountType,
+
         category,
       } = action.payload;
 
@@ -66,9 +63,7 @@ export const catalogSlice = createSlice({
         id: newProductId || productId,
         updatedAt: moment().unix().toString(),
         name: name || state[productId].name,
-        defaultAmountOne: defaultAmountOne || state[productId].defaultAmountOne,
-        defaultAmountTwo: defaultAmountTwo || state[productId].defaultAmountTwo,
-        amountType: amountType || state[productId].amountType,
+        defaultAmount: defaultAmount || state[productId].defaultAmount,
         unit: unit || state[productId].unit,
         category: category || state[productId].category,
       };

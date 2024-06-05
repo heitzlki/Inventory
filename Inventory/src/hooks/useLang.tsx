@@ -13,22 +13,22 @@ export const langEn: Translation = {
   email: 'Email',
   id: 'ID',
   name: 'Name',
-  amountOne: 'Amount One',
-  amountTwo: 'Amount Two',
-  amountType: 'Amount Type',
+  amount: 'Amount',
   active: 'Active',
   yes: 'yes',
   no: 'no',
-  inventoryNotificationTitle: 'Inventory notification!',
-  inventoryNotificationBody: "It's time for inventory",
   home: 'Home',
   catalog: 'Catalog',
   reminder: 'Reminder',
   settings: 'Settings',
-  single: 'Single',
-  double: 'Double',
+  category: 'Category',
+  unit: 'Unit',
   inventory: 'Inventory',
   theme: 'Theme',
+  lang: {
+    de_DE: 'German',
+    en_EN: 'English',
+  },
 };
 
 export const langDe: Translation = {
@@ -41,22 +41,22 @@ export const langDe: Translation = {
   email: 'Email',
   id: 'ID',
   name: 'Name',
-  amountOne: 'Menge eins',
-  amountTwo: 'Menge zwei',
-  amountType: 'Mengen typ',
+  amount: 'Menge',
   active: 'Aktiv',
   yes: 'ja',
   no: 'nein',
-  inventoryNotificationTitle: 'Inventur Nachricht!',
-  inventoryNotificationBody: 'Es ist zeit für die Inventur',
   home: 'Home',
   catalog: 'Katalog',
   reminder: 'Erinnerung',
   settings: 'Einstellungen',
-  single: 'einzel',
-  double: 'doppel',
+  category: 'Kategorie',
+  unit: 'Einheit',
   inventory: 'Inventur',
   theme: 'Thema',
+  lang: {
+    de_DE: 'Deutsch',
+    en_EN: 'Englisch',
+  },
 };
 
 export interface Translation {
@@ -69,22 +69,22 @@ export interface Translation {
   email: string;
   id: string;
   name: string;
-  amountOne: string;
-  amountTwo: string;
-  amountType: string;
+  amount: string;
   active: string;
   yes: string;
   no: string;
-  inventoryNotificationTitle: string;
-  inventoryNotificationBody: string;
   home: string;
   catalog: string;
   reminder: string;
   settings: string;
-  single: string;
-  double: string;
+  category: string;
+  unit: string;
   inventory: string;
   theme: string;
+  lang: {
+    de_DE: string;
+    en_EN: string;
+  };
 }
 
 interface UseLang {

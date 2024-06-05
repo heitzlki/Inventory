@@ -215,32 +215,10 @@ const CatalogScreen = ({
                     fontWeight: '500',
                     fontSize: 16,
                   }}
-                  text={item.defaultAmountOne}
+                  text={item.defaultAmount}
                 />
               </View>
-              {item.amountType === 'double' ? (
-                <View
-                  style={{
-                    flex: 1,
-                    paddingVertical: 5,
-                    paddingHorizontal: 10,
-                    backgroundColor: styles.colors.paletteSix,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 8,
-                    marginHorizontal: 4,
-                    borderColor: styles.colors.palettePrimarColdStorage,
-                    borderWidth: 2,
-                  }}>
-                  <MyText
-                    style={{
-                      fontWeight: '500',
-                      fontSize: 16,
-                    }}
-                    text={item.defaultAmountTwo}
-                  />
-                </View>
-              ) : null}
+
               <View
                 style={{
                   flex: 1,

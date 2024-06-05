@@ -261,93 +261,11 @@ const AmountInputScreen = ({
         </View>
       </MyTopBar>
 
-      {products[item.productId].amountType === 'double' ? (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Pressable
-            style={{
-              paddingVertical: 5,
-              paddingHorizontal: 30,
-              backgroundColor: styles.colors.paletteSix,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 8,
-              marginHorizontal: 4,
-              borderColor:
-                editingAmount === 'two'
-                  ? styles.colors.paletteTextMain
-                  : styles.colors.palettePrimarColdStorage,
-              borderWidth: editingAmount === 'two' ? 4 : 2,
-              marginVertical: 6,
-              width: '45%',
-            }}
-            onPress={() => {
-              if (confirmed) {
-                setEditingAmount('two');
-              }
-            }}>
-            <MyText
-              style={{
-                fontWeight: '500',
-                fontSize: 24,
-              }}
-              text={
-                editingAmount === 'two'
-                  ? confirmed
-                    ? amountTwo
-                    : displaySecondNumber()
-                  : amountTwo
-              }
-            />
-          </Pressable>
-          <Pressable
-            style={{
-              paddingVertical: 5,
-              paddingHorizontal: 30,
-              backgroundColor: styles.colors.paletteSix,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 8,
-              marginHorizontal: 4,
-              borderColor:
-                editingAmount === 'one'
-                  ? styles.colors.paletteTextMain
-                  : styles.colors.palettePrimarDryStorage,
-              borderWidth: editingAmount === 'one' ? 4 : 2,
-              marginVertical: 6,
-              width: '45%',
-            }}
-            onPress={() => {
-              if (confirmed) {
-                setEditingAmount('one');
-              }
-            }}>
-            <MyText
-              style={{
-                fontWeight: '500',
-                fontSize: 24,
-              }}
-              text={
-                editingAmount === 'one'
-                  ? confirmed
-                    ? amountOne
-                    : displaySecondNumber()
-                  : amountOne
-              }
-            />
-          </Pressable>
-        </View>
-      ) : null}
       <View
         style={{
           alignItems: 'center',
           justifyContent: 'center',
-          marginVertical:
-            products[item.productId].amountType === 'double' ? 0 : 20,
+          marginVertical: 20,
         }}>
         <View
           style={{

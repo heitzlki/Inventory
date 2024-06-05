@@ -14,14 +14,10 @@ import { catalogProductDelete, catalogProductEdit } from 'store/catalog';
 import { RootState } from 'store/index';
 
 import { useStyles } from 'hooks/useStyles';
+import { useLang } from 'hooks/useLang';
 
 import { BottomSheetRefProps } from 'components/BottomSheet';
-import {
-  AmountType,
-  CategoryType,
-  ProductState,
-  UnitType,
-} from 'store/catalog/state';
+import { CategoryType, ProductState, UnitType } from 'store/catalog/state';
 
 import ProductCategoryBottomSheet from 'components/catalog/ProductCategoryBottomSheet';
 import {
@@ -31,7 +27,7 @@ import {
   MyText,
   MyTopBar,
 } from 'components/custom';
-import { validAmounts, validCategories, validUnits } from 'store/catalog/state';
+import { validCategories, validUnits } from 'store/catalog/state';
 
 interface CatalogEditProductTextInputProps extends TextInputProps {
   name?: string;
@@ -41,9 +37,7 @@ export interface EditProductState {
   newProductId: string;
   name: string;
   unit: UnitType;
-  amountType: AmountType;
-  defaultAmountOne: string;
-  defaultAmountTwo: string;
+  defaultAmount: string;
   category: CategoryType;
 }
 
@@ -105,30 +99,21 @@ const CatalogEditProductScreen = ({
   const catalog = useSelector((state: RootState) => state.catalogReducer);
 
   const { styles } = useStyles();
+  const { translations } = useLang();
   const product: ProductState = catalog[productId];
 
   const [editProduct, setEditProduct] = useState<EditProductState>({
     newProductId: product.id,
     name: product.name,
     unit: product.unit,
-    amountType: product.amountType,
-    defaultAmountOne: product.defaultAmountOne,
-    defaultAmountTwo: product.defaultAmountTwo,
+    defaultAmount: product.defaultAmount,
     category: product.category,
   });
 
   const [valid, setValid] = useState(true);
 
   const validateEditProduct = (): boolean => {
-    const {
-      newProductId,
-      name,
-      unit,
-      amountType,
-      defaultAmountOne,
-      defaultAmountTwo,
-      category,
-    } = editProduct;
+    const { newProductId, name, unit, defaultAmount, category } = editProduct;
 
     if (
       typeof newProductId !== 'string' ||
@@ -136,13 +121,9 @@ const CatalogEditProductScreen = ({
       typeof name !== 'string' ||
       name.trim() === '' ||
       !validUnits.includes(unit) ||
-      !validAmounts.includes(amountType) ||
-      typeof defaultAmountOne !== 'string' ||
-      defaultAmountOne.trim() === '' ||
-      isNaN(Number(defaultAmountOne)) ||
-      typeof defaultAmountTwo !== 'string' ||
-      defaultAmountTwo.trim() === '' ||
-      isNaN(Number(defaultAmountTwo)) ||
+      typeof defaultAmount !== 'string' ||
+      defaultAmount.trim() === '' ||
+      isNaN(Number(defaultAmount)) ||
       !validCategories.includes(category)
     ) {
       return false;
@@ -166,35 +147,26 @@ const CatalogEditProductScreen = ({
       <MyTopBar backButton={true} title="Settings" />
       <View style={{ alignItems: 'center' }}>
         <CatalogEditProductTextInput
-          name="ID:"
+          name={`${translations.id}:`}
           value={editProduct.newProductId}
           onChangeText={text => {
             setEditProduct({ ...editProduct, newProductId: text });
           }}
         />
         <CatalogEditProductTextInput
-          name="Name:"
+          name={`${translations.name}:`}
           value={editProduct.name}
           onChangeText={text => {
             setEditProduct({ ...editProduct, name: text });
           }}
         />
         <CatalogEditProductTextInput
-          name="Amount One:"
-          value={editProduct.defaultAmountOne}
+          name={`${translations.amount}:`}
+          value={editProduct.defaultAmount}
           onChangeText={text => {
-            setEditProduct({ ...editProduct, defaultAmountOne: text });
+            setEditProduct({ ...editProduct, defaultAmount: text });
           }}
         />
-        {editProduct.amountType === 'double' ? (
-          <CatalogEditProductTextInput
-            name="Amount Two:"
-            value={editProduct.defaultAmountTwo}
-            onChangeText={text => {
-              setEditProduct({ ...editProduct, defaultAmountTwo: text });
-            }}
-          />
-        ) : null}
         <View
           style={{
             height: 42,
@@ -214,7 +186,7 @@ const CatalogEditProductScreen = ({
               flex: 1,
               marginLeft: 8,
             }}
-            text="Unit:"
+            text={`${translations.unit}:`}
           />
 
           <View
@@ -261,75 +233,6 @@ const CatalogEditProductScreen = ({
             />
           </View>
         </View>
-        <View
-          style={{
-            height: 42,
-            width: '95%',
-            backgroundColor: styles.colors.paletteFour,
-            marginVertical: 4,
-            borderRadius: 8,
-
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <MyText
-            style={{
-              fontWeight: '500',
-              fontSize: 16,
-              flex: 1,
-              marginLeft: 8,
-            }}
-            text="Amount Type:"
-          />
-          <View
-            style={{
-              maxWidth: 200,
-            }}>
-            <FlatList
-              horizontal
-              data={validAmounts}
-              renderItem={({ item }) => (
-                <Pressable
-                  key={item}
-                  style={{
-                    flex: 1,
-                    margin: 5,
-                    backgroundColor: styles.colors.paletteSix,
-
-                    paddingHorizontal: 10,
-
-                    borderRadius: 8,
-                    borderColor: styles.colors.paletteTextMain,
-                    borderWidth: editProduct.amountType == item ? 2 : 0,
-
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                  onPress={() => {
-                    setEditProduct({
-                      ...editProduct,
-                      amountType: item,
-                      defaultAmountTwo: '0',
-                    });
-                  }}>
-                  <MyText
-                    text={item}
-                    style={{
-                      fontWeight: '500',
-                      fontSize: 16,
-                      textAlign: 'center',
-                      color:
-                        editProduct.amountType == item
-                          ? styles.colors.paletteTextMain
-                          : styles.colors.paletteTextLight,
-                    }}
-                  />
-                </Pressable>
-              )}
-            />
-          </View>
-        </View>
 
         <MyButton
           onPress={() => {
@@ -346,7 +249,7 @@ const CatalogEditProductScreen = ({
               flex: 1,
               marginLeft: 8,
             }}
-            text="Category:"
+            text={`${translations.category}:`}
           />
           <MyCategoryLabel
             category={editProduct.category}
