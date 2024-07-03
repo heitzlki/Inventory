@@ -1,5 +1,4 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { EditingAmountEnum } from 'screens/inventories/AmountInputScreen';
 
 export type AppStackParamList = {
   Main: undefined;
@@ -9,9 +8,7 @@ export type AppStackParamList = {
   AmountInput: {
     inventoryId: string;
     itemId: string;
-    amountOnePrediction?: string;
-    amounTwoPrediction?: string;
-    selectedAmount?: EditingAmountEnum;
+    amountPrediction?: string;
   };
   Catalog: undefined;
   CatalogEditProduct: { productId: string };

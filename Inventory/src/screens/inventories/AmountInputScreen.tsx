@@ -25,8 +25,6 @@ import {
 import { IconProps } from 'components/custom/MyIcon';
 import { ItemState } from 'store/inventories/state';
 
-export type EditingAmountEnum = 'one' | 'two';
-
 const evalAndFormat = (input: string) => {
   if (input != '') {
     return eval(input.replace(/^0+(?=\d)/, ''))
@@ -98,39 +96,11 @@ const AmountInputScreen = ({
 
   const dispatch = useDispatch();
 
-  const [amountOne, setAmountOne] = useState(
-    route.params.amountOnePrediction || route.params.amountOnePrediction == ''
-      ? route.params.amountOnePrediction
-      : item.amountOne,
+  const [amount, setAmount] = useState(
+    route.params.amountPrediction || route.params.amountPrediction == ''
+      ? route.params.amountPrediction
+      : item.amount,
   );
-
-  const [amountTwo, setAmountTwo] = useState(
-    route.params.amounTwoPrediction || route.params.amounTwoPrediction == ''
-      ? route.params.amounTwoPrediction
-      : item.amountTwo,
-  );
-
-  const [amount, setAmount] = useState<string>(amountOne);
-
-  const [editingAmount, setEditingAmount] = useState<EditingAmountEnum>(
-    route.params.selectedAmount || 'one',
-  );
-
-  useEffect(() => {
-    if (editingAmount === 'one') {
-      setAmount(amountOne);
-    } else {
-      setAmount(amountTwo);
-    }
-  }, [editingAmount, amountOne, amountTwo]);
-
-  const changeAmount = (newAmount: string) => {
-    if (editingAmount === 'one') {
-      setAmountOne(newAmount);
-    } else {
-      setAmountTwo(newAmount);
-    }
-  };
 
   const [confirmed, setConfirmed] = useState(true);
 
@@ -152,10 +122,7 @@ const AmountInputScreen = ({
 
   const checkConfirmed = () => {
     try {
-      if (
-        evalAndFormat(amountOne) == amountOne &&
-        evalAndFormat(amountTwo) == amountTwo
-      ) {
+      if (evalAndFormat(amount) == amount) {
         return true;
       } else {
         return false;
@@ -167,7 +134,7 @@ const AmountInputScreen = ({
 
   useEffect(() => {
     setConfirmed(checkConfirmed());
-  }, [editingAmount, amount, amountOne, amountTwo, changeAmount]);
+  }, [amount, setAmount]);
 
   return (
     <MyBackground>
@@ -283,7 +250,7 @@ const AmountInputScreen = ({
               fontWeight: '500',
               fontSize: 24,
             }}
-            text={checkConfirmed() ? eval(`${amountOne} + ${amountTwo}`) : ''}
+            text={checkConfirmed() ? eval(`${amount}`) : ''}
           />
         </View>
       </View>
@@ -319,26 +286,26 @@ const AmountInputScreen = ({
           <AmountBaseButton
             titleOrIcon={'1'}
             onPress={() => {
-              changeAmount(`${amount}1`);
+              setAmount(`${amount}1`);
             }}
           />
           <AmountBaseButton
             titleOrIcon={'2'}
             onPress={() => {
-              changeAmount(`${amount}2`);
+              setAmount(`${amount}2`);
             }}
           />
           <AmountBaseButton
             titleOrIcon={'3'}
             onPress={() => {
-              changeAmount(`${amount}3`);
+              setAmount(`${amount}3`);
             }}
           />
           <AmountBaseButton
             titleOrIcon={'÷'}
             style={{ backgroundColor: styles.colors.paletteSix }}
             onPress={() => {
-              changeAmount(`${amount}/`);
+              setAmount(`${amount}/`);
             }}
           />
         </View>
@@ -351,26 +318,26 @@ const AmountInputScreen = ({
           <AmountBaseButton
             titleOrIcon={'4'}
             onPress={() => {
-              changeAmount(`${amount}4`);
+              setAmount(`${amount}4`);
             }}
           />
           <AmountBaseButton
             titleOrIcon={'5'}
             onPress={() => {
-              changeAmount(`${amount}5`);
+              setAmount(`${amount}5`);
             }}
           />
           <AmountBaseButton
             titleOrIcon={'6'}
             onPress={() => {
-              changeAmount(`${amount}6`);
+              setAmount(`${amount}6`);
             }}
           />
           <AmountBaseButton
             titleOrIcon={'×'}
             style={{ backgroundColor: styles.colors.paletteSix }}
             onPress={() => {
-              changeAmount(`${amount}*`);
+              setAmount(`${amount}*`);
             }}
           />
         </View>
@@ -383,26 +350,26 @@ const AmountInputScreen = ({
           <AmountBaseButton
             titleOrIcon={'7'}
             onPress={() => {
-              changeAmount(`${amount}7`);
+              setAmount(`${amount}7`);
             }}
           />
           <AmountBaseButton
             titleOrIcon={'8'}
             onPress={() => {
-              changeAmount(`${amount}8`);
+              setAmount(`${amount}8`);
             }}
           />
           <AmountBaseButton
             titleOrIcon={'9'}
             onPress={() => {
-              changeAmount(`${amount}9`);
+              setAmount(`${amount}9`);
             }}
           />
           <AmountBaseButton
             titleOrIcon={'+'}
             style={{ backgroundColor: styles.colors.paletteSix }}
             onPress={() => {
-              changeAmount(`${amount}+`);
+              setAmount(`${amount}+`);
             }}
           />
         </View>
@@ -415,26 +382,26 @@ const AmountInputScreen = ({
           <AmountBaseButton
             titleOrIcon={','}
             onPress={() => {
-              changeAmount(`${amount}.`);
+              setAmount(`${amount}.`);
             }}
           />
           <AmountBaseButton
             titleOrIcon={'0'}
             onPress={() => {
-              changeAmount(`${amount}0`);
+              setAmount(`${amount}0`);
             }}
           />
           <AmountBaseButton
             titleOrIcon={'⌫'}
             onPress={() => {
-              changeAmount(amount.slice(0, -1));
+              setAmount(amount.slice(0, -1));
             }}
           />
           <AmountBaseButton
             titleOrIcon={'-'}
             style={{ backgroundColor: styles.colors.paletteSix }}
             onPress={() => {
-              changeAmount(`${amount}-`);
+              setAmount(`${amount}-`);
             }}
           />
         </View>
@@ -467,16 +434,14 @@ const AmountInputScreen = ({
             }}
             onPress={() => {
               try {
-                if (amountOne != '' && amountTwo != '') {
-                  setAmountOne(evalAndFormat(amountOne));
-                  setAmountTwo(evalAndFormat(amountTwo));
+                if (amount != '') {
+                  setAmount(evalAndFormat(amount));
                   if (checkConfirmed()) {
                     dispatch(
                       inventoryItemSetAmount({
                         inventoryId,
                         itemId,
-                        newAmountOne: amountOne,
-                        newAmountTwo: amountTwo,
+                        newAmount: amount,
                       }),
                     );
                     navigation.goBack();
@@ -488,242 +453,7 @@ const AmountInputScreen = ({
             }}
           />
         </View>
-        {/* <TouchableOpacity
-          style={{
-            width: 313,
-            height: 72,
-            borderRadius: 24,
-            backgroundColor: styles.colors.paletteSix,
-            justifyContent: 'center',
-            alignItems: 'center',
-            margin: 5,
-          }}
-          onPress={() => {
-            try {
-              if (amountOne != '' && amountTwo != '') {
-                setAmountOne(evalAndFormat(amountOne));
-                setAmountTwo(evalAndFormat(amountTwo));
-                if (confirmed) {
-                  dispatch(
-                    inventoryItemSetAmount({
-                      inventoryId,
-                      itemId,
-                      newAmountOne: amountOne,
-                      newAmountTwo: amountTwo,
-                    }),
-                  );
-                  navigation.goBack();
-                } else {
-                  setConfirmed(true);
-                }
-              }
-            } catch {}
-          }}>
-          <Text style={{ color: '#DCDDDE', fontWeight: '500', fontSize: 28 }}>
-            {confirmed ? '✅' : '='}
-          </Text>
-        </TouchableOpacity> */}
       </View>
-
-      {/* </View> */}
-
-      {/* <View style={{ position: 'absolute', top: 20, left: 20, width: '100%' }}>
-        <Text style={{ color: '#EBECED', fontWeight: '500', fontSize: 24 }}>
-          {inventories[inventoryId].items[itemId].name}
-        </Text>
-      </View>
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 20,
-          width: '100%',
-        }}>
-        <View style={{}}>
-          <View
-            style={{
-              alignItems: 'flex-end',
-              right: 48,
-            }}>
-            <Text style={{ color: '#EBECED', fontWeight: '500', fontSize: 56 }}>
-              {displayFirstNumber()}
-            </Text>
-
-            <Text style={{ color: '#EBECED', fontWeight: '500', fontSize: 34 }}>
-              {displaySecondNumber()}
-            </Text>
-          </View>
-        </View>
-
-        <View
-          style={{
-            maxWidth: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <AmountCalcButton
-            title="1"
-            onPress={() => {
-              setAmountOne(`${amountOne}1`);
-            }}
-          />
-          <AmountCalcButton
-            title="2"
-            onPress={() => {
-              setAmountOne(`${amountOne}2`);
-            }}
-          />
-          <AmountCalcButton
-            title="3"
-            onPress={() => {
-              setAmountOne(`${amountOne}3`);
-            }}
-          />
-          <AmountCalcButton
-            style={{ backgroundColor: '#292B2F' }}
-            title="÷"
-            onPress={() => {
-              setAmountOne(`${amountOne}/`);
-            }}
-          />
-        </View>
-        <View
-          style={{
-            maxWidth: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <AmountCalcButton
-            title="4"
-            onPress={() => {
-              setAmountOne(`${amountOne}4`);
-            }}
-          />
-          <AmountCalcButton
-            title="5"
-            onPress={() => {
-              setAmountOne(`${amountOne}5`);
-            }}
-          />
-          <AmountCalcButton
-            title="6"
-            onPress={() => {
-              setAmountOne(`${amountOne}6`);
-            }}
-          />
-          <AmountCalcButton
-            style={{ backgroundColor: '#292B2F' }}
-            title="×"
-            onPress={() => {
-              setAmountOne(`${amountOne}*`);
-            }}
-          />
-        </View>
-        <View
-          style={{
-            maxWidth: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <AmountCalcButton
-            title="7"
-            onPress={() => {
-              setAmountOne(`${amountOne}7`);
-            }}
-          />
-          <AmountCalcButton
-            title="8"
-            onPress={() => {
-              setAmountOne(`${amountOne}8`);
-            }}
-          />
-          <AmountCalcButton
-            title="9"
-            onPress={() => {
-              setAmountOne(`${amountOne}9`);
-            }}
-          />
-          <AmountCalcButton
-            style={{ backgroundColor: '#292B2F' }}
-            title="+"
-            onPress={() => {
-              setAmountOne(`${amountOne}+`);
-            }}
-          />
-        </View>
-        <View
-          style={{
-            maxWidth: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <AmountCalcButton
-            title=","
-            onPress={() => {
-              setAmountOne(`${amountOne}.`);
-            }}
-          />
-          <AmountCalcButton
-            title="0"
-            onPress={() => {
-              setAmountOne(`${amountOne}0`);
-            }}
-          />
-          <AmountCalcButton
-            title="⌫"
-            onPress={() => {
-              setAmountOne(`${amountOne}`.slice(0, -1));
-            }}
-          />
-          <AmountCalcButton
-            style={{ backgroundColor: '#292B2F' }}
-            title="-"
-            onPress={() => {
-              setAmountOne(`${amountOne}-`);
-            }}
-          />
-        </View>
-
-        <View
-          style={{
-            maxWidth: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <TouchableOpacity
-            style={{
-              width: 313,
-              height: 72,
-              borderRadius: 24,
-              backgroundColor: '#202225',
-              justifyContent: 'center',
-              alignItems: 'center',
-              margin: 5,
-            }}
-            onPress={() => {
-              try {
-                if (amountOne != '') {
-                  setAmountOne(evalAndFormat(amountOne));
-                  if (confirmed) {
-                    dispatch(
-                      inventoryItemSetAmount({
-                        inventoryId,
-                        itemId,
-                        newAmountOne: amountOne,
-                      }),
-                    );
-                    navigation.goBack();
-                  } else {
-                    setConfirmed(true);
-                  }
-                }
-              } catch {}
-            }}>
-            <Text style={{ color: '#DCDDDE', fontWeight: '500', fontSize: 28 }}>
-              {confirmed ? '✅' : '='}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View> */}
     </MyBackground>
   );
 };

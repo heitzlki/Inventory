@@ -184,7 +184,7 @@ const SearchItemScreen = ({
               navigation.navigate('AmountInput', {
                 inventoryId,
                 itemId: newItemId,
-                amountOnePrediction:
+                amountPrediction:
                   item.defaultAmount == '0' ? '' : item.defaultAmount,
               });
             }}>
@@ -229,7 +229,7 @@ const SearchItemScreen = ({
                   justifyContent: 'center',
                   borderRadius: 8,
                   marginHorizontal: 4,
-                  borderColor: styles.colors.palettePrimarDryStorage,
+                  borderColor: styles.colors.paletteTextMain,
                   borderWidth: 2,
                 }}>
                 <MyText

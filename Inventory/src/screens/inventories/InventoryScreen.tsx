@@ -37,24 +37,14 @@ const InventoryScreen = ({
 
   const formatCreateAndShare = useFormatCreateAndShareXlsx(inventoryId);
 
-  const updateAmount = (
-    itemId: string,
-    firstAmount: boolean = true,
-    operator: string,
-    amount: string,
-  ) => {
+  const updateAmount = (itemId: string, operator: string, amount: string) => {
     // let item = inventories[inventoryId].items[itemId];
     let item = store.getState().invetoriesReducer[inventoryId].items[itemId];
     dispatch(
       inventoryItemSetAmount({
         inventoryId,
         itemId,
-        newAmountOne: firstAmount
-          ? eval(`${item.amountOne} ${operator} ${amount}`).toString()
-          : item.amountOne,
-        newAmountTwo: !firstAmount
-          ? eval(`${item.amountTwo} ${operator} ${amount}`)
-          : item.amountTwo,
+        newAmount: eval(`${item.amount} ${operator} ${amount}`).toString(),
       }),
     );
   };
@@ -92,7 +82,6 @@ const InventoryScreen = ({
           style={{ position: 'absolute', marginHorizontal: 20, right: 0 }}
           onPress={() => {
             // setModalActive(!modalActive);
-            console.log('Test');
             formatCreateAndShare();
           }} //formatCreateAndShare()}
           set="MaterialIcons"
@@ -195,7 +184,7 @@ const InventoryScreen = ({
                       justifyContent: 'center',
                       borderRadius: 8,
                     }}
-                    onPress={() => updateAmount(itemId, true, '+', '1')}
+                    onPress={() => updateAmount(itemId, '+', '1')}
                     // onPressOut={handlePressOut}
                   >
                     <MyIcon
@@ -214,13 +203,12 @@ const InventoryScreen = ({
                       justifyContent: 'center',
                       borderRadius: 8,
                       borderWidth: 2,
-                      borderColor: styles.colors.palettePrimarDryStorage,
+                      borderColor: styles.colors.paletteTextMain,
                     }}
                     onPress={() => {
                       navigation.navigate('AmountInput', {
                         inventoryId,
                         itemId,
-                        selectedAmount: 'one',
                       });
                     }}>
                     <MyText
@@ -228,7 +216,7 @@ const InventoryScreen = ({
                         fontWeight: '500',
                         fontSize: 16,
                       }}
-                      text={item.amountOne}
+                      text={item.amount}
                     />
                   </Pressable>
                   <Pressable
@@ -241,7 +229,7 @@ const InventoryScreen = ({
                       justifyContent: 'center',
                       borderRadius: 8,
                     }}
-                    onPress={() => updateAmount(itemId, true, '-', '1')}
+                    onPress={() => updateAmount(itemId, '-', '1')}
                     // onPressOut={handlePressOut}
                   >
                     <MyIcon

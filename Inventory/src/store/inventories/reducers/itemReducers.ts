@@ -13,15 +13,12 @@ export const inventoryItemSetAmount = (
   action: PayloadAction<{
     inventoryId: string;
     itemId: string;
-    newAmountOne?: string;
-    newAmountTwo?: string;
+    newAmount?: string;
   }>,
 ) => {
-  const { inventoryId, itemId, newAmountOne, newAmountTwo } = action.payload;
-  state[inventoryId].items[itemId].amountOne =
-    newAmountOne || state[inventoryId].items[itemId].amountOne;
-  state[inventoryId].items[itemId].amountTwo =
-    newAmountTwo || state[inventoryId].items[itemId].amountTwo;
+  const { inventoryId, itemId, newAmount } = action.payload;
+  state[inventoryId].items[itemId].amount =
+    newAmount || state[inventoryId].items[itemId].amount;
 };
 
 export const inventoryItemDelete = (
@@ -50,8 +47,7 @@ export const inventoryItemAdd = (
     createdAt: moment().unix().toString(),
     updatedAt: moment().unix().toString(),
     name,
-    amountOne: '0',
-    amountTwo: '0',
+    amount: '0',
   };
 
   let newItems: ItemsState = Object.assign(
