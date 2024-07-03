@@ -100,6 +100,7 @@ const CatalogEditProductScreen = ({
 
   const { styles } = useStyles();
   const { translations } = useLang();
+
   const product: ProductState = catalog[productId];
 
   const [editProduct, setEditProduct] = useState<EditProductState>({
@@ -276,7 +277,7 @@ const CatalogEditProductScreen = ({
               fontWeight: '500',
               fontSize: 18,
             }}
-            text="Save"
+            text={translations.save}
           />
         </MyButton>
         <MyButton
@@ -295,7 +296,7 @@ const CatalogEditProductScreen = ({
               fontWeight: '500',
               fontSize: 18,
             }}
-            text="Delete"
+            text={translations.delete}
           />
         </MyButton>
       </View>

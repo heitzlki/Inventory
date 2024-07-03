@@ -19,6 +19,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/index';
 
 import { useStyles } from 'hooks/useStyles';
+import { useLang } from 'hooks/useLang';
+
 import MyText from 'components/custom/MyText';
 import type { SharedValue } from 'react-native-reanimated';
 
@@ -88,6 +90,7 @@ const DrawerRoute = ({
 
 const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
   const { styles } = useStyles();
+  const { translations } = useLang();
   const drawer = useSelector((state: RootState) => state.drawerReducer);
   const dispatch = useDispatch();
 
@@ -236,7 +239,7 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
             action={() => {
               handleNav(() => {});
             }}
-            title={'Home'}
+            title={translations.home}
           />
           <DrawerRoute
             action={() => {
@@ -244,7 +247,7 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
                 navigation.navigate('Catalog');
               });
             }}
-            title={'Catalog'}
+            title={translations.catalog}
           />
 
           <DrawerRoute
@@ -253,7 +256,7 @@ const Drawer = ({ route, navigation }: RootStackScreenProps<'Drawer'>) => {
                 navigation.navigate('Settings');
               });
             }}
-            title={'Settings'}
+            title={translations.settings}
           />
         </Animated.View>
       </PanGestureHandler>

@@ -25,6 +25,10 @@ export const langEn: Translation = {
   unit: 'Unit',
   inventory: 'Inventory',
   theme: 'Theme',
+  search: 'Search',
+  product: 'Product',
+  save: 'Save',
+  delete: 'Delete',
   lang: {
     de_DE: 'German',
     en_EN: 'English',
@@ -53,6 +57,10 @@ export const langDe: Translation = {
   unit: 'Einheit',
   inventory: 'Inventur',
   theme: 'Thema',
+  search: 'Suche',
+  product: 'Produkt',
+  save: 'Speichern',
+  delete: 'Löschen',
   lang: {
     de_DE: 'Deutsch',
     en_EN: 'Englisch',
@@ -81,6 +89,10 @@ export interface Translation {
   unit: string;
   inventory: string;
   theme: string;
+  search: string;
+  product: string;
+  save: string;
+  delete: string;
   lang: {
     de_DE: string;
     en_EN: string;

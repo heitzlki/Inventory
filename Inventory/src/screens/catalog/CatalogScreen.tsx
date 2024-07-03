@@ -21,12 +21,14 @@ import { MyCategoryLabel, MyText } from 'components/custom';
 
 import useSearch from 'hooks/useSearch';
 import useSortedCategories from 'hooks/useSortedCategories';
+import { useLang } from 'hooks/useLang';
 
 const CatalogScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'Catalog'>) => {
   const { styles } = useStyles();
+  const { translations } = useLang();
 
   const store = useStore<RootState>();
 
@@ -87,7 +89,7 @@ const CatalogScreen = ({
               placeholderTextColor={styles.colors.paletteTextLight}
               value={searchQuery}
               onChangeText={handleSearchChange}
-              placeholder="Search"
+              placeholder={translations.search}
             />
             <MyPressableIcon
               style={{ paddingHorizontal: 8 }}
@@ -207,7 +209,7 @@ const CatalogScreen = ({
                   justifyContent: 'center',
                   borderRadius: 8,
                   marginHorizontal: 4,
-                  borderColor: '#ffd42ad6',
+                  borderColor: styles.colors.paletteTextMain,
                   borderWidth: 2,
                 }}>
                 <MyText
