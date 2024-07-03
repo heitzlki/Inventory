@@ -5,6 +5,8 @@ import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 import XLSX from 'xlsx';
 
+import { useLang } from 'hooks/useLang';
+
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/index';
 
@@ -25,6 +27,12 @@ function useInventoryData(inventoryId: string) {
 }
 
 function useFormattedData(items: ItemsState | {}) {
+  const { translations } = useLang();
+
+  const sheetStructure = [
+    [translations.id, translations.product, translations.amount],
+  ];
+
   return (): string[][] => {
     if (Object.keys(items).length > 0) {
       return [
@@ -32,9 +40,7 @@ function useFormattedData(items: ItemsState | {}) {
         ...Object.values(items).map(item => [
           item.productId,
           item.name,
-          item.amountOne,
-          item.amountTwo,
-          eval(`${item.amountOne} + ${item.amountTwo}`),
+          item.amount,
         ]),
       ];
     } else {
@@ -46,43 +52,22 @@ function useFormattedData(items: ItemsState | {}) {
 function useCreateSheet() {
   return async (data: string[][], name: string): Promise<string> => {
     try {
-      const templateBinaryContent = await RNFS.readFileAssets(
-        '004_Inventurliste_V_2.4.xlsx',
-        'base64',
-      );
+      console.log(data);
 
-      const templateBuffer = Buffer.from(templateBinaryContent, 'base64');
+      const worksheet = XLSX.utils.aoa_to_sheet(data);
 
-      const templateWorkbook = XLSX.read(templateBuffer, { type: 'buffer' });
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'name');
 
-      const sheetName = templateWorkbook.SheetNames[0];
-      const sheet = templateWorkbook.Sheets[sheetName];
-
-      for (const rowData of data.slice(1)) {
-        const artNr = rowData[0];
-        const range = XLSX.utils.decode_range(sheet['!ref']!);
-
-        for (let row = range.s.r + 1; row <= range.e.r; row++) {
-          const cellAddress = XLSX.utils.encode_cell({ r: row, c: 0 });
-          const cellValue = sheet[cellAddress]?.v;
-
-          if (String(cellValue) === artNr) {
-            for (let col = 0; col < rowData.length; col++) {
-              const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
-              sheet[cellAddress] = { t: 's', v: rowData[col] };
-            }
-          }
-        }
-      }
-
-      const fileName = `${name}_${moment()
-        .format('YYYY_MM_DD_HH_mm')
-        .toString()}.xlsx`;
+      const fileName = `${name}.xlsx`;
+      //DownloadDirectoryPath
       const filePathStr = `${RNFS.CachesDirectoryPath}/${fileName}`;
-      const wbout = XLSX.write(templateWorkbook, {
+      const wbout = XLSX.write(workbook, {
         type: 'buffer',
         bookType: 'xlsx',
       });
+
+      console.log(filePathStr);
       await RNFS.writeFile(
         filePathStr,
         Buffer.from(wbout).toString('base64'),
@@ -125,6 +110,7 @@ function useShareFile() {
 
       await Share.open({
         url: `file://${filePath}`,
+        saveToFiles: true,
       });
     } catch (error) {}
   };
