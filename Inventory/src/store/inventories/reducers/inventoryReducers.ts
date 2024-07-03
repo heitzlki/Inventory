@@ -5,7 +5,10 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import uuid from 'react-native-uuid';
 import moment from 'moment';
 
-export const inventoryAdd = (state: InventoriesState) => {
+export const inventoryAdd = (
+  state: InventoriesState,
+  // action: PayloadAction<{ inventoryName: string }>,
+) => {
   let id = `${uuid.v4()}`;
 
   return Object.assign(
@@ -14,7 +17,7 @@ export const inventoryAdd = (state: InventoriesState) => {
         id,
         createdAt: moment().unix().toString(),
         updatedAt: moment().unix().toString(),
-        name: `Inventory ${Object.keys(state).length}`,
+        name: moment().format('DD_MM_YYYY').toString(), // `${action.payload.inventoryName} ${Object.keys(state).length}`,
         items: {} as ItemState,
       },
     },
