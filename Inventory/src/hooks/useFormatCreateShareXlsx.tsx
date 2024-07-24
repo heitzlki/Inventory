@@ -52,8 +52,6 @@ function useFormattedData(items: ItemsState | {}) {
 function useCreateSheet() {
   return async (data: string[][], name: string): Promise<string> => {
     try {
-      console.log(data);
-
       const worksheet = XLSX.utils.aoa_to_sheet(data);
 
       const workbook = XLSX.utils.book_new();
@@ -67,7 +65,6 @@ function useCreateSheet() {
         bookType: 'xlsx',
       });
 
-      console.log(filePathStr);
       await RNFS.writeFile(
         filePathStr,
         Buffer.from(wbout).toString('base64'),

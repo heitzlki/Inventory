@@ -1,4 +1,4 @@
-package com.inventory.newarchitecture;
+package com.heitzlki.inventory.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.inventory.BuildConfig;
-import com.inventory.newarchitecture.components.MainComponentsRegistry;
-import com.inventory.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.heitzlki.inventory.BuildConfig;
+import com.heitzlki.inventory.newarchitecture.components.MainComponentsRegistry;
+import com.heitzlki.inventory.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

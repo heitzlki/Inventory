@@ -1,4 +1,4 @@
-package com.inventory.newarchitecture.modules;
+package com.heitzlki.inventory.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

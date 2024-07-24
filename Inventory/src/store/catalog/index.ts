@@ -4,12 +4,13 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { CatalogState, ProductState, UnitType } from 'store/catalog/state';
 import { CategoryType } from 'store/catalog/state';
 
-import uuid from 'react-native-uuid';
 import moment from 'moment';
+
+const initialState: CatalogState = {};
 
 export const catalogSlice = createSlice({
   name: 'catalog',
-  initialState: {} as CatalogState,
+  initialState,
   reducers: {
     catalogUpdate: (
       state: CatalogState,
@@ -18,17 +19,29 @@ export const catalogSlice = createSlice({
       return action.payload;
     },
 
-    catalogProductAdd: (state: CatalogState): CatalogState => {
-      const id = uuid.v4().toString().split('-')[0];
+    catalogProductAdd: (
+      state: CatalogState,
+      action: PayloadAction<{
+        id: string;
+        createdAt: string;
+        updatedAt: string;
+        name: string;
+        unit: UnitType;
+        defaultAmount: string;
+        category: CategoryType;
+      }>,
+    ): CatalogState => {
+      const { id, createdAt, updatedAt, name, unit, defaultAmount, category } =
+        action.payload;
 
       let newProduct: ProductState = {
         id,
-        createdAt: moment().unix().toString(),
-        updatedAt: moment().unix().toString(),
-        name: `Neues Produkt ${Object.keys(state).length + 1}`,
-        defaultAmount: '0',
-        unit: 'kg',
-        category: 'Aktionsprodukte',
+        createdAt,
+        updatedAt,
+        name,
+        unit,
+        defaultAmount,
+        category,
       };
       return { [id]: newProduct, ...state };
     },

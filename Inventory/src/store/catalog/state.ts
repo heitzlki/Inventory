@@ -2,26 +2,26 @@
 
 export type UnitType = 'kg' | 'g' | 'pcs';
 export type CategoryType =
-  | 'Aktionsprodukte'
-  | '(1) Frisch- & TK-Ware'
-  | '(2) Frisch- & TK-Ware'
-  | 'Soßen, Dips & Dressings'
-  | 'Dosen- & Trockenware'
-  | 'Getränke'
-  | 'Verpackungen'
-  | 'Desserts (TK)';
+  | 'One'
+  | 'Two'
+  | 'Three'
+  | 'Four'
+  | 'Five'
+  | 'Six'
+  | 'Seven'
+  | 'Eight';
 
 export const validUnits: UnitType[] = ['kg', 'g', 'pcs'];
 
 export const validCategories: CategoryType[] = [
-  'Aktionsprodukte',
-  '(1) Frisch- & TK-Ware',
-  '(2) Frisch- & TK-Ware',
-  'Soßen, Dips & Dressings',
-  'Dosen- & Trockenware',
-  'Getränke',
-  'Verpackungen',
-  'Desserts (TK)',
+  'One',
+  'Two',
+  'Three',
+  'Four',
+  'Five',
+  'Six',
+  'Seven',
+  'Eight',
 ];
 
 export interface ProductState {

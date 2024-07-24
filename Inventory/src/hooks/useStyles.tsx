@@ -12,14 +12,14 @@ type CategoryColorType = Record<
 >;
 
 export const paletteCategory: CategoryColorType = {
-  Aktionsprodukte: { primary: '#02ab8ad6', secondary: '#27fdd4ff' },
-  '(1) Frisch- & TK-Ware': { primary: '#ab0241d6', secondary: '#ff0061ff' },
-  '(2) Frisch- & TK-Ware': { primary: '#93ab02d6', secondary: '#d1f004ff' },
-  'Soßen, Dips & Dressings': { primary: '#02ab46d6', secondary: '#00ff66ff' },
-  'Dosen- & Trockenware': { primary: '#028bacd6', secondary: '#55ddffff' },
-  Getränke: { primary: '#7002abd6', secondary: '#9c00f0ff' },
-  Verpackungen: { primary: '#4602acd6', secondary: '#6600ffff' },
-  'Desserts (TK)': { primary: '#575757d6', secondary: '#808080ff' },
+  One: { primary: '#02ab8ad6', secondary: '#27fdd4ff' },
+  Two: { primary: '#ab0241d6', secondary: '#ff0061ff' },
+  Three: { primary: '#93ab02d6', secondary: '#d1f004ff' },
+  Four: { primary: '#02ab46d6', secondary: '#00ff66ff' },
+  Five: { primary: '#028bacd6', secondary: '#55ddffff' },
+  Six: { primary: '#7002abd6', secondary: '#9c00f0ff' },
+  Seven: { primary: '#4602acd6', secondary: '#6600ffff' },
+  Eight: { primary: '#575757d6', secondary: '#808080ff' },
 };
 
 export const darkTheme: Style = {

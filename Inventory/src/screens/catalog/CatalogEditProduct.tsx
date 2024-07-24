@@ -145,7 +145,7 @@ const CatalogEditProductScreen = ({
 
   return (
     <MyBackground>
-      <MyTopBar backButton={true} title="Settings" />
+      <MyTopBar backButton={true} title={translations.newProduct} />
       <View style={{ alignItems: 'center' }}>
         <CatalogEditProductTextInput
           name={`${translations.id}:`}

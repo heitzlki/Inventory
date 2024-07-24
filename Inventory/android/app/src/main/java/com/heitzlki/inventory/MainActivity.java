@@ -1,4 +1,4 @@
-package com.inventory;
+package com.heitzlki.inventory;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

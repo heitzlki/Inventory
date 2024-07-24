@@ -161,6 +161,7 @@ const InventoryScreen = ({
                       }}
                       text={item.name}
                     />
+
                     <MyCategoryLabel
                       category={products[item.productId].category}
                       style={{ alignSelf: 'flex-start' }}
@@ -204,6 +205,7 @@ const InventoryScreen = ({
                       borderRadius: 8,
                       borderWidth: 2,
                       borderColor: styles.colors.paletteTextMain,
+                      marginHorizontal: 2,
                     }}
                     onPress={() => {
                       navigation.navigate('AmountInput', {
@@ -216,9 +218,10 @@ const InventoryScreen = ({
                         fontWeight: '500',
                         fontSize: 16,
                       }}
-                      text={item.amount}
+                      text={`${item.amount} ${products[item.productId].unit}`}
                     />
                   </Pressable>
+
                   <Pressable
                     style={{
                       flex: 1,

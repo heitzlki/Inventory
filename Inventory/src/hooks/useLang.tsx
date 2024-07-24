@@ -29,6 +29,7 @@ export const langEn: Translation = {
   product: 'Product',
   save: 'Save',
   delete: 'Delete',
+  newProduct: 'New Product',
   lang: {
     de_DE: 'German',
     en_EN: 'English',
@@ -61,6 +62,7 @@ export const langDe: Translation = {
   product: 'Produkt',
   save: 'Speichern',
   delete: 'Löschen',
+  newProduct: 'Neues Produkt',
   lang: {
     de_DE: 'Deutsch',
     en_EN: 'Englisch',
@@ -93,6 +95,7 @@ export interface Translation {
   product: string;
   save: string;
   delete: string;
+  newProduct: string;
   lang: {
     de_DE: string;
     en_EN: string;

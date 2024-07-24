@@ -7,6 +7,9 @@ import { RootState } from 'store/index';
 import { useStyles } from 'hooks/useStyles';
 import { catalogProductAdd } from 'store/catalog';
 
+import uuid from 'react-native-uuid';
+import moment from 'moment';
+
 import type { RootStackScreenProps } from 'navigation/types';
 
 import {
@@ -22,6 +25,7 @@ import { MyCategoryLabel, MyText } from 'components/custom';
 import useSearch from 'hooks/useSearch';
 import useSortedCategories from 'hooks/useSortedCategories';
 import { useLang } from 'hooks/useLang';
+import { useGenData } from 'hooks/useGenData';
 
 const CatalogScreen = ({
   route,
@@ -30,7 +34,8 @@ const CatalogScreen = ({
   const { styles } = useStyles();
   const { translations } = useLang();
 
-  const store = useStore<RootState>();
+  // const store = useStore<RootState>();
+  const { generateNewCatalogProduct } = useGenData();
 
   const dispatch = useDispatch();
 
@@ -247,12 +252,16 @@ const CatalogScreen = ({
 
       <MyAddButton
         onPress={() => {
-          dispatch(catalogProductAdd());
+          const newProduct = generateNewCatalogProduct();
 
-          const newProductId = Object.keys(store.getState().catalogReducer)[0];
+          dispatch(catalogProductAdd(newProduct));
+
+          // const updatedStore = Object.keys(store.getState().catalogReducer);
+
+          // const newProductId = updatedStore[updatedStore.length - 1];
 
           navigation.navigate('CatalogEditProduct', {
-            productId: newProductId,
+            productId: newProduct.id,
           });
         }}
       />
