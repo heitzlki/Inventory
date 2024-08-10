@@ -1,0 +1,23 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+
+    /* Completeness */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "baseUrl": ".",
+    "paths": {
+      // This needs to be mirrored in babel.config.js
+      // Components is a directory with sub directories
+      "store/*": ["src/store/*"],
+      "utils/*": ["src/utils/*"],
+      "components/*": ["src/components/*"],
+      "hooks/*": ["src/hooks/*"],
+      "assets/*": ["src/assets/*"],
+      "styles/*": ["src/styles/*"],
+      "navigation/*": ["src/navigation/*"],
+      "screens/*": ["src/screens/*"]
+    }
+  },
+  "typeRoots": ["./src/types"]
+}
