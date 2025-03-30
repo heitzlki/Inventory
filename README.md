@@ -2,6 +2,10 @@
 
 [Google Play Store](https://play.google.com/store/apps/details?id=com.heitzlki.inventory)
 
+##### Contact:
+
+contact@heitzlki.dev
+
 ##### Features:
 
 - [x] Create Inventories
@@ -20,6 +24,4 @@
 <img src="inventory/PlayStoreRelease/Screenshots/StoreScrenshots/Bild 5.png" width=40% >
 <img src="inventory/PlayStoreRelease/Screenshots/StoreScrenshots/Bild 6.png" width=40% >
 
-##### Contact:
 
-heitzlki.dev@gmail.com
